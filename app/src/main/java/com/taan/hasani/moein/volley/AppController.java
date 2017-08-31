@@ -1,5 +1,6 @@
 package com.taan.hasani.moein.volley;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -13,7 +14,7 @@ import com.android.volley.toolbox.Volley;
  * Created by Moein on 8/31/2017.
  */
 
-public class AppController extends AppCompatActivity {
+public class AppController extends Application {
 
     public static final String TAG = AppController.class
             .getSimpleName();
@@ -22,20 +23,20 @@ public class AppController extends AppCompatActivity {
     private ImageLoader mImageLoader;
 
     private static AppController mInstance;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mInstance = this;
-    }
-
-    //    @Override
-//    public void onCreate() {
 //
-//        super.onCreate();
-//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
 //        mInstance = this;
 //    }
+
+        @Override
+    public void onCreate() {
+
+        super.onCreate();
+
+        mInstance = this;
+    }
 
     public static synchronized AppController getInstance() {
         return mInstance;

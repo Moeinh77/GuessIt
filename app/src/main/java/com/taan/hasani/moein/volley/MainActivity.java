@@ -2,15 +2,15 @@ package com.taan.hasani.moein.volley;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,26 +19,85 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     String url = "http://online6732.tk/guessIt.php";
-    HashMap<String, String> info = new HashMap<String, String>();
     private String password;
     private String username;
     private String name;
-    private JSONObject jsonObject;
+    private Button login_bt;
+    private Button signup_bt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        login_bt=(Button)findViewById(R.id.login);
+        signup_bt=(Button)findViewById(R.id.signup);
+
+        signup_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sign_up();
+            }
+        });
+
+        login_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login();
+            }
+        });
+      //  sign_up();
+    }
+
+    public void login(){
+
+        HashMap<String, String> info = new HashMap<String, String>();
+
+                username="Moein";
+                password="&&password__";
+        info.put("action","login");
+        info.put("password",password);
+        info.put("username",username);
+
+        JSONObject jsonObject=new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    Toast.makeText(getApplicationContext(),
+                            response.getString("responseData"),Toast.LENGTH_LONG).show();
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
     }
 
     public void sign_up(){
+
+        HashMap<String, String> info = new HashMap<String, String>();
+
+        username="Moein";
+        password="&&password__";
+        name="Moeinhasani";
 
         info.put("action","signup");
         info.put("password",password);
         info.put("username",username);
         info.put("name",name);
-        jsonObject=new JSONObject(info);
+
+        JSONObject jsonObject=new JSONObject(info);
 
         JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject,new Response.Listener<JSONObject>() {
@@ -46,10 +105,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
-
-                    JSONArray jsonArray = response.getJSONArray("weather");
-                    JSONObject object = jsonArray.getJSONObject(0);
-
+                    Toast.makeText(getApplicationContext(),
+                            response.getString("responseData"),Toast.LENGTH_LONG).show();
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
