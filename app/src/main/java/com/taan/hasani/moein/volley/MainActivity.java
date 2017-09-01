@@ -1,5 +1,6 @@
 package com.taan.hasani.moein.volley;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -24,12 +25,15 @@ public class MainActivity extends AppCompatActivity {
     private String name;
     private Button login_bt;
     private Button signup_bt;
+    private Button gameinfo_bt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        gameinfo_bt=(Button)findViewById(R.id.game_info);
         login_bt=(Button)findViewById(R.id.login);
         signup_bt=(Button)findViewById(R.id.signup);
 
@@ -40,24 +44,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        gameinfo_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                game_info();
+            }
+        });
+
         login_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
             }
         });
-      //  sign_up();
+
     }
 
-    public void login(){
 
+    public void game_info(){
         HashMap<String, String> info = new HashMap<String, String>();
 
-                username="Moein";
-                password="&&password__";
-        info.put("action","login");
-        info.put("password",password);
-        info.put("username",username);
+
+        info.put("action","newGame");
+        info.put("catagory","ورزشی");
+        info.put("player","Moein");
+        info.put("mode","singlePlayer");
+
 
         JSONObject jsonObject=new JSONObject(info);
         JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST,
@@ -69,19 +81,26 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             response.getString("responseData"),Toast.LENGTH_LONG).show();
                 }catch (JSONException e){
-                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),
+                            "Failed",Toast.LENGTH_LONG).show();
                 }
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(getApplicationContext(),
+                        "error",Toast.LENGTH_LONG).show();
             }
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+    }
 
+    public void login(){
+
+        Intent i=new Intent(MainActivity.this,Login.class);
+        startActivity(i);
     }
 
     public void sign_up(){
