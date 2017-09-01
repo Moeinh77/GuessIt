@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,12 +65,10 @@ public class MainActivity extends AppCompatActivity {
     public void game_info(){
         HashMap<String, String> info = new HashMap<String, String>();
 
-
         info.put("action","newGame");
-        info.put("catagory","ورزشی");
-        info.put("player","Moein");
+        info.put("category","ورزشی");
+        info.put("player","1");
         info.put("mode","singlePlayer");
-
 
         JSONObject jsonObject=new JSONObject(info);
         JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST,
@@ -78,11 +77,12 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
+                    JSONArray jsonArray=new JSONArray(response.getString("words"));
                     Toast.makeText(getApplicationContext(),
-                            response.getString("responseData"),Toast.LENGTH_LONG).show();
+                            jsonArray.toString(),Toast.LENGTH_LONG).show();
                 }catch (JSONException e){
                     Toast.makeText(getApplicationContext(),
-                            "Failed",Toast.LENGTH_LONG).show();
+                            "Json Execption",Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        "error",Toast.LENGTH_LONG).show();
+                        error.toString(),Toast.LENGTH_LONG).show();
             }
         });
 
@@ -105,40 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void sign_up(){
 
-        HashMap<String, String> info = new HashMap<String, String>();
-
-        username="Moein";
-        password="&&password__";
-        name="Moeinhasani";
-
-        info.put("action","signup");
-        info.put("password",password);
-        info.put("username",username);
-        info.put("name",name);
-
-        JSONObject jsonObject=new JSONObject(info);
-
-        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject,new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-                    Toast.makeText(getApplicationContext(),
-                            response.getString("responseData"),Toast.LENGTH_LONG).show();
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+        Intent i=new Intent(MainActivity.this,SignUp.class);
+        startActivity(i);
 
     }
 }

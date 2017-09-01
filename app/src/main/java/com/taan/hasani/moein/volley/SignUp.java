@@ -17,13 +17,12 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class Login extends AppCompatActivity {
+public class SignUp extends AppCompatActivity {
 
     String url = "http://online6732.tk/guessIt.php";
-    private String password;
-    private String username;
+    private String password,name,username;
     private Button login_bt;
-    private EditText username_editext,password_editext;
+    private EditText username_editext,password_editext,name_editext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,21 +32,25 @@ public class Login extends AppCompatActivity {
         login_bt=(Button)findViewById(R.id.login);
         username_editext=(EditText)findViewById(R.id.username);
         password_editext=(EditText)findViewById(R.id.password);
-
+        name_editext=(EditText)findViewById(R.id.name);
 
         final HashMap<String, String> info = new HashMap<>();
 
-        username=username_editext.getText().toString();
-        password=password_editext.getText().toString();
+
 
 
 
         login_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                info.put("action","login");
+                username=username_editext.getText().toString();
+                password=password_editext.getText().toString();
+                name= name_editext.getText().toString();
+                info.put("action","signup");
                 info.put("password",password);
                 info.put("username",username);
+                info.put("name",name);
+
                 JSONObject jsonObject=new JSONObject(info);
                 JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST,
                         url, jsonObject,new Response.Listener<JSONObject>() {
@@ -66,7 +69,7 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(),
-                               "Error login",Toast.LENGTH_LONG).show();
+                                "Error signing up",Toast.LENGTH_LONG).show();
 
                     }
                 });
