@@ -21,15 +21,15 @@ public class SignUp extends AppCompatActivity {
 
     String url = "http://online6732.tk/guessIt.php";
     private String password,name,username;
-    private Button login_bt;
+    private Button signup;
     private EditText username_editext,password_editext,name_editext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_sign_up);
 
-        login_bt=(Button)findViewById(R.id.login);
+        signup=(Button)findViewById(R.id.signup);
         username_editext=(EditText)findViewById(R.id.username);
         password_editext=(EditText)findViewById(R.id.password);
         name_editext=(EditText)findViewById(R.id.name);
@@ -40,7 +40,7 @@ public class SignUp extends AppCompatActivity {
 
 
 
-        login_bt.setOnClickListener(new View.OnClickListener() {
+        signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 username=username_editext.getText().toString();

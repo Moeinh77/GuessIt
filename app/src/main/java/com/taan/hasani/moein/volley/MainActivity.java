@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -78,11 +79,16 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     JSONArray jsonArray=new JSONArray(response.getString("words"));
+                  //  jsonArray.getJSONObject(0).getString("incompleteWord");
+                    String name_fa = new String( jsonArray.getJSONObject(0).getString("incompleteWord")
+                            .getBytes("ISO-8859-1"), "UTF-8");
                     Toast.makeText(getApplicationContext(),
-                            jsonArray.toString(),Toast.LENGTH_LONG).show();
+                            name_fa,Toast.LENGTH_LONG).show();
                 }catch (JSONException e){
                     Toast.makeText(getApplicationContext(),
                             "Json Execption",Toast.LENGTH_LONG).show();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
             }
 

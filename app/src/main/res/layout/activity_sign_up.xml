@@ -67,4 +67,14 @@
         android:layout_marginLeft="46dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@+id/username" />
+
+    <Button
+        android:id="@+id/signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:text="sign up"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 </android.support.constraint.ConstraintLayout>
