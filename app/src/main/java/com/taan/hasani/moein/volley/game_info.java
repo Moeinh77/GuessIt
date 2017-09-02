@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -12,42 +11,35 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Random;
 
-public class Login extends AppCompatActivity {
+public class game_info extends AppCompatActivity {
 
+    private Button get_info_bt;
+    HashMap<String, String> info = new HashMap<String, String>();
     String url = "http://online6732.tk/guessIt.php";
-    private String password;
-    private String username;
-    private Button login_bt;
-    private EditText username_editext,password_editext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_game_info);
 
-        login_bt=(Button)findViewById(R.id.login);
-        username_editext=(EditText)findViewById(R.id.username);
-        password_editext=(EditText)findViewById(R.id.password);
+        get_info_bt=(Button)findViewById(R.id.getinfo);
 
-
-        final HashMap<String, String> info = new HashMap<>();
-
-        username=username_editext.getText().toString();
-        password=password_editext.getText().toString();
-
-
-
-        login_bt.setOnClickListener(new View.OnClickListener() {
+        get_info_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                info.put("action","login");
-                info.put("password",password);
-                info.put("username",username);
+                info.put("action","newGame");
+                info.put("category","ورزشی");
+                info.put("player","1");
+                info.put("mode","singlePlayer");
+
                 JSONObject jsonObject=new JSONObject(info);
                 JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST,
                         url, jsonObject,new Response.Listener<JSONObject>() {
@@ -55,9 +47,21 @@ public class Login extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
 
                         try {
+                            JSONArray jsonArray=new JSONArray(response.getString("words"));
+                            //  jsonArray.getJSONObject(0).getString("incompleteWord");
+
+                            Random rand = new Random();
+
+                            int  i = rand.nextInt(2);
+
+                            String name_fa = new String( jsonArray.getJSONObject(i).getString("incompleteWord")
+                                    .getBytes("ISO-8859-1"), "UTF-8");
                             Toast.makeText(getApplicationContext(),
-                                    response.getString("dataIsRight"),Toast.LENGTH_LONG).show();
+                                    name_fa,Toast.LENGTH_LONG).show();
                         }catch (JSONException e){
+                            Toast.makeText(getApplicationContext(),
+                                    "Json Execption",Toast.LENGTH_LONG).show();
+                        } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
                     }
@@ -66,14 +70,11 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(),
-                               "Error login",Toast.LENGTH_LONG).show();
-
+                                error.toString(),Toast.LENGTH_LONG).show();
                     }
                 });
 
                 AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
-                finish();
             }
         });
 
