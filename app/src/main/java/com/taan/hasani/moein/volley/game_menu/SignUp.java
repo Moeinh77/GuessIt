@@ -1,5 +1,6 @@
 package com.taan.hasani.moein.volley.game_menu;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.volley.appcontroller.AppController;
 import com.taan.hasani.moein.volley.R;
+import com.taan.hasani.moein.volley.game.choosing_theGame;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,7 +80,8 @@ public class SignUp extends AppCompatActivity {
 
                 AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
-                finish();
+                Intent intent=new Intent(SignUp.this,choosing_theGame.class);
+                startActivity(intent);
             }
         });
 
