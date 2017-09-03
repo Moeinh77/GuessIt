@@ -1,8 +1,6 @@
-package com.taan.hasani.moein.volley;
+package com.taan.hasani.moein.volley.appcontroller;
 
 import android.app.Application;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
