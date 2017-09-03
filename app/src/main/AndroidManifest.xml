@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".game_menu.Loading">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,14 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".game_menu.Signup_and_Login"/>
+        <activity android:name=".game_menu.Signup_and_Login" />
         <activity android:name=".game_menu.Login" />
         <activity android:name=".game_menu.SignUp" />
         <activity android:name=".game.single_Player" />
         <activity android:name=".game.choosing_theGame" />
-
-
+        <activity android:name=".game_menu.profile"></activity>
     </application>
 
 </manifest>
