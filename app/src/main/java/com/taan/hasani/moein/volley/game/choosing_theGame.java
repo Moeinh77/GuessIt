@@ -21,7 +21,7 @@ public class choosing_theGame extends AppCompatActivity {
         singleplayer_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(choosing_theGame.this,game_info.class);
+                Intent i=new Intent(choosing_theGame.this,single_Player.class);
                 startActivity(i);
             }
         });

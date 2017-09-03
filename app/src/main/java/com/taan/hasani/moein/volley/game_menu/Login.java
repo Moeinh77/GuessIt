@@ -94,6 +94,7 @@ public class Login extends AppCompatActivity {
                         //opens the gamechoose activity
                         Intent i=new Intent(activity, choosing_theGame.class);
                         startActivity(i);
+                        finish();
                     }
 
                     else{Toast.makeText(getApplicationContext(),

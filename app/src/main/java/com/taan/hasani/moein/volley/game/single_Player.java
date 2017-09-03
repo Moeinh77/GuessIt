@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Random;
 
-public class game_info extends AppCompatActivity {
+public class single_Player extends AppCompatActivity {
 
     private EditText entered_word;
     private Button check_bt;
@@ -38,7 +38,7 @@ public class game_info extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_game_info);
+        setContentView(R.layout.activity_single_player);
 
         message=(TextView)findViewById(R.id.message);
         incomplete_TextView=(TextView)findViewById(R.id.incompleteword);

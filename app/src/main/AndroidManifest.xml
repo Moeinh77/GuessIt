@@ -21,8 +21,9 @@
         </activity>
         <activity android:name=".game_menu.Login" />
         <activity android:name=".game_menu.SignUp" />
-        <activity android:name=".game.game_info" />
-        <activity android:name=".game.choosing_theGame"></activity>
+        <activity android:name=".game.single_Player" />
+        <activity android:name=".game.choosing_theGame" />
+        <activity android:name=".game_menu.Loading"></activity>
     </application>
 
 </manifest>

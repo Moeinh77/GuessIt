@@ -1,6 +1,7 @@
 package com.taan.hasani.moein.volley.game_menu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 
 public class SignUp extends AppCompatActivity {
 
+    private final String MY_PREFS_NAME ="username and password" ;
     String url = "http://online6732.tk/guessIt.php";
     private String password,name,username;
     private Button signup;
@@ -39,10 +41,6 @@ public class SignUp extends AppCompatActivity {
         name_editext=(EditText)findViewById(R.id.name);
 
         final HashMap<String, String> info = new HashMap<>();
-
-
-
-
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,10 +78,22 @@ public class SignUp extends AppCompatActivity {
 
                 AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
+                save_user_and_pass(username,password);
+
                 Intent intent=new Intent(SignUp.this,choosing_theGame.class);
                 startActivity(intent);
             }
         });
+
+    }
+    public void save_user_and_pass(String username__,String password__){
+
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString("usename", username__);
+        editor.putString("password", password__);
+        editor.apply();
+//        Toast.makeText(getApplicationContext(),
+//                "user :"+username__+"pass :"+password__,Toast.LENGTH_LONG).show();
 
     }
 }

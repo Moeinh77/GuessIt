@@ -70,12 +70,14 @@ public class MainActivity extends AppCompatActivity {
 
         Intent i = new Intent(MainActivity.this, Login.class);
         startActivity(i);
+        finish();
     }
 
     public void sign_up() {
 
         Intent i = new Intent(MainActivity.this, SignUp.class);
         startActivity(i);
+        finish();
 
     }
 
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                         //opens the gamechoose activity
                         Intent i=new Intent(MainActivity.this, choosing_theGame.class);
                         startActivity(i);
+                        finish();
                     }
 
                     else{Toast.makeText(getApplicationContext(),
