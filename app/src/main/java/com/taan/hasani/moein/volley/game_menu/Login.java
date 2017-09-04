@@ -50,32 +50,27 @@ public class Login extends AppCompatActivity {
                 String username=username_editext.getText().toString();
                 String password=password_editext.getText().toString();
 
-
-                //saving usename and password
-                save_user_and_pass(username,password);
-                ///////////////////////////////////
-
                 //sending user and pass to server
-                sending_info(username,password,Login.this);
+                sending_info(username,password);
                 ///////////////////////////////////
-
             }
         });
 
     }
 
-    public void save_user_and_pass(String username__,String password__){
+    public void save_user_and_pass_and_id(String username__,String password__,String id__){
 
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putString("usename", username__);
         editor.putString("password", password__);
+        editor.putString("id",id__);
         editor.apply();
-        Toast.makeText(getApplicationContext(),
-                "user :"+username__+"pass :"+password__,Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(),
+//                "user :"+username__+"pass :"+password__,Toast.LENGTH_LONG).show();
 
     }
 
-    public void sending_info(String username_, String password_, final Activity activity){
+    public void sending_info(final String username_, final String password_){
 
         info.put("action","login");
         info.put("username",username_);
@@ -91,8 +86,15 @@ public class Login extends AppCompatActivity {
                     // Toast.makeText(getApplicationContext(),
                     //         response.getString("dataIsRight"),Toast.LENGTH_LONG).show();
                     if(response.getString("dataIsRight").equals("yes")){
+
+
+                        String id=response.getString("id");
+                        //saving usename and password
+                        save_user_and_pass_and_id(username_,password_,id);
+                        ///////////////////////////////////
+
                         //opens the gamechoose activity
-                        Intent i=new Intent(activity, choosing_theGame.class);
+                        Intent i=new Intent(Login.this, choosing_theGame.class);
                         startActivity(i);
                         finish();
                     }

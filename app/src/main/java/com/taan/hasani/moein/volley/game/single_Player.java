@@ -1,7 +1,9 @@
 package com.taan.hasani.moein.volley.game;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,9 +56,11 @@ public class single_Player extends AppCompatActivity {
                 try {
                     completeword = new String(jsonArray.getJSONObject(i).getString("word")
                             .getBytes("ISO-8859-1"), "UTF-8");
-                }catch (JSONException je){
+                }
+                catch (JSONException je){
 
-                }catch (UnsupportedEncodingException e){
+                }
+                catch (UnsupportedEncodingException e){
 
                 }
 
@@ -75,9 +79,17 @@ public class single_Player extends AppCompatActivity {
 
     public void OnOpening(){
 
+        //getting id for the player
+        String MY_PREFS_NAME="username and password";
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String id = prefs.getString("id", null);
+        //////////////////////////////////////////
+
+        Log.v("","########id: "+id);
+
         info.put("action","newGame");
         info.put("category","ورزشی");
-        info.put("player","1");
+        info.put("player",id);
         info.put("mode","singlePlayer");
 
         JSONObject jsonObject=new JSONObject(info);
