@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.volley.game_menu;
+package com.taan.hasani.moein.volley.profile_fragments;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -30,8 +30,6 @@ public class profile extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
@@ -41,8 +39,8 @@ public class profile extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new account_settings(), "First");
-        adapter.addFragment(new account_games_info(), "Second");
+        adapter.addFragment(new account_settings(), "Profile Settings");
+        adapter.addFragment(new account_games_info(), "Player Info");
         viewPager.setAdapter(adapter);
     }
 

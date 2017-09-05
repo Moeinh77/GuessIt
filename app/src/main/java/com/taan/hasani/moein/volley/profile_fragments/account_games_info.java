@@ -1,107 +1,101 @@
 package com.taan.hasani.moein.volley.profile_fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.volley.R;
+import com.taan.hasani.moein.volley.appcontroller.AppController;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link account_games_info.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link account_games_info#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+
+import static android.content.Context.MODE_PRIVATE;
+
+
 public class account_games_info extends Fragment{
-//    // TODO: Rename parameter arguments, choose names that match
-//    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
 
-//    private OnFragmentInteractionListener mListener;
+
+    HashMap<String, String> info = new HashMap<>();
+    String url = "http://online6732.tk/guessIt.php";
+    private TextView games_info_textview;
+
 
     public account_games_info() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment second.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static account_games_info newInstance(String param1, String param2) {
-        account_games_info fragment = new account_games_info();
-        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account_games_info, container, false);
+        View games_info=inflater.inflate(R.layout.fragment_account_games_info, container, false);
+        games_info_textview=(TextView)games_info.findViewById(R.id.games_info);
+        games_info_textview.setText("gamesinfo");
+
+
+        return games_info;
+    }
+    ////////////////////////////////////////////////////
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-//
-//    /**
-//     * This interface must be implemented by activities that contain this
-//     * fragment to allow an interaction in this fragment to be communicated
-//     * to the activity and potentially other fragments contained in that
-//     * activity.
-//     * <p>
-//     * See the Android Training lesson <a href=
-//     * "http://developer.android.com/training/basics/fragments/communicating.html"
-//     * >Communicating with Other Fragments</a> for more information.
-//     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
+    ////////////////////////////////////////////////////
+    private void getUserGamesInfo(String gameID){
+
+        //getting id for the player
+        String MY_PREFS_NAME="username and password";
+        SharedPreferences prefs =getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String id = prefs.getString("id", null);
+
+        info.put("action","sendGameInformation");
+        info.put("userID",id);
+        info.put("gameID", gameID);
+
+        JSONObject jsonObject=new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+    }
+
+
 }
