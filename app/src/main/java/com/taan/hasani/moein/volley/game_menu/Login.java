@@ -63,7 +63,7 @@ public class Login extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putString("usename", username__);
         editor.putString("password", password__);
-        editor.putString("id",id__);
+        editor.putString("userId",id__);
         editor.apply();
 //        Toast.makeText(getApplicationContext(),
 //                "user :"+username__+"pass :"+password__,Toast.LENGTH_LONG).show();
@@ -94,7 +94,7 @@ public class Login extends AppCompatActivity {
                         ///////////////////////////////////
 
                         //opens the gamechoose activity
-                        Intent i=new Intent(Login.this, choosing_theGame.class);
+                        Intent i=new Intent(Login.this, Main_menu.class);
                         startActivity(i);
                         finish();
                     }

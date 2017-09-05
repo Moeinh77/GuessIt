@@ -4,30 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.taan.hasani.moein.volley.game_menu.Entrance_signup_login">
+    tools:context="com.taan.hasani.moein.volley.game_menu.Main_menu">
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/games_bt"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="145dp"
-        android:text="Login"
+        android:layout_marginTop="130dp"
+        android:text="games"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/signup"
+        android:id="@+id/profile_bt"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="singup"
+        android:text="profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login"
-        app:layout_constraintVertical_bias="0.106" />
-
+        app:layout_constraintTop_toBottomOf="@+id/games_bt"
+        app:layout_constraintVertical_bias="0.34" />
 </android.support.constraint.ConstraintLayout>

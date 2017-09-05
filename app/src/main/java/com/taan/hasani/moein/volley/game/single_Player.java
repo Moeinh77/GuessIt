@@ -89,7 +89,7 @@ public class single_Player extends AppCompatActivity {
 
         info.put("action","newGame");
         info.put("category","ورزشی");
-        info.put("player",id);
+        info.put("userId",id);
         info.put("mode","singlePlayer");
 
         JSONObject jsonObject=new JSONObject(info);

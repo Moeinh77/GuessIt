@@ -80,7 +80,7 @@ public class SignUp extends AppCompatActivity {
 
                 save_user_and_pass(username,password);
 
-                Intent intent=new Intent(SignUp.this,choosing_theGame.class);
+                Intent intent=new Intent(SignUp.this,Main_menu.class);
                 startActivity(intent);
             }
         });

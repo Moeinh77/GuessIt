@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import com.taan.hasani.moein.volley.R;
 
-public class Signup_and_Login extends AppCompatActivity {
+public class Entrance_signup_login extends AppCompatActivity {
 
     private Button login_bt;
     private Button signup_bt;
@@ -44,14 +44,14 @@ public class Signup_and_Login extends AppCompatActivity {
 
     public void login() {
 
-        Intent i = new Intent(Signup_and_Login.this, Login.class);
+        Intent i = new Intent(Entrance_signup_login.this, Login.class);
         startActivity(i);
         finish();
     }
 
     public void sign_up() {
 
-        Intent i = new Intent(Signup_and_Login.this, SignUp.class);
+        Intent i = new Intent(Entrance_signup_login.this, SignUp.class);
         startActivity(i);
         finish();
 

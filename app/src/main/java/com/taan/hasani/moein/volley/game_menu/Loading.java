@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 public class Loading extends AppCompatActivity {
 
-    private static int TIME_OUT = 1500;
+    private static int TIME_OUT = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class Loading extends AppCompatActivity {
 
                     if(response.getString("dataIsRight").equals("yes")){
                         //opens the gamechoose activity
-                        Intent i=new Intent(Loading.this, choosing_theGame.class);
+                        Intent i=new Intent(Loading.this, Main_menu.class);
                         startActivity(i);
                         finish();
                     }
