@@ -63,7 +63,7 @@ public class Login extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putString("usename", username__);
         editor.putString("password", password__);
-        editor.putString("userId",id__);
+        editor.putString("userID",id__);
         editor.apply();
 //        Toast.makeText(getApplicationContext(),
 //                "user :"+username__+"pass :"+password__,Toast.LENGTH_LONG).show();
@@ -88,7 +88,7 @@ public class Login extends AppCompatActivity {
                     if(response.getString("dataIsRight").equals("yes")){
 
 
-                        String id=response.getString("id");
+                        String id=response.getString("userID");
                         //saving usename and password
                         save_user_and_pass_and_id(username_,password_,id);
                         ///////////////////////////////////

@@ -1,5 +1,6 @@
 package com.taan.hasani.moein.volley.profile;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -51,6 +52,11 @@ public class profile extends AppCompatActivity {
                // startActivity(new Intent(this, About.class));
                 return true;
 
+            case R.id.change_password:
+
+                Intent intent=new Intent(profile.this,change_password.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

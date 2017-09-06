@@ -82,14 +82,14 @@ public class single_Player extends AppCompatActivity {
         //getting id for the player
         String MY_PREFS_NAME="username and password";
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String id = prefs.getString("id", null);
+        String id = prefs.getString("userID", null);
         //////////////////////////////////////////
 
         Log.v("","########id: "+id);
 
         info.put("action","newGame");
         info.put("category","ورزشی");
-        info.put("userId",id);
+        info.put("userID",id);
         info.put("mode","singlePlayer");
 
         JSONObject jsonObject=new JSONObject(info);

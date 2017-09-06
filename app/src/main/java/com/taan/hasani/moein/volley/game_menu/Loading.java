@@ -23,6 +23,7 @@ import java.util.HashMap;
 public class Loading extends AppCompatActivity {
 
     private static int TIME_OUT = 1000;
+    private final String MY_PREFS_NAME="username and password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,12 @@ public class Loading extends AppCompatActivity {
                 try {
 
                     if(response.getString("dataIsRight").equals("yes")){
-                        //opens the gamechoose activity
+
+                        String id__=response.getString("userID");
+                        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                        editor.putString("userID",id__);
+                        editor.apply();
+
                         Intent i=new Intent(Loading.this, Main_menu.class);
                         startActivity(i);
                         finish();
