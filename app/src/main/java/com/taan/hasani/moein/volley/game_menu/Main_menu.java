@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import com.taan.hasani.moein.volley.R;
 import com.taan.hasani.moein.volley.game.choosing_theGame;
-import com.taan.hasani.moein.volley.profile_fragments.profile;
+import com.taan.hasani.moein.volley.profile.profile;
 
 public class Main_menu extends AppCompatActivity {
 

@@ -26,7 +26,7 @@
         <activity android:name=".game_menu.SignUp" />
         <activity android:name=".game.single_Player" />
         <activity android:name=".game.choosing_theGame" />
-        <activity android:name=".profile_fragments.profile"
+        <activity android:name=".profile.profile"
             android:theme="@style/MyMaterialTheme"/>
         <activity android:name=".game_menu.Main_menu"/>
     </application>

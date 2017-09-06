@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.volley.profile_fragments;
+package com.taan.hasani.moein.volley.profile;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -7,11 +7,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.taan.hasani.moein.volley.R;
-import com.taan.hasani.moein.volley.profile_fragments.account_games_info;
-import com.taan.hasani.moein.volley.profile_fragments.account_settings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,29 @@ public class profile extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
+
+    //menu
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.profile_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+               // startActivity(new Intent(this, About.class));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        //respond to menu item selection
+
+    }
+    //////////////////////////////////////////////////
+
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());

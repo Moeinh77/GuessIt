@@ -36,11 +36,16 @@ public class Loading extends AppCompatActivity {
                 SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
                 String username = prefs.getString("usename", null);
                 String password = prefs.getString("password", null);
-                if (username != null &&  password!=null) {
+               // String name=prefs.getString("name",null);
+                if (username != null || password!=null) {
 
-                    // Toast.makeText(getApplicationContext(),username+","+password,Toast.LENGTH_LONG).show();
+                   //  Toast.makeText(getApplicationContext(),"Welcome "+name,Toast.LENGTH_LONG).show();
                     sending_info(username,password);
 
+                }else{
+                    Intent intent=new Intent(Loading.this,Entrance_signup_login.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
         }, TIME_OUT);
@@ -87,7 +92,7 @@ public class Loading extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        "Error login",Toast.LENGTH_LONG).show();
+                        error.toString(),Toast.LENGTH_LONG).show();
 
             }
         });
