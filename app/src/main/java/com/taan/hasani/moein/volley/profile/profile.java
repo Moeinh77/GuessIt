@@ -1,6 +1,7 @@
 package com.taan.hasani.moein.volley.profile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,12 +14,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.taan.hasani.moein.volley.R;
+import com.taan.hasani.moein.volley.game_menu.Entrance_signup_login;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class profile extends AppCompatActivity {
 
+    private final String MY_PREFS_NAME="username and password";
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -49,7 +52,16 @@ public class profile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-               // startActivity(new Intent(this, About.class));
+
+                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                editor.putString("usename", null);
+                editor.putString("password", null);
+                editor.putString("userID",null);
+                editor.apply();
+
+                Intent i=new Intent(profile.this, Entrance_signup_login.class);
+                startActivity(i);
+                finish();
                 return true;
 
             case R.id.change_password:

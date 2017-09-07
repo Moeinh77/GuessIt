@@ -71,7 +71,7 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(),
-                                "Error signing up",Toast.LENGTH_LONG).show();
+                                error.toString(),Toast.LENGTH_LONG).show();
 
                     }
                 });

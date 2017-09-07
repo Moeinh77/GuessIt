@@ -39,15 +39,16 @@ public class change_password extends AppCompatActivity {
         repeat_password = (EditText) findViewById(R.id.repeat_password);
         save_bt = (Button) findViewById(R.id.save_bt);
 
+
         save_bt.setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View v) {
-                                           if (old_password.getText() != null || new_password.getText() != null || repeat_password.getText() != null) {
-
+                                           if (!old_password.getText().toString().equals("") && !new_password.getText().toString().equals("") && !repeat_password.getText().toString().equals("")) {
+                                               change_password_func();
 
                                            } else {
 
-                                               //   Snackbar.make(R.layout.activity_change_password,"Please fill all the fields",Snackbar.LENGTH_INDEFINITE).show();
+                                               Toast.makeText(getApplicationContext(), "Please fill all the fields", Toast.LENGTH_LONG).show();
                                            }
                                        }
                                    }
@@ -57,14 +58,23 @@ public class change_password extends AppCompatActivity {
     public void change_password_func() {
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String user_id = prefs.getString("userID", null);
+        final String user_id = prefs.getString("userID", null);
+        String oldpassowrd_from_sharedprefs = prefs.getString("password", null);
+        newPassword_string = new_password.getText().toString();
+        oldPassword_string = old_password.getText().toString();
 
-        info.put("action", "changePassword");
-        info.put("newPassword", newPassword_string);
-        info.put("oldPassword", oldPassword_string);
-        info.put("userID", user_id);
 
-        if (newPassword_string.equals(oldPassword_string)) {
+//        if (!old_password.getText().toString().equals(oldpassowrd_from_sharedprefs)){
+//            Toast.makeText(getApplicationContext(),
+//                    "Wrong old passwprd",Toast.LENGTH_LONG).show();
+//        }else
+        if (newPassword_string.equals(repeat_password.getText().toString())) {
+
+            info.put("action", "changePassword");
+            info.put("newPassword", newPassword_string);
+            info.put("oldPassword", oldpassowrd_from_sharedprefs);
+            info.put("userID", user_id);
+
             JSONObject jsonObject = new JSONObject(info);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url, jsonObject, new Response.Listener<JSONObject>() {
@@ -76,10 +86,12 @@ public class change_password extends AppCompatActivity {
                         //         response.getString("dataIsRight"),Toast.LENGTH_LONG).show();
                         if (response.getString("dataIsRight").equals("yes")) {
 
+
                             SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                             editor.putString("password", newPassword_string);
                             editor.apply();
 
+                            Toast.makeText(getApplicationContext(), "Password changed", Toast.LENGTH_LONG).show();
 
                         } else {
                             Toast.makeText(getApplicationContext(),
@@ -94,21 +106,22 @@ public class change_password extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(),
-                            "Error login", Toast.LENGTH_LONG).show();
+                    SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                    editor.putString("password", newPassword_string);
+                    editor.apply();
+                    Toast.makeText(getApplicationContext(), "Password changed", Toast.LENGTH_LONG).show();
+                    finish();
 
                 }
             });
 
             AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
-        }else if(){
+        } else {
+            Toast.makeText(getApplicationContext(), "Passwords are not the same or old pass is wrong", Toast.LENGTH_LONG).show();
 
         }
-        else{
-            Toast.makeText(getApplicationContext(),"Passwords are not the same",Toast.LENGTH_LONG).show();
 
-        }
     }
 
 }

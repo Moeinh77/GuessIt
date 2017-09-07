@@ -33,7 +33,7 @@ public class account_games_info extends Fragment {
     String url = "http://online6732.tk/guessIt.php";
     private TextView games_info_textview;
     String id, recived_games_id;
-    String game_scores_string="z";
+    String game_scores_string="";
     String[] array = null;
 
 
@@ -110,7 +110,7 @@ public class account_games_info extends Fragment {
         //getting id for the player
         final String MY_PREFS_NAME = "username and password";
         SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String id = prefs.getString("userId", null);
+        String id = prefs.getString("userID", null);
         //////////////////////////////////////////
         info.put("action", "sendUserInformation");
         info.put("userID", id);
@@ -122,7 +122,7 @@ public class account_games_info extends Fragment {
 
                 try {
 
-                    recived_games_id = new String(response.getString("games").getBytes("ISO-8859-1"), "UTF-8");
+                    recived_games_id = new String(response.getString("gamesID").getBytes("ISO-8859-1"), "UTF-8");
                     Snackbar.make(getView(), recived_games_id, Snackbar.LENGTH_LONG).show();
 
                     array=recived_games_id.split(", ");

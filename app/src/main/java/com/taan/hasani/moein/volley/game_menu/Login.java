@@ -105,6 +105,7 @@ public class Login extends AppCompatActivity {
 
                 }catch (JSONException e){
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
                 }
             }
 

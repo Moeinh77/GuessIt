@@ -109,7 +109,7 @@ public class single_Player extends AppCompatActivity {
 //                                    incompleteWord,Toast.LENGTH_LONG).show();
                 }catch (JSONException e){
                     Toast.makeText(getApplicationContext(),
-                            "Json Execption",Toast.LENGTH_LONG).show();
+                            e.toString(),Toast.LENGTH_LONG).show();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }

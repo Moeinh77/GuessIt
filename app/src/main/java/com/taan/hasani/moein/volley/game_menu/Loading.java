@@ -74,7 +74,7 @@ public class Loading extends AppCompatActivity {
 
                     if(response.getString("dataIsRight").equals("yes")){
 
-                        String id__=response.getString("userID");
+                        String id__=response.getString("userID");//#######
                         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                         editor.putString("userID",id__);
                         editor.apply();
@@ -87,10 +87,14 @@ public class Loading extends AppCompatActivity {
                     else{
                         Toast.makeText(getApplicationContext(),
                                 response.getString("dataIsRight"),Toast.LENGTH_LONG).show();
+                        finish();
                     }
 
                 }catch (JSONException e){
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),
+                            e.toString(),Toast.LENGTH_LONG).show();
+
                 }
             }
 
