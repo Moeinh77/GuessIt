@@ -65,8 +65,6 @@ public class Login extends AppCompatActivity {
         editor.putString("password", password__);
         editor.putString("userID",id__);
         editor.apply();
-//        Toast.makeText(getApplicationContext(),
-//                "user :"+username__+"pass :"+password__,Toast.LENGTH_LONG).show();
 
     }
 

@@ -64,10 +64,10 @@ public class change_password extends AppCompatActivity {
         oldPassword_string = old_password.getText().toString();
 
 
-//        if (!old_password.getText().toString().equals(oldpassowrd_from_sharedprefs)){
-//            Toast.makeText(getApplicationContext(),
-//                    "Wrong old passwprd",Toast.LENGTH_LONG).show();
-//        }else
+        if (!old_password.getText().toString().equals(oldpassowrd_from_sharedprefs)){
+            Toast.makeText(getApplicationContext(),
+                    "Wrong old passwprd",Toast.LENGTH_LONG).show();
+        }else
         if (newPassword_string.equals(repeat_password.getText().toString())) {
 
             info.put("action", "changePassword");
@@ -93,6 +93,7 @@ public class change_password extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(), "Password changed", Toast.LENGTH_LONG).show();
 
+                            finish();
                         } else {
                             Toast.makeText(getApplicationContext(),
                                     response.getString("dataIsRight"), Toast.LENGTH_LONG).show();
@@ -106,11 +107,7 @@ public class change_password extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                    editor.putString("password", newPassword_string);
-                    editor.apply();
-                    Toast.makeText(getApplicationContext(), "Password changed", Toast.LENGTH_LONG).show();
-                    finish();
+                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG);
 
                 }
             });
@@ -118,7 +115,7 @@ public class change_password extends AppCompatActivity {
             AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
         } else {
-            Toast.makeText(getApplicationContext(), "Passwords are not the same or old pass is wrong", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Entered passwords are not the same ", Toast.LENGTH_LONG).show();
 
         }
 
