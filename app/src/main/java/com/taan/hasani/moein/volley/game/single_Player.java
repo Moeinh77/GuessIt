@@ -1,6 +1,9 @@
 package com.taan.hasani.moein.volley.game;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,8 +36,8 @@ public class single_Player extends AppCompatActivity {
     HashMap<String, String> info = new HashMap<>();
     String url = "http://online6732.tk/guessIt.php";
     JSONArray jsonArray;
-    Random rand = new Random();
-    int  i = rand.nextInt(2);
+//    Random rand = new Random();
+//    int  i = rand.nextInt(2);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +55,14 @@ public class single_Player extends AppCompatActivity {
         check_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String completeword="didnt recieve the word... :( ";
+                String completeword="";
                 try {
-                    completeword = new String(jsonArray.getJSONObject(i).getString("word")
+                    completeword = new String(jsonArray.getJSONObject(0).getString("word")
                             .getBytes("ISO-8859-1"), "UTF-8");
                 }
                 catch (JSONException je){
+
+                    Toast.makeText(getApplication(),"didnt recieve the word... :( ",Toast.LENGTH_LONG).show();
 
                 }
                 catch (UnsupportedEncodingException e){
@@ -66,8 +71,32 @@ public class single_Player extends AppCompatActivity {
 
                 if(entered_word.getText().toString().equals(completeword)){
 
-                    message.setText("Congratulations !!! Your guess was RIGHT !");
                     incomplete_TextView.setText(completeword);
+
+                    final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
+                    alertDialogBuilder.setTitle("Congratulations !");
+                    //alertDialogBuilder.setIcon(R.drawable.);
+                    alertDialogBuilder
+                            .setMessage("Congratulations !!! Your guess was RIGHT !")
+                            .setCancelable(false)
+                            .setPositiveButton("Next word",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+
+                                    dialog.cancel();
+                                    next_Word_func();
+
+                                }
+                            })
+                            .setNegativeButton("Exit this game",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    finish();
+                                    Intent i=new Intent(single_Player.this,choosing_theGame.class);
+                                    startActivity(i);
+                                }
+                            });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
 
                 }else{
                   message.setText("No,Guess again !");
@@ -101,12 +130,54 @@ public class single_Player extends AppCompatActivity {
                 try {
                     jsonArray=new JSONArray(response.getString("words"));
 
-                    String incompleteWord = new String( jsonArray.getJSONObject(i).getString("incompleteWord")
+                    String incompleteWord = new String( jsonArray.getJSONObject(0).getString("incompleteWord")
                             .getBytes("ISO-8859-1"), "UTF-8");
 
                     incomplete_TextView.setText(incompleteWord);
-//                            Toast.makeText(getApplicationContext(),
-//                                    incompleteWord,Toast.LENGTH_LONG).show();
+
+                }catch (JSONException e){
+                    Toast.makeText(getApplicationContext(),
+                           e.toString(),Toast.LENGTH_LONG).show();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),
+                        "***Volley  :"+error.toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void next_Word_func(){
+
+//dialog ro cancel ko va maghadir jadid beriz too textview va string ha
+
+
+
+        info.put("action","setNextWord");
+        info.put("playerOneTime","");
+        info.put("playerOneScore","");
+
+        JSONObject jsonObject=new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    jsonArray=new JSONArray(response.getString("words"));
+
+                    String incompleteWord = new String( jsonArray.getJSONObject(0).getString("incompleteWord")
+                            .getBytes("ISO-8859-1"), "UTF-8");
+
+                    incomplete_TextView.setText(incompleteWord);
+
                 }catch (JSONException e){
                     Toast.makeText(getApplicationContext(),
                             e.toString(),Toast.LENGTH_LONG).show();
@@ -119,11 +190,13 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        error.toString(),Toast.LENGTH_LONG).show();
+                        "***Volley  :"+error.toString(),Toast.LENGTH_LONG).show();
             }
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+
     }
 }
 

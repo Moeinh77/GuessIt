@@ -40,7 +40,6 @@
         android:layout_height="41dp"
         android:layout_marginTop="48dp"
         android:gravity="center"
-        android:text="TextView"
         android:textColor="#a00038"
         android:textSize="18sp"
         android:textStyle="bold"
