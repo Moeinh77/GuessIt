@@ -122,7 +122,7 @@ public class account_games_info extends Fragment {
 
                 try {
 
-                    recived_games_id = new String(response.getString("gamesID").getBytes("ISO-8859-1"), "UTF-8");
+                    recived_games_id = new String(response.getString("games").getBytes("ISO-8859-1"), "UTF-8");
                     Snackbar.make(getView(), recived_games_id, Snackbar.LENGTH_LONG).show();
 
                     array=recived_games_id.split(", ");

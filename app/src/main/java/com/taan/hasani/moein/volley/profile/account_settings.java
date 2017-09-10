@@ -90,7 +90,7 @@ public class account_settings extends Fragment {
 
                     name = new String(response.getString("name").getBytes("ISO-8859-1"), "UTF-8");
                     username = new String(response.getString("username").getBytes("ISO-8859-1"), "UTF-8");
-                    games = new String(response.getString("gamesID").getBytes("ISO-8859-1"), "UTF-8");
+                    games = new String(response.getString("games").getBytes("ISO-8859-1"), "UTF-8");
                     profilePicture = new String(response.getString("profilePicture").getBytes("ISO-8859-1"), "UTF-8");
                     name_textview.setText(name);
                     username_textview.setText(username);
