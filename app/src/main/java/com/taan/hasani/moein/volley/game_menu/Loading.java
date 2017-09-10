@@ -101,7 +101,8 @@ public class Loading extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        error.toString(),Toast.LENGTH_LONG).show();
+                        "No internet connection found ...", Toast.LENGTH_LONG).show();
+                finish();
 
             }
         });
