@@ -1,11 +1,13 @@
 package com.taan.hasani.moein.volley.profile;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -52,16 +54,36 @@ public class profile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
+                    alertDialogBuilder.setTitle("Logout");
+                    //alertDialogBuilder.setIcon(R.drawable.);
+                    alertDialogBuilder
+                            .setMessage("Do you really want to logout of app ?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
 
-                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                editor.putString("usename", null);
-                editor.putString("password", null);
-                editor.putString("userID",null);
-                editor.apply();
+                                    SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                                    editor.putString("usename", null);
+                                    editor.putString("password", null);
+                                    editor.putString("userID",null);
+                                    editor.apply();
 
-                Intent i=new Intent(profile.this, Entrance_signup_login.class);
-                startActivity(i);
-                finish();
+                                    Intent i=new Intent(profile.this, Entrance_signup_login.class);
+                                    startActivity(i);
+                                    finish();
+
+                                }
+                            })
+                            .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    dialog.cancel();
+
+                                }
+                            });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 return true;
 
             case R.id.change_password:
