@@ -1,20 +1,17 @@
-package com.taan.hasani.moein.volley.game_menu;
+package com.taan.hasani.moein.guess_it.game_menu;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
+import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.volley.R;
-import com.taan.hasani.moein.volley.appcontroller.AppController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,14 +33,13 @@ public class Leader_Board extends AppCompatActivity {
 
         scores = (TextView) findViewById(R.id.scores);
 
-        try {
-            get_scores();
-        } catch (JSONException e) {
-        }
+
+        get_scores();
+
 
     }
 
-    public void get_scores() throws JSONException {
+    public void get_scores() {
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         String userID = prefs.getString("userID", null);
@@ -52,47 +48,69 @@ public class Leader_Board extends AppCompatActivity {
         info.put("userID", userID);
 
         JSONObject jsonObject = new JSONObject(info);
+//        JSONArray jsonArray;
 //
-//        JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.POST,
-//                url,jsonObject,new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
+//        try {
+//            jsonArray=new JSONArray(info);
+//            JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.POST, url, jsonArray, new Response.Listener<JSONArray>() {
+//                @Override
+//                public void onResponse(JSONArray response) {
 //
-//                scores.setText(response.toString());
-//            }
 //
-//        },
-//                new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
 //
-//            }
-//        });
+//
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//
+//                }
+//            });
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 try {
-                    scores.setText(response.getJSONArray("").toString());
+                    JSONArray jsonArray_scores = response.getJSONArray("listOfTopUsers");
+
+                    String scores_fromJsonArray = "";
+
+//                    for (int i = 0; i < jsonArray_scores.length(); i++) {
+//
+//                        scores_fromJsonArray = jsonArray_scores.getJSONObject(i).getString("position") + "\t" +
+//                                jsonArray_scores.getJSONObject(i).getString("username") + "\t" +
+//                                jsonArray_scores.getJSONObject(i).getString("totalScore") + "\n";
+//
+//                    }
+
+                    scores.setText(jsonArray_scores.toString());
+
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                 }
 
             }
 
-        }, new Response.ErrorListener() {
+        }
+                , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        error.toString(), Toast.LENGTH_LONG).show();
+                        "get_scores $$$" + error.toString(), Toast.LENGTH_LONG).show();
 
             }
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
-
     }
 }

@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.volley.profile;
+package com.taan.hasani.moein.guess_it.profile;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.volley.R;
-import com.taan.hasani.moein.volley.appcontroller.AppController;
+import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 
 import org.json.JSONException;
 import org.json.JSONObject;

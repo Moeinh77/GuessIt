@@ -1,6 +1,5 @@
-package com.taan.hasani.moein.volley.game_menu;
+package com.taan.hasani.moein.guess_it.game_menu;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +13,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.taan.hasani.moein.volley.appcontroller.AppController;
+import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.volley.R;
-import com.taan.hasani.moein.volley.game.choosing_theGame;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,7 +96,7 @@ public class Login extends AppCompatActivity {
                     }
 
                     else{Toast.makeText(getApplicationContext(),
-                            response.getString("dataIsRight"),Toast.LENGTH_LONG).show();
+                            "Wrong username or password", Toast.LENGTH_LONG).show();
                     }
 
                 }catch (JSONException e){

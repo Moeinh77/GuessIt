@@ -1,9 +1,8 @@
-package com.taan.hasani.moein.volley.game;
+package com.taan.hasani.moein.guess_it.game;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,8 +13,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.volley.R;
-import com.taan.hasani.moein.volley.appcontroller.AppController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,30 +65,6 @@ public class single_Player extends AppCompatActivity {
 
                     incomplete_TextView.setText(completeWord);
                     message.setText("Congratulations !!! Your guess was RIGHT !");
-//                    final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
-//                    alertDialogBuilder.setTitle("Congratulations !");
-//                    //alertDialogBuilder.setIcon(R.drawable.);
-//                    alertDialogBuilder
-//                            .setMessage("Congratulations !!! Your guess was RIGHT !")
-//                            .setCancelable(false)
-//                            .setPositiveButton("Next word",new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog,int id) {
-//
-//                                    dialog.cancel();
-//                                    next_Word_func();
-//
-//                                }
-//                            })
-//                            .setNegativeButton("Exit this game",new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog,int id) {
-//                                    finish();
-//                                    Intent i=new Intent(single_Player.this,choosing_theGame.class);
-//                                    startActivity(i);
-//                                }
-//                            });
-//
-//                    AlertDialog alertDialog = alertDialogBuilder.create();
-//                    alertDialog.show();
 
                 } else {
                     message.setText("No,Guess again !");
@@ -110,8 +85,6 @@ public class single_Player extends AppCompatActivity {
 
 
     public void OnOpening() {
-
-        //Log.v("", "########id: " + id);
 
         info.put("action", "newGame");
         info.put("category", "ورزشی");

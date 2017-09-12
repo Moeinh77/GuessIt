@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".appcontroller.AppController"
+        android:name="com.taan.hasani.moein.guess_it.appcontroller.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme2">
         <activity
-            android:name=".game_menu.Loading"
+            android:name="com.taan.hasani.moein.guess_it.game_menu.Loading"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,29 +21,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".game_menu.Entrance_signup_login" />
-
-        <activity android:name=".game_menu.Login" />
-
-        <activity android:name=".game_menu.SignUp" />
-
+        <activity android:name="com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login" />
+        <activity android:name="com.taan.hasani.moein.guess_it.game_menu.Login" />
+        <activity android:name="com.taan.hasani.moein.guess_it.game_menu.SignUp" />
         <activity
-            android:name=".game.single_Player"
+            android:name="com.taan.hasani.moein.guess_it.game.single_Player"
             android:theme="@style/MyMaterialTheme2" />
-
-        <activity android:name=".game.choosing_theGame" />
-
+        <activity android:name="com.taan.hasani.moein.guess_it.game.choosing_theGame" />
         <activity
-            android:name=".profile.profile"
+            android:name="com.taan.hasani.moein.guess_it.profile.profile"
             android:theme="@style/MyMaterialTheme" />
-
-        <activity android:name=".game_menu.Main_menu" />
-
-        <activity android:name=".profile.change_password" />
-
-        <activity android:name=".game_menu.Leader_Board" />
-
+        <activity android:name="com.taan.hasani.moein.guess_it.game_menu.Main_menu" />
+        <activity android:name="com.taan.hasani.moein.guess_it.profile.change_password" />
+        <activity android:name="com.taan.hasani.moein.guess_it.game_menu.Leader_Board" />
+        <activity android:name="com.taan.hasani.moein.guess_it.game.two_player"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.volley.profile;
+package com.taan.hasani.moein.guess_it.profile;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.volley.R;
-import com.taan.hasani.moein.volley.appcontroller.AppController;
+import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +26,7 @@ import java.util.HashMap;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class account_settings extends Fragment {
+public class account_settings_and_info extends Fragment {
 
     String MY_PREFS_NAME="username and password";
     HashMap<String, String> info = new HashMap<>();

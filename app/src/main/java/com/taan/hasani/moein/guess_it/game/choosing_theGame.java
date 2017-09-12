@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.volley.game;
+package com.taan.hasani.moein.guess_it.game;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,15 +10,19 @@ import com.taan.hasani.moein.volley.R;
 
 public class choosing_theGame extends AppCompatActivity {
 
-    private Button singleplayer_bt;
+    private Button singlePlayer_bt, twoPlayer_bt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choosing_the_game);
 
-        singleplayer_bt=(Button)findViewById(R.id.Single_Player);
-        singleplayer_bt.setOnClickListener(new View.OnClickListener() {
+        twoPlayer_bt = (Button) findViewById(R.id.twoPlayer_bt);
+
+
+        singlePlayer_bt = (Button) findViewById(R.id.Single_Player);
+
+        singlePlayer_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(choosing_theGame.this,single_Player.class);

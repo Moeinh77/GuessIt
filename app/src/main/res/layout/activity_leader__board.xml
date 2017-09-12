@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.taan.hasani.moein.volley.game_menu.Leader_Board">
+    tools:context="com.taan.hasani.moein.volley.com.taan.hasani.moein.guess_it.game_menu.Leader_Board">
 
     <TextView
         android:id="@+id/scores"

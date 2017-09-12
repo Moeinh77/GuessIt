@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.taan.hasani.moein.volley.profile.account_games_info">
+    tools:context="com.taan.hasani.moein.volley.com.taan.hasani.moein.guess_it.profile.account_games_info">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
