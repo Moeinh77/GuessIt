@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -52,6 +53,14 @@ public class profile extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+//
+//        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+//            public void run() {
+//                Log.v("","####################In shutdown hook");
+//            }
+//        }, "Shutdown-thread"));
+
     }
 
 

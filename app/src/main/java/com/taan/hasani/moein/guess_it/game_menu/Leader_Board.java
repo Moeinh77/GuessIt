@@ -3,6 +3,7 @@ package com.taan.hasani.moein.guess_it.game_menu;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,7 @@ import java.util.HashMap;
 
 public class Leader_Board extends AppCompatActivity {
 
-    private TextView scores;
+    private TextView scores, yourPlace;
     private String MY_PREFS_NAME = "username and password";
     final HashMap<String, String> info = new HashMap<>();
     String url = "http://online6732.tk/guessIt.php";
@@ -32,10 +33,9 @@ public class Leader_Board extends AppCompatActivity {
         setContentView(R.layout.activity_leader__board);
 
         scores = (TextView) findViewById(R.id.scores);
-
+        yourPlace = (TextView) findViewById(R.id.your_place);
 
         get_scores();
-
 
     }
 
@@ -48,30 +48,6 @@ public class Leader_Board extends AppCompatActivity {
         info.put("userID", userID);
 
         JSONObject jsonObject = new JSONObject(info);
-//        JSONArray jsonArray;
-//
-//        try {
-//            jsonArray=new JSONArray(info);
-//            JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.POST, url, jsonArray, new Response.Listener<JSONArray>() {
-//                @Override
-//                public void onResponse(JSONArray response) {
-//
-//
-//
-//
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//
-//                }
-//            });
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject, new Response.Listener<JSONObject>() {
@@ -83,16 +59,19 @@ public class Leader_Board extends AppCompatActivity {
 
                     String scores_fromJsonArray = "";
 
-//                    for (int i = 0; i < jsonArray_scores.length(); i++) {
-//
-//                        scores_fromJsonArray = jsonArray_scores.getJSONObject(i).getString("position") + "\t" +
-//                                jsonArray_scores.getJSONObject(i).getString("username") + "\t" +
-//                                jsonArray_scores.getJSONObject(i).getString("totalScore") + "\n";
-//
-//                    }
+                    for (int i = 0; i < jsonArray_scores.length(); i++) {
 
-                    scores.setText(jsonArray_scores.toString());
+                        scores_fromJsonArray += "\n\n" + jsonArray_scores.getJSONObject(i).getString("position") + ". " +
+                                jsonArray_scores.getJSONObject(i).getString("username") + "\t\t\t" + "Score : " + "\t\t" +
+                                jsonArray_scores.getJSONObject(i).getString("totalScore") + "\n" + "________________________________________________";
 
+                    }
+
+                    scores.setText(scores_fromJsonArray);
+                    scores.setMovementMethod(new ScrollingMovementMethod());
+
+
+                    yourPlace.setText(response.getString("yourPosition"));
 
                 } catch (JSONException e) {
 
