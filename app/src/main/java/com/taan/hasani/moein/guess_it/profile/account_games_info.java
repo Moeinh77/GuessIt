@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,7 +124,7 @@ public class account_games_info extends Fragment {
                 try {
 
                     recived_games_id = new String(response.getString("games").getBytes("ISO-8859-1"), "UTF-8");
-                    Snackbar.make(getView(), recived_games_id, Snackbar.LENGTH_LONG).show();
+                    //Snackbar.make(getView(), recived_games_id, Snackbar.LENGTH_LONG).show();
 
                     array=recived_games_id.split(", ");
 
@@ -134,6 +135,7 @@ public class account_games_info extends Fragment {
                     }
                      ////////////////////////
                     games_info_textview.setText(game_scores_string);
+                    games_info_textview.setMovementMethod(new ScrollingMovementMethod());
 
 
                 } catch (JSONException e) {

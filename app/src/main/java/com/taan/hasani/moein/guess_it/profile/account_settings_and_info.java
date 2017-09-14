@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +95,9 @@ public class account_settings_and_info extends Fragment {
                     profilePicture = new String(response.getString("profilePicture").getBytes("ISO-8859-1"), "UTF-8");
                     name_textview.setText(name);
                     username_textview.setText(username);
+
                     games_textview.setText(games);
+                    games_textview.setMovementMethod(new ScrollingMovementMethod());
 
                 } catch (JSONException e) {
                     Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
