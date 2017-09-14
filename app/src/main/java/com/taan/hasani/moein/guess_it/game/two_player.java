@@ -21,7 +21,6 @@ import java.util.HashMap;
 
 public class two_player extends AppCompatActivity {
 
-    private HashMap<String, String> info = new HashMap<>();
     private String MY_PREFS_NAME = "username and password",
             url = "http://online6732.tk/guessIt.php", id;
     private SharedPreferences prefs;
@@ -35,11 +34,13 @@ public class two_player extends AppCompatActivity {
 
         prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         id = prefs.getString("userID", null);
+        gamedID =
 
     }
 
 
     public void newGame() {
+        HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "newGame");
         info.put("category", "ورزشی");
@@ -85,6 +86,7 @@ public class two_player extends AppCompatActivity {
     }
 
     public void isMyGameReady() {
+        HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "isMyGameReady");
         info.put("userID", id);
@@ -128,6 +130,7 @@ public class two_player extends AppCompatActivity {
     }
 
     public void setGameSettings() {
+        HashMap<String, String> info = new HashMap<>();
 
         String categories = "ورزشی,ورزشی,ورزشی,ورزشی,ورزشی,ورزشی,ورزشی,ورزشی,ورزشی,ورزشی";
         try {
@@ -174,10 +177,11 @@ public class two_player extends AppCompatActivity {
     }
 
     public void next_Word_func() {
+        HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "sendNextWord");
-        info.put("playerOneTime", "10");
-        info.put("playerOneScore", "10");
+        //info.put("playerOneTime", "10");
+        // info.put("playerOneScore", "10");
         info.put("gameID", gamedID);
         info.put("userID", id);
 
@@ -220,6 +224,44 @@ public class two_player extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
 
+    }
+
+
+    public void setAnswer() {
+
+        HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "sendNextWord");
+        info.put("gameID", gamedID);
+        info.put("userID", id);
+        info.put("answer", );
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(),
+                            e.toString(), Toast.LENGTH_LONG).show();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),
+                        "***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
 }

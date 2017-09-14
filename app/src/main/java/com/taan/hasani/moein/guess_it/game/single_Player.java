@@ -28,7 +28,6 @@ public class single_Player extends AppCompatActivity {
     private EditText entered_word;
     private Button check_bt,next_word_bt;
     private TextView incomplete_TextView, message;
-    private HashMap<String, String> info = new HashMap<>();
     private JSONArray jsonArray;
     private String MY_PREFS_NAME = "username and password";
 
@@ -85,6 +84,7 @@ public class single_Player extends AppCompatActivity {
 
 
     public void OnOpening() {
+        HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "newGame");
         info.put("category", "ورزشی");
@@ -134,6 +134,7 @@ public class single_Player extends AppCompatActivity {
 
 
     public void next_Word_func() {
+        HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "sendNextWord");
         info.put("playerOneTime", "10");
