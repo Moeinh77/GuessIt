@@ -1,7 +1,9 @@
 package com.taan.hasani.moein.guess_it.game;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,6 +17,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
+import com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login;
+import com.taan.hasani.moein.guess_it.game_menu.Loading;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONArray;
@@ -22,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class two_player extends AppCompatActivity {
@@ -43,11 +49,20 @@ public class two_player extends AppCompatActivity {
         prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         id = prefs.getString("userID", null);
 
+        check_bt = (Button) findViewById(R.id.check_bt);
+        nextWord_bt = (Button) findViewById(R.id.nextWord_bt);
+        word = (TextView) findViewById(R.id.word);
+        message = (TextView) findViewById(R.id.message);
+        entered_word = (EditText) findViewById(R.id.enteredWord);
+
+
         newTwoPlayerGame();
 
         check_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                setAnswer(entered_word.getText().toString());
 
                 if (entered_word.getText().toString().equals(completeWord)) {
 
@@ -60,7 +75,6 @@ public class two_player extends AppCompatActivity {
 
                 }
 
-                setAnswer(entered_word.getText().toString());
 
             }
         });
@@ -96,6 +110,9 @@ public class two_player extends AppCompatActivity {
 
                 try {
 
+                    Toast.makeText(getApplicationContext(),
+                            response.toString(), Toast.LENGTH_LONG).show();
+
                     if (response.getString("gameID").equals("-1")) {
 
                         isMyGameReady();
@@ -105,7 +122,8 @@ public class two_player extends AppCompatActivity {
                         gamedID = response.getString("gameID");
 
                         setGameSettings();
-
+                        Toast.makeText(getApplicationContext(),
+                                gamedID, Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
@@ -141,11 +159,22 @@ public class two_player extends AppCompatActivity {
 
                 try {
 
+                    Toast.makeText(getApplicationContext(),
+                            response.toString(), Toast.LENGTH_SHORT).show();
+
                     if (response.getString("gameID").equals("-1")) {
-                        isMyGameReady();
+
+                        new Handler().postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                isMyGameReady();
+                            }
+                        }, 3000);
 
                     } else {
-
+                        Toast.makeText(getApplicationContext(),
+                                response.getString("gameID"), Toast.LENGTH_SHORT).show();
                         setGameSettings();
 
                     }
@@ -171,15 +200,23 @@ public class two_player extends AppCompatActivity {
     public void setGameSettings() {
         HashMap<String, String> info = new HashMap<>();
 
-        String categories = "ورزشی,ورزشی,ورزشی,ورزشی,ورزشی,ورزشی,ورزشی,ورزشی,ورزشی,ورزشی";
+        // String [] categories = {"ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی"};
+
+        // JSONArray catagories_jsonarray = new JSONArray(Arrays.asList(categories));
+
+        //    try {
+
         try {
-
-            JSONArray catagories_jsonarray = new JSONArray(categories);
-            info.put("categories", catagories_jsonarray.toString());
-
-        } catch (JSONException e) {
-            Toast.makeText(getApplicationContext(), "Error in jsonarray ", Toast.LENGTH_LONG).show();
+            info.put("categories", URLEncoder.encode("1", "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
+        //  }
+
+        //  } catch (UnsupportedEncodingException e) {
+        //      e.printStackTrace();
+        //  }
+
 
         info.put("action", "setGameSetting");
         info.put("userID", id);
@@ -201,7 +238,7 @@ public class two_player extends AppCompatActivity {
 
                     } else {
 
-                        Toast.makeText(getApplicationContext(), "There wae an error with setting the game settings", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "dataIsRight=no, There was an error with setting the game settings", Toast.LENGTH_LONG).show();
 
                     }
 
@@ -242,12 +279,13 @@ public class two_player extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
+                    Toast.makeText(getApplicationContext(),
+                            response.toString(), Toast.LENGTH_LONG).show();
+                    incompleteWord = response.getJSONObject("word").getString("incompleteWord");
+                    //  .getBytes("ISO-8859-1"), "UTF-8");
 
-                    incompleteWord = new String(response.getString("incompleteWord")
-                            .getBytes("ISO-8859-1"), "UTF-8");
-
-                    completeWord = new String(response.getString("word")
-                            .getBytes("ISO-8859-1"), "UTF-8");
+                    completeWord = response.getJSONObject("word").getString("word");
+                    //     .getBytes("ISO-8859-1"), "UTF-8");
 
                     word.setText(incompleteWord);
 
@@ -256,9 +294,10 @@ public class two_player extends AppCompatActivity {
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(),
                             e.toString(), Toast.LENGTH_LONG).show();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
                 }
+                // catch (UnsupportedEncodingException e) {
+                //     e.printStackTrace();
+                // }
             }
 
         }, new Response.ErrorListener() {
@@ -279,13 +318,15 @@ public class two_player extends AppCompatActivity {
 
         HashMap<String, String> info = new HashMap<>();
         HashMap<String, String> answer_hashmap = new HashMap<>();
-        JSONObject answer = new JSONObject(answer_hashmap);
         /////////////////////////
         answer_hashmap.put("time", "15");
         answer_hashmap.put("score", "15");
         answer_hashmap.put("answer", entered_word);
+
+        JSONObject answer = new JSONObject(answer_hashmap);
+
         /////////////////////////
-        info.put("action", "sendNextWord");
+        info.put("action", "setAnswer");
         info.put("gameID", gamedID);
         info.put("userID", id);
         info.put("answer", answer.toString());
@@ -297,6 +338,8 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
+                Toast.makeText(getApplicationContext(),
+                        "setAnswer response  :" + response.toString(), Toast.LENGTH_LONG).show();
 
             }
 

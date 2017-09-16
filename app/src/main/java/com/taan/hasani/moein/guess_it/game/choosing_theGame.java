@@ -19,6 +19,15 @@ public class choosing_theGame extends AppCompatActivity {
 
         twoPlayer_bt = (Button) findViewById(R.id.twoPlayer_bt);
 
+        twoPlayer_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(choosing_theGame.this, two_player.class);
+                startActivity(intent);
+
+            }
+        });
 
         singlePlayer_bt = (Button) findViewById(R.id.Single_Player);
 

@@ -59,7 +59,7 @@ public class Login extends AppCompatActivity {
     public void save_user_and_pass_and_id(String username__,String password__,String id__){
 
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putString("usename", username__);
+        editor.putString("username", username__);
         editor.putString("password", password__);
         editor.putString("userID",id__);
         editor.apply();

@@ -33,7 +33,7 @@ public class Loading extends AppCompatActivity {
             @Override
             public void run() {
                 SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-                String username = prefs.getString("usename", null);
+                String username = prefs.getString("username", null);
                 String password = prefs.getString("password", null);
                // String name=prefs.getString("name",null);
                 if (username != null || password!=null) {

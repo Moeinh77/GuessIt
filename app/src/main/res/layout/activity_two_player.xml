@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="46dp"
-        android:text="TextView"
         android:textColor="#14e800"
         android:textSize="16sp"
         android:textStyle="bold|italic"
@@ -26,7 +25,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
-        android:text="TextView"
         android:textColor="#14e800"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -35,7 +33,7 @@
         tools:text="TextView" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/enteredWord"
         android:layout_width="187dp"
         android:layout_height="43dp"
         android:layout_marginTop="58dp"
@@ -57,7 +55,7 @@
         android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/enteredWord" />
 
     <Button
         android:id="@+id/nextWord_bt"
