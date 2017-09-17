@@ -16,6 +16,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="0dp"
+        android:backgroundTint="#66BB6A"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

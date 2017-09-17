@@ -35,7 +35,7 @@ public class account_games_info extends Fragment {
     String url = "http://online6732.tk/guessIt.php";
     private TextView games_info_textview;
     String recived_games_id;
-    String game_scores_string = "", scores = "";
+    String scores = "";
     String[] array = null;
 
 
@@ -60,7 +60,7 @@ public class account_games_info extends Fragment {
         // Inflate the layout for this fragment
         View games_info = inflater.inflate(R.layout.fragment_account_games_info, container, false);
         games_info_textview = (TextView) games_info.findViewById(R.id.games_info);
-        games_info_textview.setBackgroundColor(Color.parseColor("#BABABA")); // set any custom color as background color
+        // games_info_textview.setBackgroundColor(Color.parseColor("#BABABA")); // set any custom color as background color
 
 
 
@@ -156,7 +156,7 @@ public class account_games_info extends Fragment {
                         getUserGamesInfo(array[i]);
                     }
                      ////////////////////////
-                    Toast.makeText(getActivity().getApplication(), scores, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity().getApplication(), scores, Toast.LENGTH_SHORT).show();
 
 
 

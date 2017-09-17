@@ -87,13 +87,14 @@ public class profile extends AppCompatActivity {
                     if (response.getString("dataIsRight").equals("yes")) {
 
                         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                        editor.putString("usename", null);
+                        editor.putString("username", null);
                         editor.putString("password", null);
                         editor.putString("userID", null);
                         editor.apply();
 
-                        Intent i = new Intent(profile.this, Entrance_signup_login.class);
-                        startActivity(i);
+                        Intent intent = new Intent(getApplicationContext(), Entrance_signup_login.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(),

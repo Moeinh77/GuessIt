@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/FirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="131dp"
@@ -23,7 +23,7 @@
         android:layout_marginTop="21dp"
         android:textSize="18sp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/FirstName"
         tools:text="username" />
 
     <TextView
@@ -68,10 +68,10 @@
         android:textColor="#14e800"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/name"
+        app:layout_constraintBaseline_toBaselineOf="@+id/FirstName"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/imageView"
-        app:layout_constraintRight_toLeftOf="@+id/name" />
+        app:layout_constraintRight_toLeftOf="@+id/FirstName" />
 
     <TextView
         android:id="@+id/textView10"

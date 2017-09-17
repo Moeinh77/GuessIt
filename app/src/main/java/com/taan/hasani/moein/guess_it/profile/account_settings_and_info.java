@@ -47,7 +47,7 @@ public class account_settings_and_info extends Fragment {
         // Inflate the layout for this fragment
         View account_info_ = inflater.inflate(R.layout.fragment_account_info, container, false);
 
-        name_textview = (TextView) account_info_.findViewById(R.id.name);
+        name_textview = (TextView) account_info_.findViewById(R.id.FirstName);
         username_textview = (TextView) account_info_.findViewById(R.id.username);
         games_textview = (TextView) account_info_.findViewById(R.id.games);
 

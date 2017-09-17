@@ -36,12 +36,14 @@ public class Loading extends AppCompatActivity {
                 String username = prefs.getString("username", null);
                 String password = prefs.getString("password", null);
                // String name=prefs.getString("name",null);
-                if (username != null || password!=null) {
+                if (username != null && password != null) {
 
-                   //  Toast.makeText(getApplicationContext(),"Welcome "+name,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Welcome " + username, Toast.LENGTH_LONG).show();
                     sending_info(username,password);
 
                 }else{
+
+                    //    Toast.makeText(getApplicationContext(),"null user name and password ",Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(Loading.this,Entrance_signup_login.class);
                     startActivity(intent);
                     finish();
