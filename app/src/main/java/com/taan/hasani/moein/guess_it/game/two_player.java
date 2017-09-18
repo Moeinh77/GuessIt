@@ -1,11 +1,10 @@
 package com.taan.hasani.moein.guess_it.game;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -18,8 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login;
-import com.taan.hasani.moein.guess_it.game_menu.Loading;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -68,15 +65,18 @@ public class two_player extends AppCompatActivity {
             public void onClick(View v) {
 
                 String Player_time = timer.getText().toString();
-                // String Player_score=15-timer.getText().toString();
+                String Player_score = Integer.toString(15 - Integer.parseInt(Player_time));
 
-                setAnswer(entered_word.getText().toString(), Player_time);
+                setAnswer(entered_word.getText().toString(), Player_time, Player_score);
 
                 if (entered_word.getText().toString().equals(completeWord)) {
                     countDownTimer.cancel();
 
                     word.setText(completeWord);
                     message.setText("Congratulations !!! Your guess was RIGHT !");
+                    MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
+                    mediaPlayer.start();
+
                 } else {
 
                     message.setText("No,Guess again !");
@@ -95,7 +95,6 @@ public class two_player extends AppCompatActivity {
 
             }
         });
-
 
 
     }
@@ -208,23 +207,11 @@ public class two_player extends AppCompatActivity {
     public void setGameSettings() {
         HashMap<String, String> info = new HashMap<>();
 
-        // String [] categories = {"ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی","ورزشی"};
-
-        // JSONArray catagories_jsonarray = new JSONArray(Arrays.asList(categories));
-
-        //    try {
-
         try {
             info.put("categories", URLEncoder.encode("1", "utf-8"));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
         }
-        //  }
-
-        //  } catch (UnsupportedEncodingException e) {
-        //      e.printStackTrace();
-        //  }
-
 
         info.put("action", "setGameSetting");
         info.put("userID", id);
@@ -246,7 +233,7 @@ public class two_player extends AppCompatActivity {
 
                     } else {
 
-                        Toast.makeText(getApplicationContext(), "dataIsRight=no, There was an error with setting the game settings", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
 
                     }
 
@@ -288,40 +275,47 @@ public class two_player extends AppCompatActivity {
 
                 // Toast.makeText(getApplicationContext(),
                 //         response.toString(), Toast.LENGTH_LONG).show();
+
                 try {
 
+                    if (response.getString("dataIsRight").equals("yes")) {
 
-                    incompleteWord = response.getJSONObject("word").getString("incompleteWord");
-                    //  .getBytes("ISO-8859-1"), "UTF-8");
+                        incompleteWord = response.getJSONObject("word").getString("incompleteWord");
+                        //  .getBytes("ISO-8859-1"), "UTF-8");
 
-                    completeWord = response.getJSONObject("word").getString("word");
-                    //     .getBytes("ISO-8859-1"), "UTF-8");
+                        completeWord = response.getJSONObject("word").getString("word");
+                        //     .getBytes("ISO-8859-1"), "UTF-8");
 
-                    recivedTime = response.getJSONObject("word").getString("time");
+                        recivedTime = response.getJSONObject("word").getString("time");
 
 
-                    word.setText(incompleteWord);
-                    ////////////////////////////////////////////
-                    countDownTimer = new CountDownTimer(Integer.parseInt(recivedTime) * 1000, 1000) {
+                        word.setText(incompleteWord);
+                        ////////////////////////////////////////////
+                        countDownTimer = new CountDownTimer(Integer.parseInt(recivedTime) * 1000, 1000) {
 
-                        public void onTick(long millisUntilFinished) {
+                            public void onTick(long millisUntilFinished) {
 
-                            timer.setText("" + millisUntilFinished / 1000);
+                                timer.setText("" + millisUntilFinished / 1000);
 
+                            }
+
+                            public void onFinish() {
+                                timer.setText("Times up!");
+                            }
+                        };
+                        countDownTimer.start();
+                        ////////////////////////////////////////////
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "Not your turn yet", Toast.LENGTH_LONG).show();
                         }
-
-                        public void onFinish() {
-                            timer.setText("done!");
-                        }
-                    };
-                    countDownTimer.start();
-                    ////////////////////////////////////////////
-
 
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(),
                             e.toString(), Toast.LENGTH_LONG).show();
                 }
+
+
 
 
             }
@@ -340,13 +334,13 @@ public class two_player extends AppCompatActivity {
     }
 
 
-    public void setAnswer(String entered_word, String player_time) {
+    public void setAnswer(String entered_word, String player_time, String player_score) {
 
         HashMap<String, String> info = new HashMap<>();
         HashMap<String, String> answer_hashmap = new HashMap<>();
         /////////////////////////
         answer_hashmap.put("time", player_time);
-        answer_hashmap.put("score", "not set yet");
+        answer_hashmap.put("score", player_score);
         answer_hashmap.put("answer", entered_word);
 
         JSONObject answer = new JSONObject(answer_hashmap);
