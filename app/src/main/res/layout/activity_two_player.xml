@@ -10,7 +10,7 @@
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
+        android:layout_marginTop="90dp"
         android:textColor="#14e800"
         android:textSize="16sp"
         android:textStyle="bold|italic"
@@ -24,7 +24,7 @@
         android:id="@+id/word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:textColor="#14e800"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -70,4 +70,30 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/check_bt" />
+
+    <EditText
+        android:id="@+id/timer"
+        android:layout_width="98dp"
+        android:layout_height="38dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/word"
+        app:layout_constraintHorizontal_bias="0.276"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.073"
+        tools:text="timer" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="-14dp"
+        android:text="Time left : "
+        app:layout_constraintBaseline_toBaselineOf="@+id/timer"
+        app:layout_constraintRight_toLeftOf="@+id/timer" />
 </android.support.constraint.ConstraintLayout>

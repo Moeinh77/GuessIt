@@ -22,7 +22,8 @@ import java.util.HashMap;
 
 public class Leader_Board extends AppCompatActivity {
 
-    private TextView scores, yourPlace;
+    private TextView scores_names, scores_score, yourPlace, wordScore_textview;
+    //numbers_textview;
     private String MY_PREFS_NAME = "username and password";
     final HashMap<String, String> info = new HashMap<>();
     String url = "http://online6732.tk/guessIt.php";
@@ -32,8 +33,11 @@ public class Leader_Board extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader__board);
 
-        scores = (TextView) findViewById(R.id.scores);
+        scores_names = (TextView) findViewById(R.id.scores_p1);
+        scores_score = (TextView) findViewById(R.id.scores_p2);
         yourPlace = (TextView) findViewById(R.id.your_place);
+        wordScore_textview = (TextView) findViewById(R.id.wordScore);
+        // numbers_textview=(TextView) findViewById(R.id.numbers);
 
         get_scores();
 
@@ -57,19 +61,34 @@ public class Leader_Board extends AppCompatActivity {
                 try {
                     JSONArray jsonArray_scores = response.getJSONArray("listOfTopUsers");
 
-                    String scores_fromJsonArray = "";
+                    String scores_names_fromJsonArray = "";
+                    String scores_score_fromJsonArray = "";
+                    String wordScore = "";
+                    // String numbers="";
 
                     for (int i = 0; i < jsonArray_scores.length(); i++) {
 
-                        scores_fromJsonArray += "\n\n" + jsonArray_scores.getJSONObject(i).getString("position") + ". " +
-                                jsonArray_scores.getJSONObject(i).getString("username") + "\t\t\t" + "Score : " + "\t\t" +
-                                jsonArray_scores.getJSONObject(i).getString("totalScore") + "\n" + "________________________________________________";
+                        scores_names_fromJsonArray += "\n\n" +
+                                jsonArray_scores.getJSONObject(i).getString("position") + ". " +
+                                jsonArray_scores.getJSONObject(i).getString("username") + "\t\t" + "\n";
 
+
+                        // numbers+="\n\n" +(i+1)+ ". "+"\n" ;
+
+                        scores_score_fromJsonArray += "\n\n" +
+                                jsonArray_scores.getJSONObject(i).getString("totalScore") + "\n";
+
+
+                        wordScore += "\n\n" + "  Score : " + "\n";
                     }
 
-                    scores.setText(scores_fromJsonArray);
-                    scores.setMovementMethod(new ScrollingMovementMethod());
+                    scores_names.setText(scores_names_fromJsonArray);
 
+                    scores_score.setText(scores_score_fromJsonArray);
+
+                    wordScore_textview.setText(wordScore);
+
+                    //  numbers_textview.setText(numbers);
 
                     yourPlace.setText(response.getString("yourPosition"));
 

@@ -2,6 +2,7 @@ package com.taan.hasani.moein.guess_it.game;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +28,7 @@ public class single_Player extends AppCompatActivity {
 
     private EditText entered_word;
     private Button check_bt,next_word_bt;
-    private TextView incomplete_TextView, message;
+    private TextView incomplete_TextView, message, timer;
     private JSONArray jsonArray;
     private String MY_PREFS_NAME = "username and password";
 
@@ -48,9 +49,24 @@ public class single_Player extends AppCompatActivity {
         incomplete_TextView = (TextView) findViewById(R.id.incompleteword);
         entered_word = (EditText) findViewById(R.id.enterd_word);
         check_bt = (Button) findViewById(R.id.check);
+        timer = (TextView) findViewById(R.id.timer);
 
         prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         id = prefs.getString("userID", null);
+
+//////////////////////////////////////timer***
+        final CountDownTimer countDownTimer = new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                timer.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                timer.setText("done!");
+            }
+        };
+        countDownTimer.start();
+//////////////////////////////////////
 
         //starts the first game
         OnOpening();
@@ -59,6 +75,7 @@ public class single_Player extends AppCompatActivity {
         check_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countDownTimer.cancel();
 
                 if (entered_word.getText().toString().equals(completeWord)) {
 

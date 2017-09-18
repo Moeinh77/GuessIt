@@ -3,6 +3,7 @@ package com.taan.hasani.moein.guess_it.game;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,13 +22,11 @@ import com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login;
 import com.taan.hasani.moein.guess_it.game_menu.Loading;
 import com.taan.hasani.moein.volley.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class two_player extends AppCompatActivity {
@@ -36,10 +35,11 @@ public class two_player extends AppCompatActivity {
             url = "http://online6732.tk/guessIt.php", id, completeWord, incompleteWord;
     private SharedPreferences prefs;
     private String gamedID;
-    private TextView word, message;
+    private TextView word, message, timer;
     private EditText entered_word;
     private Button check_bt, nextWord_bt;
-
+    private CountDownTimer countDownTimer;
+    private String recivedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,21 +54,29 @@ public class two_player extends AppCompatActivity {
         word = (TextView) findViewById(R.id.word);
         message = (TextView) findViewById(R.id.message);
         entered_word = (EditText) findViewById(R.id.enteredWord);
+        timer = (TextView) findViewById(R.id.timer);
 
 
         newTwoPlayerGame();
+
+        ////////////
+
+        ////////////
 
         check_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                setAnswer(entered_word.getText().toString());
+                String Player_time = timer.getText().toString();
+                // String Player_score=15-timer.getText().toString();
+
+                setAnswer(entered_word.getText().toString(), Player_time);
 
                 if (entered_word.getText().toString().equals(completeWord)) {
+                    countDownTimer.cancel();
 
                     word.setText(completeWord);
                     message.setText("Congratulations !!! Your guess was RIGHT !");
-
                 } else {
 
                     message.setText("No,Guess again !");
@@ -278,26 +286,44 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
+                // Toast.makeText(getApplicationContext(),
+                //         response.toString(), Toast.LENGTH_LONG).show();
                 try {
-                    Toast.makeText(getApplicationContext(),
-                            response.toString(), Toast.LENGTH_LONG).show();
+
+
                     incompleteWord = response.getJSONObject("word").getString("incompleteWord");
                     //  .getBytes("ISO-8859-1"), "UTF-8");
 
                     completeWord = response.getJSONObject("word").getString("word");
                     //     .getBytes("ISO-8859-1"), "UTF-8");
 
-                    word.setText(incompleteWord);
+                    recivedTime = response.getJSONObject("word").getString("time");
 
+
+                    word.setText(incompleteWord);
+                    ////////////////////////////////////////////
+                    countDownTimer = new CountDownTimer(Integer.parseInt(recivedTime) * 1000, 1000) {
+
+                        public void onTick(long millisUntilFinished) {
+
+                            timer.setText("" + millisUntilFinished / 1000);
+
+                        }
+
+                        public void onFinish() {
+                            timer.setText("done!");
+                        }
+                    };
+                    countDownTimer.start();
+                    ////////////////////////////////////////////
 
 
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(),
                             e.toString(), Toast.LENGTH_LONG).show();
                 }
-                // catch (UnsupportedEncodingException e) {
-                //     e.printStackTrace();
-                // }
+
+
             }
 
         }, new Response.ErrorListener() {
@@ -314,13 +340,13 @@ public class two_player extends AppCompatActivity {
     }
 
 
-    public void setAnswer(String entered_word) {
+    public void setAnswer(String entered_word, String player_time) {
 
         HashMap<String, String> info = new HashMap<>();
         HashMap<String, String> answer_hashmap = new HashMap<>();
         /////////////////////////
-        answer_hashmap.put("time", "15");
-        answer_hashmap.put("score", "15");
+        answer_hashmap.put("time", player_time);
+        answer_hashmap.put("score", "not set yet");
         answer_hashmap.put("answer", entered_word);
 
         JSONObject answer = new JSONObject(answer_hashmap);
