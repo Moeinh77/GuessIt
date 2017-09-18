@@ -53,12 +53,7 @@ public class two_player extends AppCompatActivity {
         entered_word = (EditText) findViewById(R.id.enteredWord);
         timer = (TextView) findViewById(R.id.timer);
 
-
         newTwoPlayerGame();
-
-        ////////////
-
-        ////////////
 
         check_bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +93,6 @@ public class two_player extends AppCompatActivity {
 
 
     }
-
 
     public void newTwoPlayerGame() {
         HashMap<String, String> info = new HashMap<>();
@@ -180,10 +174,10 @@ public class two_player extends AppCompatActivity {
                         }, 3000);
 
                     } else {
-                        Toast.makeText(getApplicationContext(),
-                                response.getString("gameID"), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(),
+//                                response.getString("gameID"), Toast.LENGTH_SHORT).show();
+                        gamedID = response.getString("gameID");
                         setGameSettings();
-
                     }
 
                 } catch (JSONException e) {
