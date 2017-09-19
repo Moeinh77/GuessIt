@@ -38,7 +38,6 @@ public class Loading extends AppCompatActivity {
                // String name=prefs.getString("name",null);
                 if (username != null && password != null) {
 
-                    Toast.makeText(getApplicationContext(), "Welcome " + username, Toast.LENGTH_LONG).show();
                     sending_info(username,password);
 
                 }else{
@@ -56,7 +55,7 @@ public class Loading extends AppCompatActivity {
 
     }
 
-    public void sending_info(String username_, String password_){
+    public void sending_info(final String username_, String password_) {
         final HashMap<String, String> info = new HashMap<>();
         String url = "http://online6732.tk/guessIt.php";
 
@@ -78,6 +77,8 @@ public class Loading extends AppCompatActivity {
                         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                         editor.putString("userID",id__);
                         editor.apply();
+
+                        Toast.makeText(getApplicationContext(), "Welcome " + username_, Toast.LENGTH_LONG).show();
 
                         Intent i=new Intent(Loading.this, Main_menu.class);
                         startActivity(i);

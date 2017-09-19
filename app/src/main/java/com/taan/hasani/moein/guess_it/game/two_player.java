@@ -37,6 +37,8 @@ public class two_player extends AppCompatActivity {
     private Button check_bt, nextWord_bt;
     private CountDownTimer countDownTimer;
     private String recivedTime;
+    private String turn, flag__nextWord_Timer = null;
+    private int spent_time = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,25 +61,44 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String Player_time = timer.getText().toString();
-                String Player_score = Integer.toString(15 - Integer.parseInt(Player_time));
 
-                setAnswer(entered_word.getText().toString(), Player_time, Player_score);
+                if (turn.equals("notmyturn")) {
 
-                if (entered_word.getText().toString().equals(completeWord)) {
-                    countDownTimer.cancel();
-
-                    word.setText(completeWord);
-                    message.setText("Congratulations !!! Your guess was RIGHT !");
-                    MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
-                    mediaPlayer.start();
+                    Toast.makeText(getApplicationContext(), "Not your turn", Toast.LENGTH_SHORT).show();
 
                 } else {
 
-                    message.setText("No,Guess again !");
+                    String Player_time = timer.getText().toString();
+                    String Player_score = Integer.toString(15 - Integer.parseInt(Player_time));
+                    String myturn;
+
+                    if (entered_word.getText().toString().equals(completeWord)) {
+
+                        countDownTimer.cancel();
+
+                        myturn = "no";
+
+                        word.setText(completeWord);
+                        message.setText("Congratulations !!! Your guess was RIGHT !");
+                        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
+                        mediaPlayer.start();
+
+                    } else {
+
+                        message.setText("No,Guess again !");
+                        myturn = "yes";
+
+                    }
+
+                    if (timer.getText().toString().equals("0")) {
+                        myturn = "no";
+                        Toast.makeText(getApplicationContext(), "Times up!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    setAnswer(entered_word.getText().toString(),
+                            Player_time, Player_score, myturn);
 
                 }
-
 
             }
         });
@@ -86,9 +107,30 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                sendNextWord();
+                if (flag__nextWord_Timer == "yes") {
+
+                    countDownTimer.cancel();
+
+                    if (timer.getText().toString() != recivedTime) {
+                        setAnswer(entered_word.getText().toString(), "0", "0", "yes");
+                        spent_time = 0;
+
+                        sendNextWord();
+
+                    } else {
+                        spent_time = Integer.parseInt(recivedTime) - Integer.parseInt(timer.getText().toString());
+
+                        sendNextWord();
+                    }
+
+                } else {
+
+                    sendNextWord();
+
+                }
 
             }
+
         });
 
 
@@ -254,12 +296,14 @@ public class two_player extends AppCompatActivity {
 
         HashMap<String, String> info = new HashMap<>();
 
+
         info.put("action", "sendNextWord");
         info.put("gameID", gamedID);
         info.put("userID", id);
 
         word.setText("");
         message.setText("");
+        timer.setText("");
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -274,6 +318,9 @@ public class two_player extends AppCompatActivity {
 
                     if (response.getString("dataIsRight").equals("yes")) {
 
+                        turn = "myturn";
+                        flag__nextWord_Timer = "yes";
+
                         incompleteWord = response.getJSONObject("word").getString("incompleteWord");
                         //  .getBytes("ISO-8859-1"), "UTF-8");
 
@@ -282,34 +329,39 @@ public class two_player extends AppCompatActivity {
 
                         recivedTime = response.getJSONObject("word").getString("time");
 
-
-                        word.setText(incompleteWord);
                         ////////////////////////////////////////////
-                        countDownTimer = new CountDownTimer(Integer.parseInt(recivedTime) * 1000, 1000) {
+                        countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime) - spent_time) * 1000, 1000) {
 
                             public void onTick(long millisUntilFinished) {
-
                                 timer.setText("" + millisUntilFinished / 1000);
-
                             }
 
                             public void onFinish() {
-                                timer.setText("Times up!");
+                                timer.setText("0");
+                                setAnswer(entered_word.getText().toString(),
+                                        "0", "0", "no");
+                                Toast.makeText(getApplicationContext(), "Time's Up!", Toast.LENGTH_SHORT).show();
                             }
                         };
-                        countDownTimer.start();
                         ////////////////////////////////////////////
+                        countDownTimer.start();
+
+                        word.setText(incompleteWord);
+
                     } else {
+
+                        turn = "notmyturn";
+
                         Toast.makeText(getApplicationContext(),
                                 "Not your turn yet", Toast.LENGTH_LONG).show();
-                        }
+
+
+                    }
 
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(),
                             e.toString(), Toast.LENGTH_LONG).show();
                 }
-
-
 
 
             }
@@ -328,7 +380,8 @@ public class two_player extends AppCompatActivity {
     }
 
 
-    public void setAnswer(String entered_word, String player_time, String player_score) {
+    public void setAnswer(String entered_word, String player_time,
+                          String player_score, String rightGuess) {
 
         HashMap<String, String> info = new HashMap<>();
         HashMap<String, String> answer_hashmap = new HashMap<>();
@@ -336,6 +389,8 @@ public class two_player extends AppCompatActivity {
         answer_hashmap.put("time", player_time);
         answer_hashmap.put("score", player_score);
         answer_hashmap.put("answer", entered_word);
+        answer_hashmap.put("rightGuess", rightGuess);
+
 
         JSONObject answer = new JSONObject(answer_hashmap);
 
