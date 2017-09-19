@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +33,7 @@ public class two_player extends AppCompatActivity {
             url = "http://online6732.tk/guessIt.php", id, completeWord, incompleteWord;
     private SharedPreferences prefs;
     private String gamedID;
-    private TextView word, message, timer;
+    private TextView word, message, timer, rivalscore_textview, yourscore_textview;
     private EditText entered_word;
     private Button check_bt, nextWord_bt;
     private CountDownTimer countDownTimer;
@@ -54,6 +55,8 @@ public class two_player extends AppCompatActivity {
         message = (TextView) findViewById(R.id.message);
         entered_word = (EditText) findViewById(R.id.enteredWord);
         timer = (TextView) findViewById(R.id.timer);
+        rivalscore_textview = (TextView) findViewById(R.id.rivalscore);
+        yourscore_textview = (TextView) findViewById(R.id.yourscore);
 
         newTwoPlayerGame();
 
@@ -107,12 +110,14 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                gameInfo();
+
                 if (flag__nextWord_Timer == "yes") {
 
                     countDownTimer.cancel();
 
                     if (timer.getText().toString() != recivedTime) {
-                        setAnswer(entered_word.getText().toString(), "0", "0", "yes");
+                        // setAnswer(entered_word.getText().toString(), "0", "0", "yes");
                         spent_time = 0;
 
                         sendNextWord();
@@ -311,9 +316,6 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-                // Toast.makeText(getApplicationContext(),
-                //         response.toString(), Toast.LENGTH_LONG).show();
-
                 try {
 
                     if (response.getString("dataIsRight").equals("yes")) {
@@ -379,9 +381,8 @@ public class two_player extends AppCompatActivity {
 
     }
 
-
     public void setAnswer(String entered_word, String player_time,
-                          String player_score, String rightGuess) {
+                          String player_score, String myturn) {
 
         HashMap<String, String> info = new HashMap<>();
         HashMap<String, String> answer_hashmap = new HashMap<>();
@@ -389,7 +390,7 @@ public class two_player extends AppCompatActivity {
         answer_hashmap.put("time", player_time);
         answer_hashmap.put("score", player_score);
         answer_hashmap.put("answer", entered_word);
-        answer_hashmap.put("rightGuess", rightGuess);
+        answer_hashmap.put("myTurn", myturn);
 
 
         JSONObject answer = new JSONObject(answer_hashmap);
@@ -421,6 +422,56 @@ public class two_player extends AppCompatActivity {
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void gameInfo() {
+
+        final String MY_PREFS_NAME = "username and password";
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        final String id = prefs.getString("userID", null);
+
+        HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "sendGameInformation");
+        info.put("userID", id);
+        info.put("gameID", gamedID);
+
+        JSONObject jsonObject = new JSONObject(info);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                    String your_score = response.getString("playerOneTotalScore");
+
+                    String rival_score = response.getString("playerTwoTotalScore");
+
+                    if (id.equals(response.getString("playerOneID"))) {
+                        rivalscore_textview.setText("rival score : " + rival_score);
+                        yourscore_textview.setText("Your score : " + your_score);
+                    } else {
+                        rivalscore_textview.setText("Your score : " + your_score);
+                        yourscore_textview.setText("rival score : " + rival_score);
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
     }
 
 }
