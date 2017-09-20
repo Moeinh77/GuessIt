@@ -36,7 +36,7 @@ public class two_player extends AppCompatActivity {
     private EditText entered_word;
     private Button check_bt, nextWord_bt;
     private CountDownTimer countDownTimer;
-    private String recivedTime;
+    private String recivedTime, category, difficulty;
     private String turn, flag__nextWord_Timer = null;
     private int spent_time = 0;
 
@@ -56,6 +56,14 @@ public class two_player extends AppCompatActivity {
         timer = (TextView) findViewById(R.id.timer);
         player2_textview = (TextView) findViewById(R.id.rivalscore);
         player1_textview = (TextView) findViewById(R.id.yourscore);
+
+        //difficaulty va category ro az activity ghabl migirad
+        Bundle bundle = getIntent().getExtras();
+        category = bundle.getString("category");
+        difficulty = bundle.getString("difficulty");
+        ///////////////////////////////////////////////////////
+
+        //Toast.makeText(getApplicationContext(),difficulty,Toast.LENGTH_LONG).show();
 
         newTwoPlayerGame();
 

@@ -53,14 +53,6 @@ public class profile extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-//
-//        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-//            public void run() {
-//                Log.v("","####################In shutdown hook");
-//            }
-//        }, "Shutdown-thread"));
-
     }
 
 

@@ -23,7 +23,7 @@ public class choosing_theGame extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(choosing_theGame.this, two_player.class);
+                Intent intent = new Intent(choosing_theGame.this, categories.class);
                 startActivity(intent);
 
             }
