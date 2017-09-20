@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +32,7 @@ public class two_player extends AppCompatActivity {
             url = "http://online6732.tk/guessIt.php", id, completeWord, incompleteWord;
     private SharedPreferences prefs;
     private String gamedID;
-    private TextView word, message, timer, rivalscore_textview, yourscore_textview;
+    private TextView word, message, timer, player2_textview, player1_textview;
     private EditText entered_word;
     private Button check_bt, nextWord_bt;
     private CountDownTimer countDownTimer;
@@ -55,8 +54,8 @@ public class two_player extends AppCompatActivity {
         message = (TextView) findViewById(R.id.message);
         entered_word = (EditText) findViewById(R.id.enteredWord);
         timer = (TextView) findViewById(R.id.timer);
-        rivalscore_textview = (TextView) findViewById(R.id.rivalscore);
-        yourscore_textview = (TextView) findViewById(R.id.yourscore);
+        player2_textview = (TextView) findViewById(R.id.rivalscore);
+        player1_textview = (TextView) findViewById(R.id.yourscore);
 
         newTwoPlayerGame();
 
@@ -447,12 +446,14 @@ public class two_player extends AppCompatActivity {
 
                     String rival_score = response.getString("playerTwoTotalScore");
 
+                    Toast.makeText(getApplicationContext(), "p1:" + response.getString("playerOneID") + "p2:" + response.getString("playerTwoID") + "your id:" + id, Toast.LENGTH_SHORT).
+                            show();
                     if (id.equals(response.getString("playerOneID"))) {
-                        rivalscore_textview.setText("rival score : " + rival_score);
-                        yourscore_textview.setText("Your score : " + your_score);
-                    } else {
-                        rivalscore_textview.setText("Your score : " + your_score);
-                        yourscore_textview.setText("rival score : " + rival_score);
+                        player2_textview.setText("rival score : " + rival_score);
+                        player1_textview.setText("Your score : " + your_score);
+                    } else if (id.equals(response.getString("playerTwoID"))) {
+                        player2_textview.setText("Your score : " + rival_score);
+                        player1_textview.setText("rival score : " + your_score);
                     }
 
 
