@@ -37,8 +37,11 @@ public class two_player extends AppCompatActivity {
     private Button check_bt, nextWord_bt;
     private CountDownTimer countDownTimer;
     private String recivedTime, category, difficulty;
-    private String turn, flag__nextWord_Timer = null;
+    private String turn,
+            flag__nextWord_Timer = null;//baraye inke check konim aya vared next word shode
+    //agar shode bashad timer be karoftade
     private int spent_time = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +66,6 @@ public class two_player extends AppCompatActivity {
         difficulty = bundle.getString("difficulty");
         ///////////////////////////////////////////////////////
 
-        //Toast.makeText(getApplicationContext(),difficulty,Toast.LENGTH_LONG).show();
-
         newTwoPlayerGame();
 
         check_bt.setOnClickListener(new View.OnClickListener() {
@@ -82,32 +83,45 @@ public class two_player extends AppCompatActivity {
                     String Player_score = Integer.toString(15 - Integer.parseInt(Player_time));
                     String myturn;
 
-                    if (entered_word.getText().toString().equals(completeWord)) {
+                    if (timer.getText().toString().equals("0")) {
 
-                        countDownTimer.cancel();
-
-                        myturn = "no";
-
-                        word.setText(completeWord);
-                        message.setText("Congratulations !!! Your guess was RIGHT !");
-                        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
-                        mediaPlayer.start();
+                        Toast.makeText(getApplicationContext(), "Your time is up", Toast.LENGTH_LONG).show();
 
                     } else {
 
-                        message.setText("No,Guess again !");
-                        myturn = "yes";
+                        message.setVisibility(View.VISIBLE);
+
+                        if (entered_word.getText().toString().equals(completeWord)) {
+
+                            countDownTimer.cancel();
+
+                            myturn = "no";
+
+                            word.setText(completeWord);
+                            message.setText("Congratulations !!! Your guess was RIGHT !");
+                            MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
+                            mediaPlayer.start();
+
+                            //baraye check kardan nobat
+                            sendNextWord();
+                            ////////////////////////////
+
+                        } else {
+
+                            message.setText("No,Guess again !");
+                            myturn = "yes";
+
+                        }
+
+                        if (timer.getText().toString().equals("0")) {
+                            myturn = "no";
+                            Toast.makeText(getApplicationContext(), "Times up!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        setAnswer(entered_word.getText().toString(),
+                                Player_time, Player_score, myturn);
 
                     }
-
-                    if (timer.getText().toString().equals("0")) {
-                        myturn = "no";
-                        Toast.makeText(getApplicationContext(), "Times up!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    setAnswer(entered_word.getText().toString(),
-                            Player_time, Player_score, myturn);
-
                 }
 
             }
@@ -117,6 +131,8 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                message.setVisibility(View.INVISIBLE);
+
                 gameInfo();
 
                 if (flag__nextWord_Timer == "yes") {
@@ -124,13 +140,12 @@ public class two_player extends AppCompatActivity {
                     countDownTimer.cancel();
 
                     if (timer.getText().toString() != recivedTime) {
-                        // setAnswer(entered_word.getText().toString(), "0", "0", "yes");
-                        spent_time = 0;
+
+                        spent_time = Integer.parseInt(recivedTime) - Integer.parseInt(timer.getText().toString());
 
                         sendNextWord();
 
                     } else {
-                        spent_time = Integer.parseInt(recivedTime) - Integer.parseInt(timer.getText().toString());
 
                         sendNextWord();
                     }
@@ -253,17 +268,19 @@ public class two_player extends AppCompatActivity {
     }
 
     public void setGameSettings() {
-        HashMap<String, String> info = new HashMap<>();
 
-        try {
-            info.put("categories", URLEncoder.encode("1", "utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
-        }
+        HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "setGameSetting");
         info.put("userID", id);
         info.put("gameID", gamedID);
+        info.put("level", difficulty);
+        try {
+            info.put("categories", URLEncoder.encode(category, "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
+        }
+
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -328,13 +345,12 @@ public class two_player extends AppCompatActivity {
                     if (response.getString("dataIsRight").equals("yes")) {
 
                         turn = "myturn";
+
                         flag__nextWord_Timer = "yes";
 
                         incompleteWord = response.getJSONObject("word").getString("incompleteWord");
-                        //  .getBytes("ISO-8859-1"), "UTF-8");
 
                         completeWord = response.getJSONObject("word").getString("word");
-                        //     .getBytes("ISO-8859-1"), "UTF-8");
 
                         recivedTime = response.getJSONObject("word").getString("time");
 
@@ -342,27 +358,44 @@ public class two_player extends AppCompatActivity {
                         countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime) - spent_time) * 1000, 1000) {
 
                             public void onTick(long millisUntilFinished) {
-                                timer.setText("" + millisUntilFinished / 1000);
+                                timer.setText(String.valueOf(millisUntilFinished / 1000));
                             }
 
                             public void onFinish() {
                                 timer.setText("0");
                                 setAnswer(entered_word.getText().toString(),
                                         "0", "0", "no");
-                                Toast.makeText(getApplicationContext(), "Time's Up!", Toast.LENGTH_SHORT).show();
+
+                                // check kardane nobat
+                                sendNextWord();
+                                ////////////////////////
+
                             }
                         };
                         ////////////////////////////////////////////
                         countDownTimer.start();
 
+                        word.setVisibility(View.VISIBLE);
                         word.setText(incompleteWord);
 
                     } else {
+                        message.setVisibility(View.INVISIBLE);
+                        word.setVisibility(View.INVISIBLE);
 
                         turn = "notmyturn";
 
                         Toast.makeText(getApplicationContext(),
-                                "Not your turn yet", Toast.LENGTH_LONG).show();
+                                "Not your turn yet,Please wait...", Toast.LENGTH_LONG).show();
+
+                        //ferestadan request baraye inke bebinim nobateman shode ya na
+                        new Handler().postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                sendNextWord();
+                            }
+                        }, 1500);
+                        //////////////////////////////////////////
 
 
                     }

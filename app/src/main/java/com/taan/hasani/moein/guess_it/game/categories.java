@@ -14,7 +14,7 @@ import com.taan.hasani.moein.volley.R;
 
 public class categories extends AppCompatActivity {
 
-    Button varzeshi, english;
+    Button varzeshi, english, bazigar, film;
 
 
     @Override
@@ -24,13 +24,42 @@ public class categories extends AppCompatActivity {
 
         varzeshi = (Button) findViewById(R.id.varzeshi);
         english = (Button) findViewById(R.id.english);
+        bazigar = (Button) findViewById(R.id.bazigar);
+        film = (Button) findViewById(R.id.film);
 
         //////////////////////////
         varzeshi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                alert_dialog_function("ورزشی");
+                alert_dialog_function("1");
+
+            }
+        });
+        //////////////////////////
+        english.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alert_dialog_function("2");
+
+            }
+        });
+        //////////////////////////
+        film.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alert_dialog_function("3");
+
+            }
+        });
+        //////////////////////////
+        bazigar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alert_dialog_function("4");
 
             }
         });
@@ -57,20 +86,20 @@ public class categories extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String difficulty = "متوسط";
+                String difficulty = "2";
                 String rIsChecked = "false";
 
                 if (easy_RadioButton.isChecked()) {
-                    difficulty = easy_RadioButton.getText().toString();
+                    difficulty = "1";//easy_RadioButton.getText().toString();
                     rIsChecked = "true";
                 }
                 if (normal_RadioButton.isChecked()) {
-                    difficulty = normal_RadioButton.getText().toString();
+                    difficulty = "2";//normal_RadioButton.getText().toString();
                     rIsChecked = "true";
 
                 }
                 if (hard_RadioButton.isChecked()) {
-                    difficulty = hard_RadioButton.getText().toString();
+                    difficulty = "3";
                     rIsChecked = "true";
 
                 }
