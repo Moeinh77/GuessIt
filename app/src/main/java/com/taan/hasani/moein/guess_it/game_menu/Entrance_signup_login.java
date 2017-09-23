@@ -16,7 +16,7 @@ public class Entrance_signup_login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_entrance);
 
         login_bt = (Button) findViewById(R.id.login);
         signup_bt = (Button) findViewById(R.id.signup);

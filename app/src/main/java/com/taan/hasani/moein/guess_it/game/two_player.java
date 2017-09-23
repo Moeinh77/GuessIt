@@ -41,6 +41,7 @@ public class two_player extends AppCompatActivity {
             flag__nextWord_Timer = null;//baraye inke check konim aya vared next word shode
     //agar shode bashad timer be karoftade
     private int spent_time = 0;
+    private boolean inGame = true;
 
 
     @Override
@@ -85,7 +86,7 @@ public class two_player extends AppCompatActivity {
 
                     if (timer.getText().toString().equals("0")) {
 
-                        Toast.makeText(getApplicationContext(), "Your time is up", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Your time is up", Toast.LENGTH_SHORT).show();
 
                     } else {
 
@@ -181,7 +182,7 @@ public class two_player extends AppCompatActivity {
                 try {
 
                     Toast.makeText(getApplicationContext(),
-                            response.toString(), Toast.LENGTH_LONG).show();
+                            response.toString(), Toast.LENGTH_SHORT).show();
 
                     if (response.getString("gameID").equals("-1")) {
 
@@ -193,12 +194,12 @@ public class two_player extends AppCompatActivity {
 
                         setGameSettings();
                         Toast.makeText(getApplicationContext(),
-                                gamedID, Toast.LENGTH_LONG).show();
+                                gamedID, Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(),
-                            "newTwoPlayerGame " + e.toString(), Toast.LENGTH_LONG).show();
+                            "newTwoPlayerGame " + e.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -206,12 +207,13 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        "*newTwoPlayerGame**Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+                        "*newTwoPlayerGame**Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
+
 
     public void isMyGameReady() {
         HashMap<String, String> info = new HashMap<>();
@@ -230,28 +232,29 @@ public class two_player extends AppCompatActivity {
                 try {
 
                     Toast.makeText(getApplicationContext(),
-                            response.toString(), Toast.LENGTH_SHORT).show();
+                            response.getString("responseData") + ", searching for player...", Toast.LENGTH_SHORT).show();
+                    if (inGame) {
+                        if (response.getString("gameID").equals("-1")) {
 
-                    if (response.getString("gameID").equals("-1")) {
 
-                        new Handler().postDelayed(new Runnable() {
+                            new Handler().postDelayed(new Runnable() {
 
-                            @Override
-                            public void run() {
-                                isMyGameReady();
-                            }
-                        }, 3000);
+                                @Override
+                                public void run() {
+                                    isMyGameReady();
+                                }
+                            }, 3000);
 
-                    } else {
-//                        Toast.makeText(getApplicationContext(),
-//                                response.getString("gameID"), Toast.LENGTH_SHORT).show();
-                        gamedID = response.getString("gameID");
-                        setGameSettings();
+
+                        } else {
+                            gamedID = response.getString("gameID");
+                            setGameSettings();
+                        }
                     }
 
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG).show();
+                            e.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -259,7 +262,7 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        "isMyGameReady***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+                        "isMyGameReady***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -298,13 +301,13 @@ public class two_player extends AppCompatActivity {
 
                     } else {
 
-                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
 
                     }
 
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG).show();
+                            e.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -312,7 +315,7 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        "setGameSetting***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+                        "setGameSetting***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -385,7 +388,7 @@ public class two_player extends AppCompatActivity {
                         turn = "notmyturn";
 
                         Toast.makeText(getApplicationContext(),
-                                "Not your turn yet,Please wait...", Toast.LENGTH_LONG).show();
+                                "It's not your turn yet, Please wait...", Toast.LENGTH_SHORT).show();
 
                         //ferestadan request baraye inke bebinim nobateman shode ya na
                         new Handler().postDelayed(new Runnable() {
@@ -402,7 +405,7 @@ public class two_player extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG).show();
+                            e.toString(), Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -412,7 +415,7 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        "sendNextWord***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+                        "sendNextWord***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -449,7 +452,7 @@ public class two_player extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 Toast.makeText(getApplicationContext(),
-                        "setAnswer response  :" + response.toString(), Toast.LENGTH_LONG).show();
+                        "setAnswer response  :" + response.toString(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -457,7 +460,7 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        "setAnswer***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+                        "setAnswer***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -516,4 +519,10 @@ public class two_player extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        inGame = false;
+        super.onDestroy();
+    }
 }

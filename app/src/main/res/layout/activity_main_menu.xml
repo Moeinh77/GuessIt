@@ -9,11 +9,13 @@
     <Button
         android:id="@+id/games_bt"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="90dp"
+        android:layout_height="52dp"
         android:layout_marginTop="88dp"
         android:backgroundTint="#FFFF00"
-        android:text="games"
+        android:text="بازی ها"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/leader_board" />
@@ -21,26 +23,28 @@
     <Button
         android:id="@+id/profile_bt"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="90dp"
+        android:layout_height="52dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="#00E5FF"
-        android:text="profile"
+        android:text="پروفایل"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/games_bt"
-        app:layout_constraintVertical_bias="0.281" />
+        app:layout_constraintVertical_bias="0.282" />
 
     <Button
         android:id="@+id/leader_board"
-        android:layout_width="wrap_content"
-        android:layout_height="37dp"
+        android:layout_width="113dp"
+        android:layout_height="45dp"
         android:layout_marginTop="51dp"
         android:backgroundTint="#01579B"
-        android:text="Leader Board"
+        android:text="بازیکنان برتر"
         android:textColor="@android:color/white"
-        app:layout_constraintHorizontal_bias="0.502"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

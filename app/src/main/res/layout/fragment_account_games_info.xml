@@ -6,26 +6,51 @@
     tools:context="com.taan.hasani.moein.volley.com.taan.hasani.moein.guess_it.profile.account_games_info">
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
-        android:id="@+id/games_info"
-        android:layout_width="310dp"
-        android:layout_height="319dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
-        android:backgroundTint="#66BB6A"
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="56dp"
+        android:text="نتایج بازی های شما :"
+        android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/scrollView2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="303dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintBottom_creator="1"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1"
-        tools:text="@string/hello_blank_fragment" />
+        app:layout_constraintTop_toBottomOf="@+id/textView15"
+        app:layout_constraintVertical_bias="0.088">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/playerScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/rivalScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/playerScore" />
+
+        </RelativeLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

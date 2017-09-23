@@ -4,9 +4,10 @@
 
     <item
         android:id="@+id/change_password"
-        android:title="Change the password" />
+        android:title="تغییر کلمه عبور" />
 
     <item
         android:id="@+id/logout"
-        android:title="Log out" />
+
+        android:title="خروج از اکانت" />
 </menu>

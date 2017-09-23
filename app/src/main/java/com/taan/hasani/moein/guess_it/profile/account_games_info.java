@@ -3,6 +3,7 @@ package com.taan.hasani.moein.guess_it.profile;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.renderscript.RSIllegalArgumentException;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
@@ -33,9 +34,9 @@ public class account_games_info extends Fragment {
 
     HashMap<String, String> info = new HashMap<>();
     String url = "http://online6732.tk/guessIt.php";
-    private TextView games_info_textview;
+    private TextView playerScore_view, rivalScore_view;
     String recived_games_id;
-    String scores = "";
+    String Playerscores = "", Rivalscore = "";
     String[] array = null;
 
 
@@ -57,21 +58,14 @@ public class account_games_info extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View games_info = inflater.inflate(R.layout.fragment_account_games_info, container, false);
-        games_info_textview = (TextView) games_info.findViewById(R.id.games_info);
-        // games_info_textview.setBackgroundColor(Color.parseColor("#BABABA")); // set any custom color as background color
-
-
-
-        //
-        //games_info_textview.setText(games_array[0]);
+        playerScore_view = (TextView) games_info.findViewById(R.id.playerScore);
+        rivalScore_view = (TextView) games_info.findViewById(R.id.rivalScore);
 
         return games_info;
     }
-    ////////////////////////////////////////////////////
 
-    ////////////////////////////////////////////////////
     private void getUserGamesInfo(String gameID) {
         //   final String scores = new String();
 
@@ -93,23 +87,23 @@ public class account_games_info extends Fragment {
 
                     if (id.equals(response.getString("playerOneID"))) {
 
-                        scores += "\n" + response.getString("playerOneTotalScore");
+                        Playerscores += "\n" + "you :" + response.getString("playerOneTotalScore");
+                        Rivalscore += "\n" + response.getString("playerTwoUsername") + " :" + response.getString("playerTwoTotalScore");
 
                     } else {
 
-                        scores += "\n" + response.getString("playerTwoTotalScore");
+                        Playerscores += "\n" + "you :" + response.getString("playerTwoTotalScore");
+                        Rivalscore += "\n" + response.getString("playerTwoUsername") + " :" + response.getString("playerTwoTotalScore");
 
                     }
-
-
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                games_info_textview.setMovementMethod(new ScrollingMovementMethod());
-                games_info_textview.setText(scores);
+                playerScore_view.setText(Playerscores);
+                rivalScore_view.setText(Rivalscore);
 
 
             }
@@ -145,7 +139,6 @@ public class account_games_info extends Fragment {
                 try {
 
                     recived_games_id = new String(response.getString("games").getBytes("ISO-8859-1"), "UTF-8");
-                    //Snackbar.make(getView(), recived_games_id, Snackbar.LENGTH_LONG).show();
 
                     array=recived_games_id.split(", ");
 

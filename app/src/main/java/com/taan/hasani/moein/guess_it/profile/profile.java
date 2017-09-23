@@ -90,12 +90,12 @@ public class profile extends AppCompatActivity {
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(),
-                                "There was error in logging out...", Toast.LENGTH_LONG).show();
+                                "حطایی در خروج شما رخ داد دوباره تلاش کنید...", Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -103,7 +103,7 @@ public class profile extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        "There was error in logging out...", Toast.LENGTH_LONG).show();
+                        "حطایی در خروج شما رخ داد دوباره تلاش کنید...", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -128,9 +128,9 @@ public class profile extends AppCompatActivity {
                 alertDialogBuilder.setTitle("Logout");
                 //alertDialogBuilder.setIcon(R.drawable.);
                 alertDialogBuilder
-                        .setMessage("Do you really want to logout of app ?")
+                        .setMessage("آیا میخواهید از اکانت خود خارج شوید ؟")
                         .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("بلی", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
                                 logout_of_server();
@@ -138,7 +138,7 @@ public class profile extends AppCompatActivity {
 
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("خیر", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
 
@@ -165,8 +165,8 @@ public class profile extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new account_settings_and_info(), "Profile Settings");
-        adapter.addFragment(new account_games_info(), "Player Info");
+        adapter.addFragment(new account_settings_and_info(), "اطلاعات کاربر");
+        adapter.addFragment(new account_games_info(), "اطلاعات بازی های کاربر");
         viewPager.setAdapter(adapter);
     }
 
