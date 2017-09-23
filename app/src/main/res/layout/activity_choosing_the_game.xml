@@ -15,6 +15,7 @@
         android:backgroundTint="#F50057"
         android:text="بازی تک نفره"
         android:textAllCaps="false"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,12 +28,12 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="#EF6C00"
-        android:text="Two Player"
+        android:text="بازی دو نفره"
         android:textAllCaps="false"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Single_Player"
-        app:layout_constraintVertical_bias="0.245"
-        tools:text="بازی دو نفره" />
+        app:layout_constraintVertical_bias="0.245" />
 </android.support.constraint.ConstraintLayout>

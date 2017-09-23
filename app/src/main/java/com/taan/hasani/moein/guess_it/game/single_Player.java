@@ -40,6 +40,8 @@ public class single_Player extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private int spent_time;
     private String flag__nextWord_Timer;
+    private String category;
+    private String difficulty;
 
 
     @Override
@@ -60,7 +62,11 @@ public class single_Player extends AppCompatActivity {
 
         newSinglePlayerGame();
 
-        ////////////////////////////////
+        //difficaulty va category ro az activity ghabl migirad
+        Bundle bundle = getIntent().getExtras();
+        category = bundle.getString("category");
+        difficulty = bundle.getString("difficulty");
+        ///////////////////////////////////////////////////////
 
         check_bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,15 +181,15 @@ public class single_Player extends AppCompatActivity {
     public void setGameSettings() {
         HashMap<String, String> info = new HashMap<>();
 
-        try {
-            info.put("categories", URLEncoder.encode("1", "utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
-        }
-
         info.put("action", "setGameSetting");
         info.put("userID", id);
         info.put("gameID", game_ID);
+        info.put("level", difficulty);
+        try {
+            info.put("categories", URLEncoder.encode(category, "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
+        }
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,

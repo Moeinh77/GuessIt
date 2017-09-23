@@ -2,17 +2,16 @@ package com.taan.hasani.moein.guess_it.game;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.taan.hasani.moein.volley.R;
 
-public class categories extends AppCompatActivity {
+public class categories_singlePlayer extends AppCompatActivity {
 
     Button varzeshi, english, bazigar, film;
 
@@ -71,7 +70,7 @@ public class categories extends AppCompatActivity {
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.difficulty_dialog);
-        dialog.setTitle("This is my custom dialog box");
+        //  dialog.setTitle("This is my custom dialog box");
         dialog.setCancelable(true);
 
         final RadioButton easy_RadioButton = (RadioButton) dialog.findViewById(R.id.easy);
@@ -104,7 +103,7 @@ public class categories extends AppCompatActivity {
 
                 }
 
-                Intent i = new Intent(categories.this, two_player.class);
+                Intent i = new Intent(categories_singlePlayer.this, single_Player.class);
 
                 if (rIsChecked.equals("true")) {
 

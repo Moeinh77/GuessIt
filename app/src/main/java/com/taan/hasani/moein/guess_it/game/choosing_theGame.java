@@ -23,7 +23,7 @@ public class choosing_theGame extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(choosing_theGame.this, categories.class);
+                Intent intent = new Intent(choosing_theGame.this, categories_twoPlayer.class);
                 startActivity(intent);
 
             }
@@ -34,7 +34,7 @@ public class choosing_theGame extends AppCompatActivity {
         singlePlayer_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(choosing_theGame.this,single_Player.class);
+                Intent i = new Intent(choosing_theGame.this, categories_singlePlayer.class);
                 startActivity(i);
             }
         });

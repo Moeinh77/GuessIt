@@ -103,6 +103,12 @@ public class two_player extends AppCompatActivity {
                             MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
                             mediaPlayer.start();
 
+//                            if (timer.getText().toString() != recivedTime) {
+//
+//                                spent_time = Integer.parseInt(recivedTime) - Integer.parseInt(timer.getText().toString());
+//                            }
+                            setAnswer(entered_word.getText().toString(),
+                                    Player_time, Player_score, myturn);
                             //baraye check kardan nobat
                             sendNextWord();
                             ////////////////////////////
@@ -111,16 +117,19 @@ public class two_player extends AppCompatActivity {
 
                             message.setText("No,Guess again !");
                             myturn = "yes";
+                            setAnswer(entered_word.getText().toString(),
+                                    Player_time, Player_score, myturn);
 
                         }
 
                         if (timer.getText().toString().equals("0")) {
                             myturn = "no";
                             Toast.makeText(getApplicationContext(), "Times up!", Toast.LENGTH_SHORT).show();
+                            setAnswer(entered_word.getText().toString(),
+                                    Player_time, Player_score, myturn);
                         }
 
-                        setAnswer(entered_word.getText().toString(),
-                                Player_time, Player_score, myturn);
+
 
                     }
                 }
@@ -214,7 +223,6 @@ public class two_player extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
-
     public void isMyGameReady() {
         HashMap<String, String> info = new HashMap<>();
 
@@ -232,7 +240,7 @@ public class two_player extends AppCompatActivity {
                 try {
 
                     Toast.makeText(getApplicationContext(),
-                            response.getString("responseData") + ", searching for player...", Toast.LENGTH_SHORT).show();
+                            response.getString("responseData"), Toast.LENGTH_SHORT).show();
                     if (inGame) {
                         if (response.getString("gameID").equals("-1")) {
 
@@ -333,6 +341,7 @@ public class two_player extends AppCompatActivity {
         info.put("gameID", gamedID);
         info.put("userID", id);
 
+        entered_word.setText("");
         word.setText("");
         message.setText("");
         timer.setText("");
@@ -368,7 +377,7 @@ public class two_player extends AppCompatActivity {
                                 timer.setText("0");
                                 setAnswer(entered_word.getText().toString(),
                                         "0", "0", "no");
-
+                                spent_time = 0;
                                 // check kardane nobat
                                 sendNextWord();
                                 ////////////////////////
@@ -386,20 +395,20 @@ public class two_player extends AppCompatActivity {
                         word.setVisibility(View.INVISIBLE);
 
                         turn = "notmyturn";
+                        if (inGame) {
+                            //Toast.makeText(getApplicationContext(),
+                            //        "It's not your turn yet, Please wait...", Toast.LENGTH_SHORT).show();
+                            timer.setText("Please wait...");
+                            //ferestadan request baraye inke bebinim nobateman shode ya na
+                            new Handler().postDelayed(new Runnable() {
 
-                        Toast.makeText(getApplicationContext(),
-                                "It's not your turn yet, Please wait...", Toast.LENGTH_SHORT).show();
-
-                        //ferestadan request baraye inke bebinim nobateman shode ya na
-                        new Handler().postDelayed(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                sendNextWord();
-                            }
-                        }, 1500);
-                        //////////////////////////////////////////
-
+                                @Override
+                                public void run() {
+                                    sendNextWord();
+                                }
+                            }, 1000);
+                            //////////////////////////////////////////
+                        }
 
                     }
 
