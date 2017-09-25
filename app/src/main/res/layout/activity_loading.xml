@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.taan.hasani.moein.volley.com.taan.hasani.moein.guess_it.game_menu.Loading"
-    android:background="#13df00">
+    android:background="#0288D1">
 
     <ProgressBar
         android:id="@+id/progressBar"

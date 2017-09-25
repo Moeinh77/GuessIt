@@ -87,13 +87,13 @@ public class account_games_info extends Fragment {
 
                     if (id.equals(response.getString("playerOneID"))) {
 
-                        Playerscores += "\n" + "you :" + response.getString("playerOneTotalScore");
-                        Rivalscore += "\n" + response.getString("playerTwoUsername") + " :" + response.getString("playerTwoTotalScore");
+                        Playerscores += "you :" + response.getString("playerOneTotalScore") + "\n";
+                        Rivalscore += response.getString("playerTwoUsername") + " :" + response.getString("playerTwoTotalScore") + "\n";
 
                     } else {
 
-                        Playerscores += "\n" + "you :" + response.getString("playerTwoTotalScore");
-                        Rivalscore += "\n" + response.getString("playerTwoUsername") + " :" + response.getString("playerTwoTotalScore");
+                        Playerscores += "you :" + response.getString("playerTwoTotalScore") + "\n";
+                        Rivalscore += response.getString("playerOneUsername") + " :" + response.getString("playerTwoTotalScore") + "\n";
 
                     }
 
@@ -102,8 +102,13 @@ public class account_games_info extends Fragment {
                     e.printStackTrace();
                 }
 
-                playerScore_view.setText(Playerscores);
-                rivalScore_view.setText(Rivalscore);
+                if (Playerscores.equals("")) {
+                    playerScore_view.setText("هنوز بازی ای انجام نداده اید...");
+                } else {
+                    playerScore_view.setText(Playerscores);
+                    rivalScore_view.setText(Rivalscore);
+                }
+
 
 
             }

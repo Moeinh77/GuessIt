@@ -143,7 +143,6 @@ public class two_player extends AppCompatActivity {
 
                 message.setVisibility(View.INVISIBLE);
 
-                gameInfo();
 
                 if (flag__nextWord_Timer == "yes") {
 
@@ -334,6 +333,9 @@ public class two_player extends AppCompatActivity {
 
     public void sendNextWord() {
 
+        gameInfo();
+
+
         HashMap<String, String> info = new HashMap<>();
 
 
@@ -444,7 +446,6 @@ public class two_player extends AppCompatActivity {
         answer_hashmap.put("answer", entered_word);
         answer_hashmap.put("myTurn", myturn);
 
-
         JSONObject answer = new JSONObject(answer_hashmap);
 
         /////////////////////////
@@ -460,8 +461,8 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-                Toast.makeText(getApplicationContext(),
-                        "setAnswer response  :" + response.toString(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getApplicationContext(),
+                //       "setAnswer response  :" + response.toString(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -499,8 +500,6 @@ public class two_player extends AppCompatActivity {
 
                     String rival_score = response.getString("playerTwoTotalScore");
 
-                    Toast.makeText(getApplicationContext(), "p1:" + response.getString("playerOneID") + "p2:" + response.getString("playerTwoID") + "your id:" + id, Toast.LENGTH_SHORT).
-                            show();
                     if (id.equals(response.getString("playerOneID"))) {
                         player2_textview.setText("rival score : " + rival_score);
                         player1_textview.setText("Your score : " + your_score);

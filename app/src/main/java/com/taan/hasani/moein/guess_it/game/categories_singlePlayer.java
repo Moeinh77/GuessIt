@@ -70,7 +70,6 @@ public class categories_singlePlayer extends AppCompatActivity {
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.difficulty_dialog);
-        //  dialog.setTitle("This is my custom dialog box");
         dialog.setCancelable(true);
 
         final RadioButton easy_RadioButton = (RadioButton) dialog.findViewById(R.id.easy);
@@ -111,9 +110,10 @@ public class categories_singlePlayer extends AppCompatActivity {
                     i.putExtra("difficulty", difficulty);
 
                     startActivity(i);
+                    dialog.cancel();
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "درجه سطحی را انتخاب کنید", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "درجه سطحی را انتخاب نکردید", Toast.LENGTH_LONG).show();
                 }
 
 

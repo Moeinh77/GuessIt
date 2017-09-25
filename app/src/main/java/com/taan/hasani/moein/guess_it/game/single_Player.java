@@ -68,12 +68,16 @@ public class single_Player extends AppCompatActivity {
         difficulty = bundle.getString("difficulty");
         ///////////////////////////////////////////////////////
 
+        message.setVisibility(View.INVISIBLE);
+
         check_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String Player_time = timer.getText().toString();
                 String Player_score = Integer.toString(15 - Integer.parseInt(Player_time));
+
+                message.setVisibility(View.VISIBLE);
 
                 if (entered_word.getText().toString().equals(completeWord)) {
 
@@ -104,6 +108,9 @@ public class single_Player extends AppCompatActivity {
         next_word_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                message.setVisibility(View.INVISIBLE);
+
+                entered_word.setText("");
 
                 if (flag__nextWord_Timer == "yes") {
 
@@ -147,8 +154,8 @@ public class single_Player extends AppCompatActivity {
 
                 try {
 
-                    Toast.makeText(getApplicationContext(),
-                            response.toString(), Toast.LENGTH_LONG).show();
+                    //    Toast.makeText(getApplicationContext(),
+                    //          response.toString(), Toast.LENGTH_LONG).show();
                     game_ID = response.getString("gameID");
 
                     if (response.getString("dataIsRight").equals("yes")) {
@@ -339,8 +346,8 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-                Toast.makeText(getApplicationContext(),
-                        "setAnswer response  :" + response.toString(), Toast.LENGTH_LONG).show();
+                //  Toast.makeText(getApplicationContext(),
+                //         "setAnswer response  :" + response.toString(), Toast.LENGTH_LONG).show();
 
             }
 

@@ -111,7 +111,7 @@ public class categories_twoPlayer extends AppCompatActivity {
                     i.putExtra("difficulty", difficulty);
 
                     startActivity(i);
-
+                    dialog.cancel();
                 } else {
                     Toast.makeText(getApplicationContext(), "درجه سطحی را انتخاب کنید", Toast.LENGTH_LONG).show();
                 }
