@@ -42,6 +42,7 @@ public class two_player extends AppCompatActivity {
     //agar shode bashad timer be karoftade
     private int spent_time = 0;
     private boolean inGame = true;
+    private boolean flag_counter;//baraye inke dar onDestroy errorrokh nade age timer rah nayoftade bood
 
 
     @Override
@@ -67,6 +68,9 @@ public class two_player extends AppCompatActivity {
         difficulty = bundle.getString("difficulty");
         ///////////////////////////////////////////////////////
 
+        message.setVisibility(View.INVISIBLE);
+        word.setVisibility(View.INVISIBLE);
+
         newTwoPlayerGame();
 
         check_bt.setOnClickListener(new View.OnClickListener() {
@@ -80,8 +84,8 @@ public class two_player extends AppCompatActivity {
 
                 } else {
 
-                    String Player_time = timer.getText().toString();
-                    String Player_score = Integer.toString(15 - Integer.parseInt(Player_time));
+                    String Player_score = timer.getText().toString();
+                    String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
                     String myturn;
 
                     if (timer.getText().toString().equals("0")) {
@@ -103,10 +107,6 @@ public class two_player extends AppCompatActivity {
                             MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
                             mediaPlayer.start();
 
-//                            if (timer.getText().toString() != recivedTime) {
-//
-//                                spent_time = Integer.parseInt(recivedTime) - Integer.parseInt(timer.getText().toString());
-//                            }
                             setAnswer(entered_word.getText().toString(),
                                     Player_time, Player_score, myturn);
                             //baraye check kardan nobat
@@ -130,7 +130,6 @@ public class two_player extends AppCompatActivity {
                         }
 
 
-
                     }
                 }
 
@@ -144,7 +143,7 @@ public class two_player extends AppCompatActivity {
                 message.setVisibility(View.INVISIBLE);
 
 
-                if (flag__nextWord_Timer == "yes") {
+                if (flag__nextWord_Timer.equals("yes")) {
 
                     countDownTimer.cancel();
 
@@ -370,9 +369,10 @@ public class two_player extends AppCompatActivity {
 
                         ////////////////////////////////////////////
                         countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime) - spent_time) * 1000, 1000) {
-
                             public void onTick(long millisUntilFinished) {
                                 timer.setText(String.valueOf(millisUntilFinished / 1000));
+                                flag_counter = true;
+
                             }
 
                             public void onFinish() {
@@ -531,6 +531,10 @@ public class two_player extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         inGame = false;
+
+        if (flag_counter) {
+            countDownTimer.cancel();
+        }
         super.onDestroy();
     }
 }

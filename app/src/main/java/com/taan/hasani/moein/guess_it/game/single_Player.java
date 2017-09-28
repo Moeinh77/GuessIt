@@ -42,6 +42,7 @@ public class single_Player extends AppCompatActivity {
     private String flag__nextWord_Timer;
     private String category;
     private String difficulty;
+    boolean didItOnce = false;
 
 
     @Override
@@ -74,12 +75,12 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String Player_time = timer.getText().toString();
-                String Player_score = Integer.toString(15 - Integer.parseInt(Player_time));
+                String Player_score = timer.getText().toString();
+                String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
 
                 message.setVisibility(View.VISIBLE);
 
-                if (entered_word.getText().toString().equals(completeWord)) {
+                if (entered_word.getText().toString().equals(completeWord) && didItOnce == false) {
 
                     countDownTimer.cancel();
 
@@ -87,10 +88,19 @@ public class single_Player extends AppCompatActivity {
                     message.setText("Congratulations !!! Your guess was RIGHT !");
                     MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
                     mediaPlayer.start();
+                    didItOnce = true;
+
+                    setAnswer(entered_word.getText().toString(),
+                            Player_time, Player_score);
+                } else if (entered_word.getText().toString().equals(completeWord)
+                        && didItOnce == true) {
+
+                    message.setText("Please press the Next word button ");
 
                 } else {
 
                     message.setText("No,Guess again !");
+
 
                 }
 
@@ -98,8 +108,6 @@ public class single_Player extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Times up!", Toast.LENGTH_SHORT).show();
                 }
 
-                setAnswer(entered_word.getText().toString(),
-                        Player_time, Player_score);
 
             }
         });
@@ -362,5 +370,13 @@ public class single_Player extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
+
+    @Override
+    protected void onDestroy() {
+        countDownTimer.cancel();
+
+        super.onDestroy();
+    }
 }
+
 

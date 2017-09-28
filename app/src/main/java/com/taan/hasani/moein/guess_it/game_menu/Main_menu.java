@@ -1,12 +1,9 @@
 package com.taan.hasani.moein.guess_it.game_menu;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.taan.hasani.moein.guess_it.Leader_board.Leader_Board;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.game.choosing_theGame;
 import com.taan.hasani.moein.guess_it.profile.profile;

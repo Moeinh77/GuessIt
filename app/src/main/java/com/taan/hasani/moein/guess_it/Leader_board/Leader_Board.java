@@ -1,9 +1,10 @@
-package com.taan.hasani.moein.guess_it.game_menu;
+package com.taan.hasani.moein.guess_it.Leader_board;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,6 @@ import java.util.HashMap;
 public class Leader_Board extends AppCompatActivity {
 
     private TextView scores_names, scores_score, yourPlace, wordScore_textview;
-    //numbers_textview;
     private String MY_PREFS_NAME = "username and password";
     final HashMap<String, String> info = new HashMap<>();
     String url = "http://online6732.tk/guessIt.php";

@@ -7,9 +7,11 @@ import android.renderscript.RSIllegalArgumentException;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -36,22 +39,23 @@ public class account_games_info extends Fragment {
     String url = "http://online6732.tk/guessIt.php";
     private TextView playerScore_view, rivalScore_view;
     String recived_games_id;
-    String Playerscores = "", Rivalscore = "";
+    String Playerscores, Rivalscore;
     String[] array = null;
-
+    ListView listView;
+    ArrayList<gameHistory_object> scoreList;//*************
+    gameHistory_object gameHistory_object;
 
     public account_games_info() {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         get_user_games_ids();
 
+        Toast.makeText(getActivity().getApplicationContext(), scoreList.get(0).getRivalUsername(),
+                Toast.LENGTH_SHORT).show();//*************
 
     }
 
@@ -62,21 +66,32 @@ public class account_games_info extends Fragment {
         View games_info = inflater.inflate(R.layout.fragment_account_games_info, container, false);
         playerScore_view = (TextView) games_info.findViewById(R.id.playerScore);
         rivalScore_view = (TextView) games_info.findViewById(R.id.rivalScore);
+        listView = (ListView) games_info.findViewById(R.id.listView);
+
+        TextView textView = (TextView) games_info.findViewById(R.id.textView15);
+
+        listViewAdapter_gamesInfo listViewAdapter_gamesInfo = new listViewAdapter_gamesInfo
+                (this.getActivity(), R.layout.score_row, scoreList);
+
+        if (scoreList.isEmpty()) textView.setText("empty list");
+
+        listView.setAdapter(listViewAdapter_gamesInfo);
+        listViewAdapter_gamesInfo.notifyDataSetChanged();
 
         return games_info;
     }
 
-    private void getUserGamesInfo(String gameID) {
-        //   final String scores = new String();
+    private gameHistory_object getUserGamesInfo(String gameID) {
 
         final String MY_PREFS_NAME = "username and password";
-        SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME,
+                MODE_PRIVATE);
         final String id = prefs.getString("userID", null);
-
 
         info.put("action", "sendGameInformation");
         info.put("userID", id);
         info.put("gameID", gameID);
+
 
         JSONObject jsonObject = new JSONObject(info);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -85,18 +100,27 @@ public class account_games_info extends Fragment {
             public void onResponse(JSONObject response) {
                 try {
 
+                    gameHistory_object = new gameHistory_object();
                     if (id.equals(response.getString("playerOneID"))) {
 
-                        Playerscores += "you :" + response.getString("playerOneTotalScore") + "\n";
-                        Rivalscore += response.getString("playerTwoUsername") + " :" + response.getString("playerTwoTotalScore") + "\n";
+                        Playerscores = response.getString("playerOneTotalScore");
+                        Rivalscore = response.getString("playerTwoTotalScore");
+
+                        gameHistory_object.setRivalUsername(response.getString("playerTwoUsername"));
+                        gameHistory_object.setPlayerScore(Playerscores);
+                        gameHistory_object.setRivalScore(Rivalscore);
 
                     } else {
 
-                        Playerscores += "you :" + response.getString("playerTwoTotalScore") + "\n";
-                        Rivalscore += response.getString("playerOneUsername") + " :" + response.getString("playerTwoTotalScore") + "\n";
+                        Playerscores = response.getString("playerTwoTotalScore");
+                        Rivalscore = response.getString("playerTwoTotalScore");
 
+                        gameHistory_object.setRivalUsername(response.getString("playerOneUsername"));
+                        gameHistory_object.setPlayerScore(Playerscores);
+                        gameHistory_object.setRivalScore(Rivalscore);
                     }
 
+                    //   arrayList.add(gameHistory_object);//*************
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -109,8 +133,6 @@ public class account_games_info extends Fragment {
                     rivalScore_view.setText(Rivalscore);
                 }
 
-
-
             }
 
         }, new Response.ErrorListener() {
@@ -121,12 +143,10 @@ public class account_games_info extends Fragment {
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-        // return scores;
+        return gameHistory_object;
     }
 
-    ///////////////////////////////////////////////////////
-
-    public String[] get_user_games_ids() {
+    public void get_user_games_ids() {
 
         //getting id for the player
         final String MY_PREFS_NAME = "username and password";
@@ -142,7 +162,7 @@ public class account_games_info extends Fragment {
             public void onResponse(JSONObject response) {
 
                 try {
-
+                    scoreList = new ArrayList<>();
                     recived_games_id = new String(response.getString("games").getBytes("ISO-8859-1"), "UTF-8");
 
                     array=recived_games_id.split(", ");
@@ -150,13 +170,9 @@ public class account_games_info extends Fragment {
                     //id hame bazi ha dar array hast inja miaym har khoone az array ro mifresim be oon yeki
                     //function ta etelaat ro bar asas id biare va hamaro bokone ye string ta too ye view bezarim
                     for (int i=0;i<array.length;i++) {
-                        // game_scores_string +=
-                        getUserGamesInfo(array[i]);
+                        scoreList.add(getUserGamesInfo(array[i]));
                     }
                      ////////////////////////
-                    //Toast.makeText(getActivity().getApplication(), scores, Toast.LENGTH_SHORT).show();
-
-
 
                 } catch (JSONException e) {
                     Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
@@ -174,7 +190,6 @@ public class account_games_info extends Fragment {
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
-        return array;
     }
 
 
