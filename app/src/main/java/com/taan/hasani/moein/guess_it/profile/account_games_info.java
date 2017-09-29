@@ -1,17 +1,14 @@
 package com.taan.hasani.moein.guess_it.profile;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.renderscript.RSIllegalArgumentException;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +16,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.taan.hasani.moein.volley.R;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
+import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,8 +39,10 @@ public class account_games_info extends Fragment {
     String Playerscores, Rivalscore;
     String[] array = null;
     ListView listView;
-    ArrayList<gameHistory_object> scoreList;//*************
+    ArrayList<gameHistory_object> scoreList = new ArrayList<>();//*************
     gameHistory_object gameHistory_object;
+    ProgressBar progressBar;
+
 
     public account_games_info() {
         // Required empty public constructor
@@ -52,10 +51,8 @@ public class account_games_info extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        get_user_games_ids();
 
-        Toast.makeText(getActivity().getApplicationContext(), scoreList.get(0).getRivalUsername(),
-                Toast.LENGTH_SHORT).show();//*************
+        get_user_games_ids();
 
     }
 
@@ -64,24 +61,14 @@ public class account_games_info extends Fragment {
                              Bundle savedInstanceState) {
 
         View games_info = inflater.inflate(R.layout.fragment_account_games_info, container, false);
-        playerScore_view = (TextView) games_info.findViewById(R.id.playerScore);
-        rivalScore_view = (TextView) games_info.findViewById(R.id.rivalScore);
         listView = (ListView) games_info.findViewById(R.id.listView);
+        progressBar = (ProgressBar) games_info.findViewById(R.id.progressBar2);
 
-        TextView textView = (TextView) games_info.findViewById(R.id.textView15);
-
-        listViewAdapter_gamesInfo listViewAdapter_gamesInfo = new listViewAdapter_gamesInfo
-                (this.getActivity(), R.layout.score_row, scoreList);
-
-        if (scoreList.isEmpty()) textView.setText("empty list");
-
-        listView.setAdapter(listViewAdapter_gamesInfo);
-        listViewAdapter_gamesInfo.notifyDataSetChanged();
 
         return games_info;
     }
 
-    private gameHistory_object getUserGamesInfo(String gameID) {
+    private void getUserGamesInfo(String gameID) {
 
         final String MY_PREFS_NAME = "username and password";
         SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME,
@@ -91,7 +78,6 @@ public class account_games_info extends Fragment {
         info.put("action", "sendGameInformation");
         info.put("userID", id);
         info.put("gameID", gameID);
-
 
         JSONObject jsonObject = new JSONObject(info);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -118,19 +104,13 @@ public class account_games_info extends Fragment {
                         gameHistory_object.setRivalUsername(response.getString("playerOneUsername"));
                         gameHistory_object.setPlayerScore(Playerscores);
                         gameHistory_object.setRivalScore(Rivalscore);
+
                     }
 
-                    //   arrayList.add(gameHistory_object);//*************
+                    scoreList.add(gameHistory_object);//*************
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
-
-                if (Playerscores.equals("")) {
-                    playerScore_view.setText("هنوز بازی ای انجام نداده اید...");
-                } else {
-                    playerScore_view.setText(Playerscores);
-                    rivalScore_view.setText(Rivalscore);
                 }
 
             }
@@ -143,8 +123,8 @@ public class account_games_info extends Fragment {
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-        return gameHistory_object;
     }
+
 
     public void get_user_games_ids() {
 
@@ -165,14 +145,19 @@ public class account_games_info extends Fragment {
                     scoreList = new ArrayList<>();
                     recived_games_id = new String(response.getString("games").getBytes("ISO-8859-1"), "UTF-8");
 
-                    array=recived_games_id.split(", ");
+                    array = recived_games_id.split(", ");
 
-                    //id hame bazi ha dar array hast inja miaym har khoone az array ro mifresim be oon yeki
+                    //id hame bazi ha dar array hast inja
+                    // miaym har khoone az array ro mifresim be oon yeki
                     //function ta etelaat ro bar asas id biare va hamaro bokone ye string ta too ye view bezarim
-                    for (int i=0;i<array.length;i++) {
-                        scoreList.add(getUserGamesInfo(array[i]));
+                    for (int i = 0; i < array.length; i++) {
+                        getUserGamesInfo(array[i]);
                     }
-                     ////////////////////////
+                    ////////////////////////
+
+
+                    startUpTheList(array.length);
+
 
                 } catch (JSONException e) {
                     Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
@@ -192,5 +177,24 @@ public class account_games_info extends Fragment {
 
     }
 
+    public void startUpTheList(final int n) {
+        if (scoreList.size() != n) {
+            new Handler().postDelayed(new Runnable() {
 
+                @Override
+                public void run() {
+                    startUpTheList(n);
+                }
+            }, 1000);
+
+        } else {
+            listViewAdapter_gamesInfo listViewAdapter_gamesInfo = new listViewAdapter_gamesInfo
+                    (getActivity(), R.layout.score_row, scoreList);
+            progressBar.setVisibility(View.INVISIBLE);
+            listView.setAdapter(listViewAdapter_gamesInfo);
+            listViewAdapter_gamesInfo.notifyDataSetChanged();
+        }
+
+    }
 }
+
