@@ -1,9 +1,11 @@
 package com.taan.hasani.moein.guess_it.game;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +33,7 @@ public class single_Player extends AppCompatActivity {
     private Button check_bt, next_word_bt;
     private TextView word_TextView, message, timer;
     private String MY_PREFS_NAME = "username and password";
+    private int Total_gamescore = 0;
 
     private String incompleteWord, id, completeWord, game_ID,
             url = "http://online6732.tk/guessIt.php";
@@ -57,6 +60,8 @@ public class single_Player extends AppCompatActivity {
         entered_word = (EditText) findViewById(R.id.enterd_word);
         check_bt = (Button) findViewById(R.id.check);
         timer = (TextView) findViewById(R.id.timer);
+        final TextView totalScore_view = (TextView) findViewById(R.id.total_score);
+
 
         prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         id = prefs.getString("userID", null);
@@ -75,12 +80,15 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 String Player_score = timer.getText().toString();
                 String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
 
-                message.setVisibility(View.VISIBLE);
+                if (!entered_word.getText().toString().equals(""))
+                    message.setVisibility(View.VISIBLE);
 
-                if (entered_word.getText().toString().equals(completeWord) && didItOnce == false) {
+                if (entered_word.getText().toString().equals(completeWord) && didItOnce == false && !timer.getText().toString().equals("0")) {
+
 
                     countDownTimer.cancel();
 
@@ -90,24 +98,27 @@ public class single_Player extends AppCompatActivity {
                     mediaPlayer.start();
                     didItOnce = true;
 
+                    Total_gamescore += Integer.parseInt(Player_score);//showing total score for game ending
+
                     setAnswer(entered_word.getText().toString(),
                             Player_time, Player_score);
+
+                    Snackbar.make(findViewById(R.id.singlePlayerActivity), "you scored : " + Player_score, Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.YELLOW).show();
                 } else if (entered_word.getText().toString().equals(completeWord)
                         && didItOnce == true) {
 
                     message.setText("Please press the Next word button ");
 
+                } else if (timer.getText().toString().equals("0")) {
+
+                    Toast.makeText(getApplicationContext(), "Your time is up!", Toast.LENGTH_LONG).show();
+
                 } else {
 
                     message.setText("No,Guess again !");
 
-
                 }
-
-                if (timer.getText().toString().equals("0")) {
-                    Toast.makeText(getApplicationContext(), "Times up!", Toast.LENGTH_SHORT).show();
-                }
-
 
             }
         });
@@ -116,7 +127,10 @@ public class single_Player extends AppCompatActivity {
         next_word_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 message.setVisibility(View.INVISIBLE);
+
+                totalScore_view.setText("Toatal score :" + Total_gamescore);
 
                 entered_word.setText("");
 

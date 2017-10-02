@@ -1,6 +1,7 @@
 package com.taan.hasani.moein.guess_it.game;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -82,7 +83,7 @@ public class two_player extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "Not your turn", Toast.LENGTH_SHORT).show();
 
-                } else {
+                } else if (!timer.getText().toString().equals("")) {
 
                     String Player_score = timer.getText().toString();
                     String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
@@ -92,11 +93,15 @@ public class two_player extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "Your time is up", Toast.LENGTH_SHORT).show();
 
-                    } else {
+                    } else if (!entered_word.getText().toString().equals("")) {
 
                         message.setVisibility(View.VISIBLE);
 
-                        if (entered_word.getText().toString().equals(completeWord)) {
+                        if (entered_word.getText().toString().equals("")) {
+
+                            //   Toast.makeText(getApplicationContext(),"Please wait...",Toast.LENGTH_SHORT).show();
+
+                        } else if (entered_word.getText().toString().equals(completeWord)) {
 
                             countDownTimer.cancel();
 
@@ -501,11 +506,20 @@ public class two_player extends AppCompatActivity {
                     String rival_score = response.getString("playerTwoTotalScore");
 
                     if (id.equals(response.getString("playerOneID"))) {
-                        player2_textview.setText("rival score : " + rival_score);
-                        player1_textview.setText("Your score : " + your_score);
+
+                        player2_textview.setText("امتیاز " + response.getString("playerTwoID") + " : " + rival_score);
+                        player1_textview.setText("امتیاز شما : " + your_score);
+
+                        player2_textview.setTextColor(Color.RED);
+                        player1_textview.setTextColor(Color.GREEN);
+
                     } else if (id.equals(response.getString("playerTwoID"))) {
-                        player2_textview.setText("Your score : " + rival_score);
-                        player1_textview.setText("rival score : " + your_score);
+
+                        player2_textview.setText("امتیاز شما : " + rival_score);
+                        player1_textview.setText("امتیاز " + response.getString("playerOneID") + " : " + your_score);
+
+                        player2_textview.setTextColor(Color.GREEN);
+                        player1_textview.setTextColor(Color.RED);
                     }
 
 
