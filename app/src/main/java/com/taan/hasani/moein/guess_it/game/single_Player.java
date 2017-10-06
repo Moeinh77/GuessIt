@@ -106,7 +106,7 @@ public class single_Player extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.singlePlayerActivity), "you scored : " + Player_score, Snackbar.LENGTH_LONG)
                             .setActionTextColor(Color.YELLOW).show();
                 } else if (entered_word.getText().toString().equals(completeWord)
-                        && didItOnce == true) {
+                        && didItOnce) {
 
                     message.setText("Please press the Next word button ");
 
@@ -128,13 +128,15 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                didItOnce = false;
+
                 message.setVisibility(View.INVISIBLE);
 
                 totalScore_view.setText("Toatal score :" + Total_gamescore);
 
                 entered_word.setText("");
 
-                if (flag__nextWord_Timer == "yes") {
+                if (flag__nextWord_Timer.equals("yes")) {
 
                     countDownTimer.cancel();
 

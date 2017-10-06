@@ -32,12 +32,15 @@
         <activity
             android:name="com.taan.hasani.moein.guess_it.profile.profile"
             android:theme="@style/MyMaterialTheme" />
+
         <activity android:name="com.taan.hasani.moein.guess_it.game_menu.Main_menu" />
+        android:theme="@style/AlertDialog.AppCompat"/>
+
         <activity android:name="com.taan.hasani.moein.guess_it.profile.change_password" />
         <activity android:name="com.taan.hasani.moein.guess_it.Leader_board.Leader_Board" />
         <activity android:name="com.taan.hasani.moein.guess_it.game.two_player" />
         <activity android:name="com.taan.hasani.moein.guess_it.game.categories_twoPlayer" />
-        <activity android:name="com.taan.hasani.moein.guess_it.game.categories_singlePlayer"></activity>
+        <activity android:name="com.taan.hasani.moein.guess_it.game.categories_singlePlayer" />
     </application>
 
 </manifest>
