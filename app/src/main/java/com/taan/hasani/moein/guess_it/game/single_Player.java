@@ -1,12 +1,16 @@
 package com.taan.hasani.moein.guess_it.game;
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class single_Player extends AppCompatActivity {
@@ -34,7 +39,7 @@ public class single_Player extends AppCompatActivity {
     private TextView word_TextView, message, timer;
     private String MY_PREFS_NAME = "username and password";
     private int Total_gamescore = 0;
-
+    private ArrayList<Integer> indexlist = new ArrayList<>();
     private String incompleteWord, id, completeWord, game_ID,
             url = "http://online6732.tk/guessIt.php";
 
@@ -46,6 +51,9 @@ public class single_Player extends AppCompatActivity {
     private String category;
     private String difficulty;
     boolean didItOnce = false;
+    private int arraylist_i = 0;//baraye gereftane index alamate soal az list
+    Dialog dialog;
+    private int length = -1;
 
 
     @Override
@@ -53,7 +61,6 @@ public class single_Player extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_single_player);
-
         next_word_bt = (Button) findViewById(R.id.next_word_bt);
         message = (TextView) findViewById(R.id.message);
         word_TextView = (TextView) findViewById(R.id.word);
@@ -61,7 +68,9 @@ public class single_Player extends AppCompatActivity {
         check_bt = (Button) findViewById(R.id.check);
         timer = (TextView) findViewById(R.id.timer);
         final TextView totalScore_view = (TextView) findViewById(R.id.total_score);
-
+        Button Help = (Button) findViewById(R.id.help_bt);
+        final AlertDialog.Builder alertDialogBuilder = new
+                AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
 
         prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         id = prefs.getString("userID", null);
@@ -72,9 +81,21 @@ public class single_Player extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         category = bundle.getString("category");
         difficulty = bundle.getString("difficulty");
-        ///////////////////////////////////////////////////////
 
+
+        ///////////////////////////////////////////////////////
         message.setVisibility(View.INVISIBLE);
+
+
+        Help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alert_dialog_function();
+
+            }
+        });
+
 
         check_bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +180,98 @@ public class single_Player extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void alert_dialog_function() {
+
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.help_dialog);
+        dialog.setCancelable(true);
+
+        dialog.setTitle("Help");
+
+
+        Button yes = (Button) dialog.findViewById(R.id.yes);
+        Button no = (Button) dialog.findViewById(R.id.no);
+        dialog.show();
+
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //   getting_qmarks_index();
+                replace_char();
+
+            }
+        });
+
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.cancel();
+
+            }
+        });
+
+    }
+
+    //baz kardan alamate soal ha va jaygozari harfe asli
+    public void replace_char() {
+
+        if (indexlist.isEmpty()) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    replace_char();
+                    Toast.makeText(getApplicationContext(), "%%%not yet ",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }, 1000);
+
+            dialog.cancel();
+        } else {
+            int i = indexlist.get(arraylist_i);
+            char unlocked_char = completeWord.charAt(i);
+            StringBuilder stringBuilder = new StringBuilder(incompleteWord);
+            stringBuilder.setCharAt(i, unlocked_char);
+            incompleteWord = stringBuilder.toString();
+            word_TextView.setText(incompleteWord);
+            arraylist_i++;
+        }
+
+    }
+//////////////////////////////////////////////////////
+
+
+    public void getting_qmarks_index() {
+        //hey check mikonim bebinim ke incompleet daryaft shode ya na
+        if (length == -1) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getting_qmarks_index();
+                    Toast.makeText(getApplicationContext(), "%%%Empty textview", Toast.LENGTH_SHORT).show();
+                }
+            }, 1000);
+        } else {
+            Toast.makeText(getApplicationContext(), "getting_qmarks_index running",
+                    Toast.LENGTH_SHORT).show();
+
+            //horoof  ? ro joda kone
+            for (int i = 0; i < length; i++) {
+
+                if (incompleteWord.charAt(i) == '?') {
+
+                    indexlist.add(i);
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "inside the for loop but ? not working",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+            ///////////////////////////////////
+
+        }
     }
 
     public void newSinglePlayerGame() {
@@ -271,16 +384,14 @@ public class single_Player extends AppCompatActivity {
 
         word_TextView.setText("");
         message.setText("");
-        // timer.setText("");
+        incompleteWord = "";//intialize bekhatere getting_qmarks_index()
+
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
-                // Toast.makeText(getApplicationContext(),
-                //         response.toString(), Toast.LENGTH_LONG).show();
 
                 try {
 
@@ -289,14 +400,14 @@ public class single_Player extends AppCompatActivity {
                         flag__nextWord_Timer = "yes";
 
                         incompleteWord = response.getJSONObject("word").getString("incompleteWord");
-                        //  .getBytes("ISO-8859-1"), "UTF-8");
 
                         completeWord = response.getJSONObject("word").getString("word");
-                        //     .getBytes("ISO-8859-1"), "UTF-8");
 
                         recivedTime = response.getJSONObject("word").getString("time");
 
-                        ////////////////////////////////////////////
+                        word_TextView.setText(incompleteWord);
+
+                        //////////////////
                         countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime) - spent_time) * 1000, 1000) {
 
                             public void onTick(long millisUntilFinished) {
@@ -313,8 +424,11 @@ public class single_Player extends AppCompatActivity {
                         ////////////////////////////////////////////
                         countDownTimer.start();
 
-                        word_TextView.setText(incompleteWord);
-
+                        /////////////////
+                        length = word_TextView.getText().length();
+                        //////////////
+                        Toast.makeText(getApplicationContext(), length,
+                                Toast.LENGTH_SHORT).show();
                     } else {
 
 
@@ -328,6 +442,7 @@ public class single_Player extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             e.toString(), Toast.LENGTH_LONG).show();
                 }
+                getting_qmarks_index();
 
 
             }
@@ -341,8 +456,6 @@ public class single_Player extends AppCompatActivity {
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
-
     }
 
     public void setAnswer(String entered_word, String player_time,
@@ -385,7 +498,6 @@ public class single_Player extends AppCompatActivity {
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
-
 
     @Override
     protected void onDestroy() {

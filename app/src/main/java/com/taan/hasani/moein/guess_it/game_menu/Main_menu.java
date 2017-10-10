@@ -72,27 +72,6 @@ public class Main_menu extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-//        AlertDialog.Builder alertB=new AlertDialog.Builder(getApplicationContext());
-//        alertB.setTitle("Exit");
-//        alertB.setIcon(R.drawable.exiticon);
-//        alertB.setPositiveButton("بلی", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//                finish();
-//            }
-//        });
-//
-//        alertB.setNegativeButton("خیر", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.cancel();
-//            }
-//        });
-//
-//        alertB.setMessage("آیا می خواهید از بازی خارج شوید؟");
-//
-//        alertB.create().show();
         alert_dialog_function();
     }
 

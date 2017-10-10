@@ -124,7 +124,8 @@ public class profile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
+                AlertDialog.Builder alertDialogBuilder =
+                        new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
                 alertDialogBuilder.setTitle("Logout");
                 //alertDialogBuilder.setIcon(R.drawable.);
                 alertDialogBuilder

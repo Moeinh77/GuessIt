@@ -14,24 +14,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="27dp"
         android:backgroundTint="#43A047"
-        android:text="Check"
+        android:text="چک"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enterd_word" />
 
     <EditText
         android:id="@+id/enterd_word"
-        android:hint="Your guess..."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
         android:ems="10"
+        android:hint="حدست چیه؟"
         android:inputType="textMultiLine"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        android:layout_marginTop="45dp"
         app:layout_constraintTop_toBottomOf="@+id/word" />
 
     <TextView
@@ -73,9 +75,11 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="27dp"
         android:backgroundTint="#0277BD"
-        android:text="Next word"
+        android:text="کلمه بعد"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -86,38 +90,43 @@
         android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
         android:textSize="16sp"
-        app:layout_constraintRight_toLeftOf="@+id/message"
         tools:text="timer"
-        app:layout_constraintLeft_toRightOf="@+id/textView16"
-        android:layout_marginLeft="8dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView16"
-        app:layout_constraintHorizontal_bias="0.0" />
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="25dp"
-        android:text="Time left :"
+        android:text="زمان باقی مانده :"
         android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/total_score"
+        app:layout_constraintLeft_toRightOf="@+id/timer"
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:id="@+id/total_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="16dp"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintLeft_toRightOf="@+id/timer"
-        app:layout_constraintRight_toRightOf="parent"
+        tools:text="TextView"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="TextView" />
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/textView16"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintHorizontal_bias="0.944" />
+
+    <Button
+        android:id="@+id/help_bt"
+        android:layout_width="36dp"
+        android:layout_height="31dp"
+        android:layout_marginLeft="72dp"
+        android:background="@drawable/help"
+        app:layout_constraintBaseline_toBaselineOf="@+id/word"
+        app:layout_constraintLeft_toLeftOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -34,7 +34,6 @@ public class account_games_info extends Fragment {
 
     HashMap<String, String> info = new HashMap<>();
     String url = "http://online6732.tk/guessIt.php";
-    private TextView playerScore_view, rivalScore_view;
     String recived_games_id;
     String Playerscores, Rivalscore;
     String[] array = null;
@@ -185,7 +184,8 @@ public class account_games_info extends Fragment {
                 public void run() {
                     startUpTheList(n);
                 }
-            }, 1000);
+            }, 1000);//choon  gereftan etelaat user ba request async ast hame hamzaman daryaft nemishavand pas
+            //ma hey check mikonim ta zmani ke hame etelaat amade bashad ba list ro be listview midahim
 
         } else {
             listViewAdapter_gamesInfo listViewAdapter_gamesInfo = new listViewAdapter_gamesInfo

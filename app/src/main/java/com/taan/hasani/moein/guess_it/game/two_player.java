@@ -43,7 +43,7 @@ public class two_player extends AppCompatActivity {
     //agar shode bashad timer be karoftade
     private int spent_time = 0;
     private boolean inGame = true;
-    private boolean flag_counter;//baraye inke dar onDestroy errorrokh nade age timer rah nayoftade bood
+    private boolean flag_counter;//baraye inke dar onDestroy error rokh nade age timer rah nayoftade bood
 
 
     @Override

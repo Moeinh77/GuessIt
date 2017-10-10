@@ -100,12 +100,12 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="9dp"
         android:text="زمان باقی مانده :"
         android:textSize="14.4sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/timer"
-        app:layout_constraintLeft_toRightOf="@+id/timer"
-        android:layout_marginLeft="12dp" />
+        app:layout_constraintLeft_toRightOf="@+id/timer" />
 
     <TextView
         android:id="@+id/yourscore"
