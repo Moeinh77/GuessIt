@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +30,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static android.R.attr.type;
+
 public class single_Player extends AppCompatActivity {
 
     private EditText entered_word;
@@ -42,17 +42,17 @@ public class single_Player extends AppCompatActivity {
     private ArrayList<Integer> indexlist = new ArrayList<>();
     private String incompleteWord, id, completeWord, game_ID,
             url = "http://online6732.tk/guessIt.php";
-
+    private TextView totalScore_view;
     private SharedPreferences prefs;
     private String recivedTime;
     private CountDownTimer countDownTimer;
     private int spent_time;
     private String flag__nextWord_Timer;
     private String category;
-    private String difficulty;
+    private String difficulty, type;
     boolean didItOnce = false;
     private int arraylist_i = 0;//baraye gereftane index alamate soal az list
-    Dialog dialog;
+    private Dialog dialog;
     private int length = -1;
 
 
@@ -67,40 +67,34 @@ public class single_Player extends AppCompatActivity {
         entered_word = (EditText) findViewById(R.id.enterd_word);
         check_bt = (Button) findViewById(R.id.check);
         timer = (TextView) findViewById(R.id.timer);
-        final TextView totalScore_view = (TextView) findViewById(R.id.total_score);
+        totalScore_view = (TextView) findViewById(R.id.total_score);
         Button Help = (Button) findViewById(R.id.help_bt);
-        final AlertDialog.Builder alertDialogBuilder = new
-                AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
-
         prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         id = prefs.getString("userID", null);
 
-        newSinglePlayerGame();
-
-        //difficaulty va category ro az activity ghabl migirad
+        //difficaulty va category va type ro az activity ghabl migirad
         Bundle bundle = getIntent().getExtras();
         category = bundle.getString("category");
         difficulty = bundle.getString("difficulty");
-
-
+        type = bundle.getString("type");
         ///////////////////////////////////////////////////////
-        message.setVisibility(View.INVISIBLE);
 
+        newSinglePlayerGame();
+
+        message.setVisibility(View.INVISIBLE);
 
         Help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                alert_dialog_function();
+                alert_dialog_function_help();
 
             }
         });
 
-
         check_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 String Player_score = timer.getText().toString();
                 String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
@@ -109,7 +103,6 @@ public class single_Player extends AppCompatActivity {
                     message.setVisibility(View.VISIBLE);
 
                 if (entered_word.getText().toString().equals(completeWord) && didItOnce == false && !timer.getText().toString().equals("0")) {
-
 
                     countDownTimer.cancel();
 
@@ -182,7 +175,7 @@ public class single_Player extends AppCompatActivity {
 
     }
 
-    public void alert_dialog_function() {
+    public void alert_dialog_function_help() {
 
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.help_dialog);
@@ -240,8 +233,7 @@ public class single_Player extends AppCompatActivity {
         }
 
     }
-//////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////
 
     public void getting_qmarks_index() {
         //hey check mikonim bebinim ke incompleet daryaft shode ya na
@@ -275,11 +267,15 @@ public class single_Player extends AppCompatActivity {
     }
 
     public void newSinglePlayerGame() {
+
+        totalScore_view.setText("");
+
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "newGame");
-        info.put("userID", id);
         info.put("mode", "singlePlayer");
+        info.put("userID", id);
+        info.put("type", type);
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -427,8 +423,8 @@ public class single_Player extends AppCompatActivity {
                         /////////////////
                         length = word_TextView.getText().length();
                         //////////////
-                        Toast.makeText(getApplicationContext(), length,
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), length,
+                        //       Toast.LENGTH_SHORT).show();
                     } else {
 
 
@@ -439,10 +435,12 @@ public class single_Player extends AppCompatActivity {
                     }
 
                 } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG).show();
+
+                    alert_dialog_function_game_end();
+//                    Toast.makeText(getApplicationContext(),
+//                           e.toString(), Toast.LENGTH_LONG).show();
                 }
-                getting_qmarks_index();
+                //  getting_qmarks_index();
 
 
             }
@@ -497,6 +495,42 @@ public class single_Player extends AppCompatActivity {
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+    }
+
+
+    public void alert_dialog_function_game_end() {
+
+        countDownTimer.cancel();
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.game_end_dialog);
+        dialog.setCancelable(false);
+
+        Button start = (Button) dialog.findViewById(R.id.yes);
+        Button cancel = (Button) dialog.findViewById(R.id.no);
+
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                word_TextView.setText("");
+                message.setText("");
+                dialog.cancel();
+                newSinglePlayerGame();
+
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+        dialog.show();
+
     }
 
     @Override
