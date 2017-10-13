@@ -25,6 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.taan.hasani.moein.guess_it.Leader_board.leader_board_fragment;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.game.games_fragment;
 import com.taan.hasani.moein.guess_it.profile.account_games_info;
@@ -213,9 +214,11 @@ public class Main_menu extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         Main_menu.ViewPagerAdapter adapter = new
                 Main_menu.ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new account_settings_and_info(), "account");
+        adapter.addFragment(new account_games_info(), "games history");
         adapter.addFragment(new games_fragment(), "games");
-        adapter.addFragment(new account_games_info(), "games_info");
-        adapter.addFragment(new account_settings_and_info(), "account_info");
+        adapter.addFragment(new leader_board_fragment(), "leader board");
+
 
         viewPager.setAdapter(adapter);
     }

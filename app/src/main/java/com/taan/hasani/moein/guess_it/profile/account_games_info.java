@@ -51,7 +51,6 @@ public class account_games_info extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        get_user_games_ids();
 
     }
 
@@ -62,6 +61,7 @@ public class account_games_info extends Fragment {
         View games_info = inflater.inflate(R.layout.fragment_account_games_info, container, false);
         listView = (ListView) games_info.findViewById(R.id.listView);
         progressBar = (ProgressBar) games_info.findViewById(R.id.progressBar2);
+        get_user_games_ids();
 
 
         return games_info;

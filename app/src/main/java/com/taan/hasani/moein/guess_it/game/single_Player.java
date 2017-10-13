@@ -146,7 +146,7 @@ public class single_Player extends AppCompatActivity {
 
                 message.setVisibility(View.INVISIBLE);
 
-                totalScore_view.setText("Toatal score :" + Total_gamescore);
+                totalScore_view.setText("Total score :" + Total_gamescore);
 
                 entered_word.setText("");
 
@@ -180,9 +180,6 @@ public class single_Player extends AppCompatActivity {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.help_dialog);
         dialog.setCancelable(true);
-
-        dialog.setTitle("Help");
-
 
         Button yes = (Button) dialog.findViewById(R.id.yes);
         Button no = (Button) dialog.findViewById(R.id.no);
@@ -268,8 +265,7 @@ public class single_Player extends AppCompatActivity {
 
     public void newSinglePlayerGame() {
 
-        totalScore_view.setText("");
-
+        Total_gamescore = 0;
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "newGame");

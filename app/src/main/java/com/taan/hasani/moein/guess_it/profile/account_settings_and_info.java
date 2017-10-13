@@ -37,7 +37,6 @@ public class account_settings_and_info extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        getUserInfo();
         super.onCreate(savedInstanceState);
     }
 
@@ -51,6 +50,7 @@ public class account_settings_and_info extends Fragment {
         username_textview = (TextView) account_info_.findViewById(R.id.username);
         games_textview = (TextView) account_info_.findViewById(R.id.games);
 
+        getUserInfo();
 
         return account_info_;
     }
