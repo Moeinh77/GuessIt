@@ -28,13 +28,15 @@
         <activity
             android:name="com.taan.hasani.moein.guess_it.game.single_Player"
             android:theme="@style/MyMaterialTheme2" />
-        <activity android:name="com.taan.hasani.moein.guess_it.game.choosing_theGame" />
+
+
         <activity
             android:name="com.taan.hasani.moein.guess_it.profile.profile"
             android:theme="@style/MyMaterialTheme" />
 
-        <activity android:name="com.taan.hasani.moein.guess_it.game_menu.Main_menu" />
-        android:theme="@style/AlertDialog.AppCompat"/>
+        <activity
+            android:name="com.taan.hasani.moein.guess_it.game_menu.Main_menu"
+            android:theme="@style/MyMaterialTheme2" />
 
         <activity android:name="com.taan.hasani.moein.guess_it.profile.change_password" />
         <activity android:name="com.taan.hasani.moein.guess_it.Leader_board.Leader_Board" />

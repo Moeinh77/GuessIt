@@ -35,19 +35,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
-        android:text="سطح سختی کلمات"
+        android:text="حالت بازی"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.502" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
         android:id="@+id/radiogroup"
-        android:layout_width="161dp"
-        android:layout_height="103dp"
+        android:layout_width="186dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -55,28 +55,23 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14"
-        app:layout_constraintVertical_bias="0.019">
+        app:layout_constraintVertical_bias="0.019"
+        tools:layout_editor_absoluteY="47dp">
 
         <RadioButton
-            android:id="@+id/easy"
+            android:id="@+id/fast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text=" ساده" />
+            android:text="سرعتی با کلمات ساده" />
 
         <RadioButton
-            android:id="@+id/normal"
+            android:id="@+id/slow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="متوسط" />
+            android:text="سرعت کمتر کلمات سخت تر" />
 
-        <RadioButton
-            android:id="@+id/hard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="سخت" />
     </RadioGroup>
 
 </android.support.constraint.ConstraintLayout>

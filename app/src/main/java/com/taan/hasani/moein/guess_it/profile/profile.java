@@ -53,6 +53,7 @@ public class profile extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        // tabLayout.getTabAt(1).setIcon(R.drawable.alarm);
     }
 
 

@@ -72,48 +72,44 @@ public class categories_singlePlayer extends AppCompatActivity {
         dialog.setContentView(R.layout.difficulty_dialog);
         dialog.setCancelable(true);
 
-        final RadioButton easy_RadioButton = (RadioButton) dialog.findViewById(R.id.easy);
-        final RadioButton normal_RadioButton = (RadioButton) dialog.findViewById(R.id.normal);
-        final RadioButton hard_RadioButton = (RadioButton) dialog.findViewById(R.id.hard);
+        final RadioButton fast_RadioButton = (RadioButton) dialog.findViewById(R.id.fast);
+        final RadioButton slow_RadioButton = (RadioButton) dialog.findViewById(R.id.slow);
 
-
-        final Button start = (Button) dialog.findViewById(R.id.start);
+        Button start = (Button) dialog.findViewById(R.id.start);
         Button cancel = (Button) dialog.findViewById(R.id.cancel);
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String difficulty = "2";
                 String rIsChecked = "false";
+                String type = "fast";
 
-                if (easy_RadioButton.isChecked()) {
-                    difficulty = "1";//easy_RadioButton.getText().toString();
+                if (fast_RadioButton.isChecked()) {
+
+                    type = "fast";
                     rIsChecked = "true";
                 }
-                if (normal_RadioButton.isChecked()) {
-                    difficulty = "2";//normal_RadioButton.getText().toString();
-                    rIsChecked = "true";
+                if (slow_RadioButton.isChecked()) {
 
-                }
-                if (hard_RadioButton.isChecked()) {
-                    difficulty = "3";
+                    type = "slow";
                     rIsChecked = "true";
 
                 }
+
 
                 Intent i = new Intent(categories_singlePlayer.this, single_Player.class);
 
                 if (rIsChecked.equals("true")) {
 
                     i.putExtra("category", category);
-                    i.putExtra("difficulty", difficulty);
+                    i.putExtra("type", type);
 
                     startActivity(i);
                     dialog.cancel();
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "درجه سطحی را انتخاب نکردید", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "حالت بازی را انتخاب نکردید", Toast.LENGTH_LONG).show();
                 }
 
 

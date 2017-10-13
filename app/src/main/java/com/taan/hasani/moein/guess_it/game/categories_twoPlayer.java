@@ -73,9 +73,8 @@ public class categories_twoPlayer extends AppCompatActivity {
         dialog.setTitle("This is my custom dialog box");
         dialog.setCancelable(true);
 
-        final RadioButton easy_RadioButton = (RadioButton) dialog.findViewById(R.id.easy);
-        final RadioButton normal_RadioButton = (RadioButton) dialog.findViewById(R.id.normal);
-        final RadioButton hard_RadioButton = (RadioButton) dialog.findViewById(R.id.hard);
+        final RadioButton easy_RadioButton = (RadioButton) dialog.findViewById(R.id.slow);
+        final RadioButton hard_RadioButton = (RadioButton) dialog.findViewById(R.id.fast);
 
 
         final Button start = (Button) dialog.findViewById(R.id.start);
@@ -91,11 +90,6 @@ public class categories_twoPlayer extends AppCompatActivity {
                 if (easy_RadioButton.isChecked()) {
                     difficulty = "1";//easy_RadioButton.getText().toString();
                     rIsChecked = "true";
-                }
-                if (normal_RadioButton.isChecked()) {
-                    difficulty = "2";//normal_RadioButton.getText().toString();
-                    rIsChecked = "true";
-
                 }
                 if (hard_RadioButton.isChecked()) {
                     difficulty = "3";
