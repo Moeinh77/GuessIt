@@ -32,7 +32,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class account_games_info extends Fragment {
 
 
-    HashMap<String, String> info = new HashMap<>();
     String url = "http://online6732.tk/guessIt.php";
     String recived_games_id;
     String Playerscores, Rivalscore;
@@ -41,7 +40,7 @@ public class account_games_info extends Fragment {
     ArrayList<gameHistory_object> scoreList = new ArrayList<>();//*************
     gameHistory_object gameHistory_object;
     ProgressBar progressBar;
-
+    HashMap<String, String> info = new HashMap<>();
 
     public account_games_info() {
         // Required empty public constructor

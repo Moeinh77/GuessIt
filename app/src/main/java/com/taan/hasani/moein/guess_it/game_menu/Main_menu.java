@@ -44,7 +44,6 @@ public class Main_menu extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewpager;
-    private Toolbar toolbar;
 
     private final String MY_PREFS_NAME = "username and password";
 
@@ -58,15 +57,16 @@ public class Main_menu extends AppCompatActivity {
         viewpager = (ViewPager) findViewById(R.id.viewpager_mainmenu);
         setupViewPager(viewpager);
 
-        // toolbar = (Toolbar) findViewById(R.id.toolbar_mainmenu);
-        //setSupportActionBar(toolbar);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs_mainmenu);
 
-//        tabLayout.getTabAt(1).setIcon(R.drawable.alarm);
-        // tabLayout.getTabAt(1).setIcon(R.drawable.crown2);
-        // tabLayout.getTabAt(2).setIcon(R.drawable.your_icon);
         tabLayout.setupWithViewPager(viewpager);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.profie);
+        tabLayout.getTabAt(1).setIcon(R.drawable.history);
+        tabLayout.getTabAt(2).setIcon(R.drawable.conroller);
+        tabLayout.getTabAt(3).setIcon(R.drawable.leaderboard);
+
+        viewpager.setCurrentItem(2);//baraye ijad e tab e default
     }
 
     ////////////////////////
@@ -214,10 +214,10 @@ public class Main_menu extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         Main_menu.ViewPagerAdapter adapter = new
                 Main_menu.ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new account_settings_and_info(), "account");
-        adapter.addFragment(new account_games_info(), "games history");
-        adapter.addFragment(new games_fragment(), "games");
-        adapter.addFragment(new leader_board_fragment(), "leader board");
+        adapter.addFragment(new account_settings_and_info(), "");
+        adapter.addFragment(new account_games_info(), "");
+        adapter.addFragment(new games_fragment(), "");
+        adapter.addFragment(new leader_board_fragment(), "");
 
 
         viewPager.setAdapter(adapter);

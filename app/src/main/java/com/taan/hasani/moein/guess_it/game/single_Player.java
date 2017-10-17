@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
+import com.taan.hasani.moein.guess_it.profile.gameHistory_object;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -44,17 +45,17 @@ public class single_Player extends AppCompatActivity {
             url = "http://online6732.tk/guessIt.php";
     private TextView totalScore_view;
     private SharedPreferences prefs;
-    private String recivedTime;
     private CountDownTimer countDownTimer;
     private int spent_time;
-    private String flag__nextWord_Timer;
-    private String category;
-    private String difficulty, type;
+    private String category, flag__nextWord_Timer, difficulty, type, recivedTime;
     boolean didItOnce = false;
     private int arraylist_i = 0;//baraye gereftane index alamate soal az list
     private Dialog dialog;
     private int length = -1;
-
+    private HashMap<String, String> info;
+    private TextView yourscore_gameEnd;
+    private boolean Counter_started = false;//baraye inke agar ertebat ba net ghat shod moghe
+    //khoorooj choon cancel vase timer darim age timer ro intialize nakrde bashim stopped working mide
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -415,6 +416,7 @@ public class single_Player extends AppCompatActivity {
                         };
                         ////////////////////////////////////////////
                         countDownTimer.start();
+                        Counter_started = true;
 
                         /////////////////
                         length = word_TextView.getText().length();
@@ -504,6 +506,9 @@ public class single_Player extends AppCompatActivity {
 
         Button start = (Button) dialog.findViewById(R.id.yes);
         Button cancel = (Button) dialog.findViewById(R.id.no);
+        yourscore_gameEnd = (TextView) dialog.findViewById(R.id.player_score_gameEnd);
+        String endgame_score = String.valueOf(Total_gamescore);
+        yourscore_gameEnd.setText(endgame_score);
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -527,13 +532,70 @@ public class single_Player extends AppCompatActivity {
 
         dialog.show();
 
+
     }
 
     @Override
     protected void onDestroy() {
-        countDownTimer.cancel();
+
+        if (Counter_started)
+
+            countDownTimer.cancel();
 
         super.onDestroy();
+    }
+
+    private void gameInfo(String gameID) {
+
+        info = new HashMap<>();
+
+        final String MY_PREFS_NAME = "username and password";
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME,
+                MODE_PRIVATE);
+        final String id = prefs.getString("userID", null);
+
+        info.put("action", "sendGameInformation");
+        info.put("userID", id);
+        info.put("gameID", gameID);
+
+        JSONObject jsonObject = new JSONObject(info);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                    if (id.equals(response.getString("playerOneID"))) {
+
+                        String Playerscores = response.getString("playerOneTotalScore");
+                        //     Rivalscore = response.getString("playerTwoTotalScore");
+
+                        yourscore_gameEnd.setText(Total_gamescore);
+
+                    } else {
+
+                        String Playerscores = response.getString("playerTwoTotalScore");
+                        //   Rivalscore = response.getString("playerTwoTotalScore");
+
+                        yourscore_gameEnd.setText(Playerscores);
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 }
 
