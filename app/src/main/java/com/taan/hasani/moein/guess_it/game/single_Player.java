@@ -37,7 +37,8 @@ public class single_Player extends AppCompatActivity {
 
     private EditText entered_word;
     private Button check_bt, next_word_bt;
-    private TextView word_TextView, message, timer;
+    //  private TextView message;
+    private TextView word_TextView, timer;
     private String MY_PREFS_NAME = "username and password";
     private int Total_gamescore = 0;
     private ArrayList<Integer> indexlist = new ArrayList<>();
@@ -63,7 +64,7 @@ public class single_Player extends AppCompatActivity {
 
         setContentView(R.layout.activity_single_player);
         next_word_bt = (Button) findViewById(R.id.next_word_bt);
-        message = (TextView) findViewById(R.id.message);
+        //   message = (TextView) findViewById(R.id.message);
         word_TextView = (TextView) findViewById(R.id.word);
         entered_word = (EditText) findViewById(R.id.enterd_word);
         check_bt = (Button) findViewById(R.id.check);
@@ -82,7 +83,7 @@ public class single_Player extends AppCompatActivity {
 
         newSinglePlayerGame();
 
-        message.setVisibility(View.INVISIBLE);
+        // message.setVisibility(View.INVISIBLE);
 
         Help.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,14 +102,14 @@ public class single_Player extends AppCompatActivity {
                 String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
 
                 if (!entered_word.getText().toString().equals(""))
-                    message.setVisibility(View.VISIBLE);
+                    //   message.setVisibility(View.VISIBLE);
 
                 if (entered_word.getText().toString().equals(completeWord) && didItOnce == false && !timer.getText().toString().equals("0")) {
 
                     countDownTimer.cancel();
 
                     word_TextView.setText(completeWord);
-                    message.setText("Congratulations !!! Your guess was RIGHT !");
+                    //  message.setText();
                     MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
                     mediaPlayer.start();
                     didItOnce = true;
@@ -118,21 +119,27 @@ public class single_Player extends AppCompatActivity {
                     setAnswer(entered_word.getText().toString(),
                             Player_time, Player_score);
 
-                    Snackbar.make(findViewById(R.id.singlePlayerActivity), "you scored : " + Player_score, Snackbar.LENGTH_LONG)
+                    Snackbar.make(findViewById(R.id.singlePlayerActivity), "Congratulations !!! Your guess was RIGHT !"
+                            , Snackbar.LENGTH_LONG)
                             .setActionTextColor(Color.YELLOW).show();
-                } else if (entered_word.getText().toString().equals(completeWord)
-                        && didItOnce) {
 
-                    message.setText("Please press the Next word button ");
+                    nextWord_func();
+                }
+//                else if (entered_word.getText().toString().equals(completeWord)
+//                        && didItOnce) {
+//
+//                    message.setText("Please press the Next word button ");
+//
+//                } else if (timer.getText().toString().equals("0")) {
+//
+//                    Toast.makeText(getApplicationContext(), "Your time is up!", Toast.LENGTH_LONG).show();
+//
+//                }
+                else {
 
-                } else if (timer.getText().toString().equals("0")) {
-
-                    Toast.makeText(getApplicationContext(), "Your time is up!", Toast.LENGTH_LONG).show();
-
-                } else {
-
-                    message.setText("No,Guess again !");
-
+                    Snackbar.make(findViewById(R.id.singlePlayerActivity), "No guess again !!!"
+                            , Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.YELLOW).show();
                 }
 
             }
@@ -145,7 +152,7 @@ public class single_Player extends AppCompatActivity {
 
                 didItOnce = false;
 
-                message.setVisibility(View.INVISIBLE);
+                //  message.setVisibility(View.INVISIBLE);
 
                 totalScore_view.setText("Total score :" + Total_gamescore);
 
@@ -174,6 +181,37 @@ public class single_Player extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void nextWord_func() {
+        didItOnce = false;
+
+        //message.setVisibility(View.INVISIBLE);
+
+        totalScore_view.setText("Total score :" + Total_gamescore);
+
+        entered_word.setText("");
+
+        if (flag__nextWord_Timer.equals("yes")) {
+
+            countDownTimer.cancel();
+
+            if (timer.getText().toString() != recivedTime) {
+                spent_time = 0;
+
+                sendNextWord();
+
+            } else {
+                spent_time = Integer.parseInt(recivedTime) - Integer.parseInt(timer.getText().toString());
+
+                sendNextWord();
+            }
+
+        } else {
+
+            sendNextWord();
+
+        }
     }
 
     public void alert_dialog_function_help() {
@@ -267,6 +305,7 @@ public class single_Player extends AppCompatActivity {
     public void newSinglePlayerGame() {
 
         Total_gamescore = 0;
+        totalScore_view.setText(String.valueOf(0));
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "newGame");
@@ -376,7 +415,7 @@ public class single_Player extends AppCompatActivity {
         info.put("userID", id);
 
         word_TextView.setText("");
-        message.setText("");
+        //message.setText("");
         incompleteWord = "";//intialize bekhatere getting_qmarks_index()
 
 
@@ -409,9 +448,11 @@ public class single_Player extends AppCompatActivity {
 
                             public void onFinish() {
                                 timer.setText("0");
-                                setAnswer(entered_word.getText().toString(),
-                                        "0", "0");
-                                Toast.makeText(getApplicationContext(), "Time's Up!", Toast.LENGTH_SHORT).show();
+                                //   setAnswer(entered_word.getText().toString(),
+                                //         "0", "0");
+                                //  Toast.makeText(getApplicationContext(), "Time's Up!", Toast.LENGTH_SHORT).show();
+
+                                nextWord_func();
                             }
                         };
                         ////////////////////////////////////////////
@@ -435,8 +476,6 @@ public class single_Player extends AppCompatActivity {
                 } catch (JSONException e) {
 
                     alert_dialog_function_game_end();
-//                    Toast.makeText(getApplicationContext(),
-//                           e.toString(), Toast.LENGTH_LONG).show();
                 }
                 //  getting_qmarks_index();
 
@@ -515,7 +554,7 @@ public class single_Player extends AppCompatActivity {
             public void onClick(View v) {
 
                 word_TextView.setText("");
-                message.setText("");
+                //message.setText("");
                 dialog.cancel();
                 newSinglePlayerGame();
 
@@ -545,58 +584,6 @@ public class single_Player extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void gameInfo(String gameID) {
-
-        info = new HashMap<>();
-
-        final String MY_PREFS_NAME = "username and password";
-        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME,
-                MODE_PRIVATE);
-        final String id = prefs.getString("userID", null);
-
-        info.put("action", "sendGameInformation");
-        info.put("userID", id);
-        info.put("gameID", gameID);
-
-        JSONObject jsonObject = new JSONObject(info);
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-
-                    if (id.equals(response.getString("playerOneID"))) {
-
-                        String Playerscores = response.getString("playerOneTotalScore");
-                        //     Rivalscore = response.getString("playerTwoTotalScore");
-
-                        yourscore_gameEnd.setText(Total_gamescore);
-
-                    } else {
-
-                        String Playerscores = response.getString("playerTwoTotalScore");
-                        //   Rivalscore = response.getString("playerTwoTotalScore");
-
-                        yourscore_gameEnd.setText(Playerscores);
-
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-    }
 }
 
 

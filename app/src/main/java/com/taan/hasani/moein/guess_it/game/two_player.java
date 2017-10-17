@@ -337,11 +337,9 @@ public class two_player extends AppCompatActivity {
 
     public void sendNextWord() {
 
-        gameInfo();
-
+        gameInfo_during();
 
         HashMap<String, String> info = new HashMap<>();
-
 
         info.put("action", "sendNextWord");
         info.put("gameID", gamedID);
@@ -420,8 +418,7 @@ public class two_player extends AppCompatActivity {
                     }
 
                 } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_SHORT).show();
+                    gameInfo_gameEnd(gamedID);
                 }
 
 
@@ -482,7 +479,7 @@ public class two_player extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
-    public void gameInfo() {
+    public void gameInfo_during() {
 
         final String MY_PREFS_NAME = "username and password";
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
@@ -539,6 +536,62 @@ public class two_player extends AppCompatActivity {
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
+    }
+
+
+    private void gameInfo_gameEnd(String gameID) {
+
+        HashMap<String, String> info = new HashMap<>();
+
+        final String MY_PREFS_NAME = "username and password";
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME,
+                MODE_PRIVATE);
+        final String id = prefs.getString("userID", null);
+
+        info.put("action", "sendGameInformation");
+        info.put("userID", id);
+        info.put("gameID", gameID);
+
+        JSONObject jsonObject = new JSONObject(info);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //   try {
+
+                Toast.makeText(getApplicationContext(), response.toString(), Toast
+                        .LENGTH_LONG).show();
+//                    if (id.equals(response.getString("playerOneID"))) {
+//
+//                        String Playerscores = response.getString("playerOneTotalScore");
+//                        //     Rivalscore = response.getString("playerTwoTotalScore");
+//
+//                      //  yourscore_gameEnd.setText(Total_gamescore);
+//
+//                    } else {
+//
+//                        String Playerscores = response.getString("playerTwoTotalScore");
+//                        //   Rivalscore = response.getString("playerTwoTotalScore");
+//
+//                        //yourscore_gameEnd.setText(Playerscores);
+//
+//                    }
+
+
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
 

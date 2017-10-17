@@ -10,11 +10,11 @@ import android.widget.Button;
 
 import com.taan.hasani.moein.volley.R;
 
-public class games_fragment extends Fragment {
+public class choosing_games_fragment extends Fragment {
 
     Button twoPlayer_bt, singlePlayer_bt;
 
-    public games_fragment() {
+    public choosing_games_fragment() {
         // Required empty public constructor
     }
 
@@ -28,7 +28,7 @@ public class games_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View choosing_game = inflater.inflate(R.layout.fragment_games_fragment, container, false);
+        View choosing_game = inflater.inflate(R.layout.fragment_choosing_games, container, false);
 
         twoPlayer_bt = (Button) choosing_game.findViewById(R.id.twoPlayer_bt);
 

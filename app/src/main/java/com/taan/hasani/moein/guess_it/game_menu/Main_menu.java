@@ -12,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.Leader_board.leader_board_fragment;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.game.games_fragment;
+import com.taan.hasani.moein.guess_it.game.choosing_games_fragment;
 import com.taan.hasani.moein.guess_it.profile.account_games_info;
 import com.taan.hasani.moein.guess_it.profile.account_settings_and_info;
 import com.taan.hasani.moein.guess_it.profile.change_password;
@@ -216,7 +215,7 @@ public class Main_menu extends AppCompatActivity {
                 Main_menu.ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new account_settings_and_info(), "");
         adapter.addFragment(new account_games_info(), "");
-        adapter.addFragment(new games_fragment(), "");
+        adapter.addFragment(new choosing_games_fragment(), "");
         adapter.addFragment(new leader_board_fragment(), "");
 
 
