@@ -29,11 +29,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class account_settings_and_info extends Fragment {
 
-    String MY_PREFS_NAME="username and password";
     HashMap<String, String> info = new HashMap<>();
     String url = "http://online6732.tk/guessIt.php";
     String name, username, games, profilePicture;
-    TextView name_textview, username_textview, games_textview;
+    TextView name_textview, username_textview;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,27 +47,12 @@ public class account_settings_and_info extends Fragment {
 
         name_textview = (TextView) account_info_.findViewById(R.id.FirstName);
         username_textview = (TextView) account_info_.findViewById(R.id.username);
-        games_textview = (TextView) account_info_.findViewById(R.id.games);
 
         getUserInfo();
 
         return account_info_;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-        //saving the games
-        SharedPreferences.Editor editor =
-                getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putString("user games",games_textview.getText().toString());
-        editor.apply();
-        //////////////////////////////////////////
-
-
-
-        super.onActivityCreated(savedInstanceState);
-    }
 
     private void getUserInfo() {
         //getting id for the player
@@ -96,8 +80,6 @@ public class account_settings_and_info extends Fragment {
                     name_textview.setText(name);
                     username_textview.setText(username);
 
-                    games_textview.setText(games);
-                    games_textview.setMovementMethod(new ScrollingMovementMethod());
 
                 } catch (JSONException e) {
                     Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();

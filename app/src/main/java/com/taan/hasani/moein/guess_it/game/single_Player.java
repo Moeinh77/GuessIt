@@ -35,7 +35,6 @@ public class single_Player extends AppCompatActivity {
     private EditText entered_word;
     private int number_of_trueGuess = 0;
     private Button check_bt, next_word_bt;
-    //  private TextView message;
     private TextView word_TextView, timer, guesses_true, guesses_false;
     private String MY_PREFS_NAME = "username and password";
     private int Total_gamescore = 0;
@@ -45,13 +44,10 @@ public class single_Player extends AppCompatActivity {
     private TextView totalScore_view;
     private SharedPreferences prefs;
     private CountDownTimer countDownTimer;
-    private int spent_time;
     private String category, flag__nextWord_Timer, difficulty, type, recivedTime;
-    boolean didItOnce = false;
     private int arraylist_i;//baraye gereftane index alamate soal az list
     private Dialog dialog;
     private int length;
-    private HashMap<String, String> info;
     private TextView yourscore_gameEnd;
     private boolean Counter_started = false;//baraye inke agar ertebat ba net ghat shod moghe
     //khoorooj choon cancel vase timer darim age timer ro intialize nakrde bashim stopped working mide
@@ -105,7 +101,7 @@ public class single_Player extends AppCompatActivity {
                 if (!entered_word.getText().toString().equals(""))
                     //   message.setVisibility(View.VISIBLE);
 
-                    if (entered_word.getText().toString().equals(completeWord) && didItOnce == false && !timer.getText().toString().equals("0")) {
+                    if (entered_word.getText().toString().equals(completeWord) && !timer.getText().toString().equals("0")) {
 
                         countDownTimer.cancel();
 
@@ -113,7 +109,7 @@ public class single_Player extends AppCompatActivity {
                         //  message.setText();
                         MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
                         mediaPlayer.start();
-                        didItOnce = true;
+                        //  didItOnce = true;
 
                         Total_gamescore += Integer.parseInt(Player_score);//showing total score for game ending
 
@@ -142,7 +138,7 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                didItOnce = false;
+                // didItOnce = false;
 
                 //  message.setVisibility(View.INVISIBLE);
 
@@ -153,17 +149,6 @@ public class single_Player extends AppCompatActivity {
                 if (flag__nextWord_Timer.equals("yes")) {
 
                     countDownTimer.cancel();
-
-                    if (timer.getText().toString() != recivedTime) {
-                        spent_time = 0;
-
-                        sendNextWord();
-
-                    } else {
-                        spent_time = Integer.parseInt(recivedTime) - Integer.parseInt(timer.getText().toString());
-
-                        sendNextWord();
-                    }
 
                 } else {
 
@@ -176,7 +161,7 @@ public class single_Player extends AppCompatActivity {
     }
 
     public void nextWord_func() {
-        didItOnce = false;
+        //didItOnce = false;
 
         totalScore_view.setText("Total score :" + Total_gamescore);
 
@@ -187,12 +172,10 @@ public class single_Player extends AppCompatActivity {
             countDownTimer.cancel();
 
             if (timer.getText().toString() != recivedTime) {
-                spent_time = 0;
 
                 sendNextWord();
 
             } else {
-                spent_time = Integer.parseInt(recivedTime) - Integer.parseInt(timer.getText().toString());
 
                 sendNextWord();
             }
@@ -204,7 +187,32 @@ public class single_Player extends AppCompatActivity {
         }
     }
 
+    public void counterResume(int timeLeft_onDialogPause) {
+        //resume the counter
+        countDownTimer = new CountDownTimer(timeLeft_onDialogPause * 1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                timer.setText("" + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                timer.setText("0");
+
+                nextWord_func();
+            }
+        };
+
+        countDownTimer.start();
+        Counter_started = true;
+        ////////////////////////////////////////////
+    }
+
     public void alert_dialog_function_help() {
+
+        //gereftane time e baghi mande baraye edame bad az dialog
+        final int timeLeft_onDialogPause = Integer.parseInt(timer.getText().toString());
+        countDownTimer.cancel();
+        ///////////////////////////////////////
 
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.help_dialog);
@@ -220,15 +228,18 @@ public class single_Player extends AppCompatActivity {
                 if (word_TextView.getText().toString().equals(completeWord)) {
                     dialog.cancel();
 
+                    counterResume(timeLeft_onDialogPause);
+
                     Toast.makeText(getApplication(), "You have all the letters",
                             Toast.LENGTH_SHORT).show();
+
 
                 } else {
                     getting_qmarks_index();
                     replace_char();
                     dialog.cancel();
+                    counterResume(timeLeft_onDialogPause);
                 }
-
 
             }
         });
@@ -237,11 +248,14 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.cancel();
+                counterResume(timeLeft_onDialogPause);
+
             }
         });
 
     }
 
+    //peyda kardane index e horoofe ؟
     public void getting_qmarks_index() {
         //hey check mikonim bebinim ke incompleet daryaft shode ya na
         if (!(length > 0)) {
@@ -267,6 +281,7 @@ public class single_Player extends AppCompatActivity {
             ///////////////////////////////////
         }
     }
+    /////////////////////////////////////////////////////
 
     //baz kardan alamate soal ha va jaygozari harfe asli
     public void replace_char() {
@@ -442,7 +457,7 @@ public class single_Player extends AppCompatActivity {
                             word_TextView.setText(incompleteWord);
 
                             //////////////////
-                            countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime) - spent_time) * 1000, 1000) {
+                            countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime)) * 1000, 1000) {
 
                                 public void onTick(long millisUntilFinished) {
                                     timer.setText("" + millisUntilFinished / 1000);
@@ -450,9 +465,6 @@ public class single_Player extends AppCompatActivity {
 
                                 public void onFinish() {
                                     timer.setText("0");
-                                    //   setAnswer(entered_word.getText().toString(),
-                                    //         "0", "0");
-                                    //  Toast.makeText(getApplicationContext(), "Time's Up!", Toast.LENGTH_SHORT).show();
 
                                     nextWord_func();
                                 }
