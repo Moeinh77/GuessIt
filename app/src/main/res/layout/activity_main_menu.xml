@@ -23,7 +23,9 @@
             android:id="@+id/tabs_mainmenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
             app:tabGravity="fill"
+            app:tabIndicatorColor="@android:color/holo_red_dark"
             tools:layout_editor_absoluteX="36dp"
             tools:layout_editor_absoluteY="69dp">
 

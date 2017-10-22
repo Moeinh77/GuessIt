@@ -60,10 +60,10 @@ public class Main_menu extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewpager);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.profie);
-        tabLayout.getTabAt(1).setIcon(R.drawable.history);
-        tabLayout.getTabAt(2).setIcon(R.drawable.conroller);
-        tabLayout.getTabAt(3).setIcon(R.drawable.leaderboard);
+        tabLayout.getTabAt(0).setIcon(R.drawable.manuser);
+        tabLayout.getTabAt(1).setIcon(R.drawable.history1);
+        tabLayout.getTabAt(2).setIcon(R.drawable.game);
+        tabLayout.getTabAt(3).setIcon(R.drawable.winnermedal);
 
         viewpager.setCurrentItem(2);//baraye ijad e tab e default
     }
