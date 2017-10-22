@@ -1,8 +1,7 @@
 package com.taan.hasani.moein.guess_it.game_menu;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -29,7 +28,6 @@ import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.game.choosing_games_fragment;
 import com.taan.hasani.moein.guess_it.profile.account_games_info;
 import com.taan.hasani.moein.guess_it.profile.account_settings_and_info;
-import com.taan.hasani.moein.guess_it.profile.change_password;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -43,8 +41,6 @@ public class Main_menu extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewpager;
-
-    private final String MY_PREFS_NAME = "username and password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,57 +64,7 @@ public class Main_menu extends AppCompatActivity {
         viewpager.setCurrentItem(2);//baraye ijad e tab e default
     }
 
-    ////////////////////////
-    //menu
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.profile_menu, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logout:
-                AlertDialog.Builder alertDialogBuilder =
-                        new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
-                alertDialogBuilder.setTitle("Logout");
-                //alertDialogBuilder.setIcon(R.drawable.);
-                alertDialogBuilder
-                        .setMessage("آیا میخواهید از اکانت خود خارج شوید ؟")
-                        .setCancelable(false)
-                        .setPositiveButton("بلی", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-
-                                logout_of_server();
-
-
-                            }
-                        })
-                        .setNegativeButton("خیر", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-
-                            }
-                        });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-                return true;
-
-            case R.id.change_password:
-
-                Intent intent = new Intent(this, change_password.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        //respond to menu item selection
-
-    }
-    //////////////////////////////////////////////////
-
+    ///////////////////////
 
     public void alert_dialog_function() {
 
@@ -148,63 +94,6 @@ public class Main_menu extends AppCompatActivity {
 
 
         dialog.show();
-
-    }
-
-    private void logout_of_server() {
-
-        final HashMap<String, String> info = new HashMap<>();
-        String url = "http://online6732.tk/guessIt.php";
-
-        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String id = prefs.getString("userID", null);
-
-
-        info.put("action", "logout");
-        info.put("userID", id);
-
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-
-                try {
-                    if (response.getString("dataIsRight").equals("yes")) {
-
-                        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                        editor.putString("username", null);
-                        editor.putString("password", null);
-                        editor.putString("userID", null);
-                        editor.apply();
-
-                        Intent intent = new Intent(getApplicationContext(), Entrance_signup_login.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(),
-                                "حطایی در خروج شما رخ داد دوباره تلاش کنید...", Toast.LENGTH_LONG).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "حطایی در خروج شما رخ داد دوباره تلاش کنید...", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
 
     }
 
