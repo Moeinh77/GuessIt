@@ -8,87 +8,90 @@
         android:id="@+id/FirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="91dp"
-        android:layout_marginRight="91dp"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView9"
-        app:layout_constraintRight_toLeftOf="@+id/textView9"
-        tools:text="name" />
+        tools:text="name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView7"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/FirstName"
-        app:layout_constraintRight_toLeftOf="@+id/textView7"
-        tools:text="username" />
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
-        android:text="نام کاربری :"
-        android:textColor="#0288D1"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintRight_toRightOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="40dp"
         android:text="نام :"
         android:textAllCaps="false"
         android:textColor="#0288D1"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintRight_toLeftOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="105dp"
+        tools:layout_editor_absoluteX="289dp" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="98dp"
         android:layout_height="95dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        app:srcCompat="@android:drawable/sym_def_app_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+        android:layout_marginTop="2dp" />
 
 
     <ScrollView
         android:layout_width="296dp"
         android:layout_height="329dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="8dp"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/FirstName"
+        app:layout_constraintVertical_bias="0.55">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:textSize="18sp"
+                tools:text="username"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView7"
+                app:layout_constraintRight_toLeftOf="@+id/textView7"
+                android:layout_marginRight="8dp" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="نام کاربری :"
+                android:textColor="#0288D1"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteY="138dp"
+                tools:layout_editor_absoluteX="188dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
+
             <EditText
-                android:layout_marginTop="20dp"
                 android:id="@+id/old_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:ems="10"
                 android:hint="کلمه عبور قدیمی"
                 android:inputType="textPassword"
@@ -155,11 +158,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Log Out"
                 tools:layout_editor_absoluteX="136dp"
-                tools:layout_editor_absoluteY="417dp"
-                android:layout_marginBottom="20dp" />
+                tools:layout_editor_absoluteY="417dp" />
         </LinearLayout>
     </ScrollView>
 
