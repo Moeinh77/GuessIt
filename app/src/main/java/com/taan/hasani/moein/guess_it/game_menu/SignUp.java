@@ -99,11 +99,14 @@ public class SignUp extends AppCompatActivity {
         });
 
     }
+
+    //highscore default ham injast
     public void save_user_and_pass(String username__,String password__){
 
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putString("username", username__);
         editor.putString("password", password__);
+        editor.putInt("HighScore", 0);
         editor.apply();
 //        Toast.makeText(getApplicationContext(),
 //                "user :"+username__+"pass :"+password__,Toast.LENGTH_LONG).show();

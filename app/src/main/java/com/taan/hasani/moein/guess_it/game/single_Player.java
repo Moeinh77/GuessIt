@@ -146,15 +146,15 @@ public class single_Player extends AppCompatActivity {
 
                 entered_word.setText("");
 
-                if (flag__nextWord_Timer.equals("yes")) {
+                //    if (flag__nextWord_Timer.equals("yes")) {
 
                     countDownTimer.cancel();
 
-                } else {
+                //  } else {
 
                     sendNextWord();
 
-                }
+                //  }
             }
         });
 
@@ -477,8 +477,8 @@ public class single_Player extends AppCompatActivity {
                             length = word_TextView.getText().length();
                             //////////////
 
-                            Toast.makeText(getApplicationContext(), String.valueOf(length),
-                                    Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), String.valueOf(length),
+//                                    Toast.LENGTH_SHORT).show();
                         } else {
 
 
@@ -556,7 +556,7 @@ public class single_Player extends AppCompatActivity {
         countDownTimer.cancel();
 
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.game_end_dialog);
+        dialog.setContentView(R.layout.game_end_singleplayer_dialog);
         dialog.setCancelable(false);
 
         Button start = (Button) dialog.findViewById(R.id.yes);
@@ -564,9 +564,32 @@ public class single_Player extends AppCompatActivity {
         guesses_true = (TextView) dialog.findViewById(R.id.guesses_true);
         yourscore_gameEnd = (TextView) dialog.findViewById(R.id.player_score_gameEnd);
         guesses_false = (TextView) dialog.findViewById(R.id.guesses_false);
+        TextView newHighScore_view = (TextView) dialog.findViewById(R.id.newHighscore);
+
+        newHighScore_view.setVisibility(View.INVISIBLE);
 
         String endgame_score = String.valueOf(Total_gamescore);
         yourscore_gameEnd.setText(endgame_score);
+
+        int highscore = prefs.getInt("HighScore", 0);//gereftane higscore
+
+        //dar soorat zadane highscore jadid
+        if (Total_gamescore > highscore) {
+
+            //save kardane highscore e jadid
+            SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME
+                    , MODE_PRIVATE).edit();
+            editor.putInt("HighScore", Total_gamescore);
+            editor.apply();
+            //////////////////////////////////
+
+            newHighScore_view.setVisibility(View.VISIBLE);//neshan dadan payame highscore
+
+            MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
+            mediaPlayer.start();
+
+        }
+        /////////////////////////////////////////////////////////
 
         guesses_true.setText(String.valueOf(number_of_trueGuess));
         guesses_false.setText(String.valueOf(totalWords_number - number_of_trueGuess));
@@ -576,7 +599,6 @@ public class single_Player extends AppCompatActivity {
             public void onClick(View v) {
 
                 word_TextView.setText("");
-                //message.setText("");
                 dialog.cancel();
                 newSinglePlayerGame();
 
