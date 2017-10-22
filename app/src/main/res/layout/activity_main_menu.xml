@@ -37,11 +37,10 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager_mainmenu"
-        android:layout_width="358dp"
-        android:layout_height="452dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="454dp"
+        android:layout_marginTop="7dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
 
         app:layout_constraintRight_toRightOf="parent"

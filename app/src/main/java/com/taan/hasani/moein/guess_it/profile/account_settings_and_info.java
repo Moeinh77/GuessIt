@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +39,11 @@ public class account_settings_and_info extends Fragment {
     String name, username, games, profilePicture;
     TextView name_textview, username_textview;
     Button logout;
+    private EditText old_password, new_password, repeat_password;
+    private Button save_bt;
     private final String MY_PREFS_NAME = "username and password";
+    private String newPassword_string;
+    //oldPassword_string;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,8 +59,26 @@ public class account_settings_and_info extends Fragment {
         name_textview = (TextView) account_info_.findViewById(R.id.FirstName);
         username_textview = (TextView) account_info_.findViewById(R.id.username);
         logout = (Button) account_info_.findViewById(R.id.logout_bt);
+        old_password = (EditText) account_info_.findViewById(R.id.old_password);
+        new_password = (EditText) account_info_.findViewById(R.id.new_password);
+        repeat_password = (EditText) account_info_.findViewById(R.id.repeat_password);
+        save_bt = (Button) account_info_.findViewById(R.id.save_bt);
 
         getUserInfo();
+
+        save_bt.setOnClickListener(new View.OnClickListener() {
+                                       @Override
+                                       public void onClick(View v) {
+                                           if (!old_password.getText().toString().equals("") && !new_password.getText().toString().equals("") && !repeat_password.getText().toString().equals("")) {
+                                               change_password_func();
+
+                                           } else {
+
+                                               Toast.makeText(getActivity(), "Please fill all the fields", Toast.LENGTH_LONG).show();
+                                           }
+                                       }
+                                   }
+        );
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +111,72 @@ public class account_settings_and_info extends Fragment {
 
 
         return account_info_;
+    }
+
+
+    public void change_password_func() {
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        final String user_id = prefs.getString("userID", null);
+        String oldpassowrd_from_sharedprefs = prefs.getString("password", null);
+        newPassword_string = new_password.getText().toString();
+//        oldPassword_string = old_password.getText().toString();
+
+
+        if (!old_password.getText().toString().equals(oldpassowrd_from_sharedprefs)) {
+            Toast.makeText(getActivity(),
+                    "Wrong old passwprd", Toast.LENGTH_LONG).show();
+        } else if (newPassword_string.equals(repeat_password.getText().toString())) {
+
+            info.put("action", "changePassword");
+            info.put("newPassword", newPassword_string);
+            info.put("oldPassword", oldpassowrd_from_sharedprefs);
+            info.put("userID", user_id);
+
+            JSONObject jsonObject = new JSONObject(info);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url, jsonObject, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    try {
+                        // Toast.makeText(getApplicationContext(),
+                        //         response.getString("dataIsRight"),Toast.LENGTH_LONG).show();
+                        if (response.getString("dataIsRight").equals("yes")) {
+
+
+                            SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                            editor.putString("password", newPassword_string);
+                            editor.apply();
+
+                            Toast.makeText(getActivity(), "Password changed", Toast.LENGTH_LONG).show();
+
+                            getActivity().finish();
+                        } else {
+                            Toast.makeText(getActivity(),
+                                    response.getString("dataIsRight"), Toast.LENGTH_LONG).show();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG);
+
+                }
+            });
+
+            AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+        } else {
+            Toast.makeText(getActivity(), "Entered passwords are not the same ", Toast.LENGTH_LONG).show();
+
+        }
+
     }
 
     private void logout_of_server() {
