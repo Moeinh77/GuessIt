@@ -44,7 +44,8 @@ public class two_player extends AppCompatActivity {
     private int spent_time = 0;
     private boolean inGame = true;
     private boolean flag_counter;//baraye inke dar onDestroy error rokh nade age timer rah nayoftade bood
-
+    private boolean words_loaded;//baraye jelo giri az crash dar soorat zadan next ya check
+    //agar kalame load nashode bashad
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,66 +79,67 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (words_loaded) {
 
-                if (turn.equals("notmyturn")) {
+                    if (turn.equals("notmyturn")) {
 
-                    Toast.makeText(getApplicationContext(), "Not your turn", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Not your turn", Toast.LENGTH_SHORT).show();
 
-                } else if (!timer.getText().toString().equals("")) {
+                    } else if (!timer.getText().toString().equals("")) {
 
-                    String Player_score = timer.getText().toString();
-                    String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
-                    String myturn;
-
-                    if (timer.getText().toString().equals("0")) {
-
-                        Toast.makeText(getApplicationContext(), "Your time is up", Toast.LENGTH_SHORT).show();
-
-                    } else if (!entered_word.getText().toString().equals("")) {
-
-                        message.setVisibility(View.VISIBLE);
-
-                        if (entered_word.getText().toString().equals("")) {
-
-                            //   Toast.makeText(getApplicationContext(),"Please wait...",Toast.LENGTH_SHORT).show();
-
-                        } else if (entered_word.getText().toString().equals(completeWord)) {
-
-                            countDownTimer.cancel();
-
-                            myturn = "no";
-
-                            word.setText(completeWord);
-                            message.setText("Congratulations !!! Your guess was RIGHT !");
-                            MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
-                            mediaPlayer.start();
-
-                            setAnswer(entered_word.getText().toString(),
-                                    Player_time, Player_score, myturn);
-                            //baraye check kardan nobat
-                            sendNextWord();
-                            ////////////////////////////
-
-                        } else {
-
-                            message.setText("No,Guess again !");
-                            myturn = "yes";
-                            setAnswer(entered_word.getText().toString(),
-                                    Player_time, Player_score, myturn);
-
-                        }
+                        String Player_score = timer.getText().toString();
+                        String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
+                        String myturn;
 
                         if (timer.getText().toString().equals("0")) {
-                            myturn = "no";
-                            Toast.makeText(getApplicationContext(), "Times up!", Toast.LENGTH_SHORT).show();
-                            setAnswer(entered_word.getText().toString(),
-                                    Player_time, Player_score, myturn);
+
+                            Toast.makeText(getApplicationContext(), "Your time is up", Toast.LENGTH_SHORT).show();
+
+                        } else if (!entered_word.getText().toString().equals("")) {
+
+                            message.setVisibility(View.VISIBLE);
+
+                            if (entered_word.getText().toString().equals("")) {
+
+                                //   Toast.makeText(getApplicationContext(),"Please wait...",Toast.LENGTH_SHORT).show();
+
+                            } else if (entered_word.getText().toString().equals(completeWord)) {
+
+                                countDownTimer.cancel();
+
+                                myturn = "no";
+
+                                word.setText(completeWord);
+                                message.setText("Congratulations !!! Your guess was RIGHT !");
+                                MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
+                                mediaPlayer.start();
+
+                                setAnswer(entered_word.getText().toString(),
+                                        Player_time, Player_score, myturn);
+                                //baraye check kardan nobat
+                                sendNextWord();
+                                ////////////////////////////
+
+                            } else {
+
+                                message.setText("No,Guess again !");
+                                myturn = "yes";
+                                setAnswer(entered_word.getText().toString(),
+                                        Player_time, Player_score, myturn);
+
+                            }
+
+                            if (timer.getText().toString().equals("0")) {
+                                myturn = "no";
+                                Toast.makeText(getApplicationContext(), "Times up!", Toast.LENGTH_SHORT).show();
+                                setAnswer(entered_word.getText().toString(),
+                                        Player_time, Player_score, myturn);
+                            }
+
+
                         }
-
-
                     }
                 }
-
             }
         });
 
@@ -145,30 +147,31 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                message.setVisibility(View.INVISIBLE);
+                if (words_loaded) {
+                    message.setVisibility(View.INVISIBLE);
 
 
-                if (flag__nextWord_Timer.equals("yes")) {
+                    if (flag__nextWord_Timer.equals("yes")) {
 
-                    countDownTimer.cancel();
+                        countDownTimer.cancel();
 
-                    if (timer.getText().toString() != recivedTime) {
+                        if (timer.getText().toString() != recivedTime) {
 
-                        spent_time = Integer.parseInt(recivedTime) - Integer.parseInt(timer.getText().toString());
+                            spent_time = Integer.parseInt(recivedTime) - Integer.parseInt(timer.getText().toString());
 
-                        sendNextWord();
+                            sendNextWord();
+
+                        } else {
+
+                            sendNextWord();
+                        }
 
                     } else {
 
                         sendNextWord();
+
                     }
-
-                } else {
-
-                    sendNextWord();
-
                 }
-
             }
 
         });
@@ -383,6 +386,7 @@ public class two_player extends AppCompatActivity {
                                 setAnswer(entered_word.getText().toString(),
                                         "0", "0", "no");
                                 spent_time = 0;
+                                words_loaded = false;
                                 // check kardane nobat
                                 sendNextWord();
                                 ////////////////////////
@@ -394,6 +398,8 @@ public class two_player extends AppCompatActivity {
 
                         word.setVisibility(View.VISIBLE);
                         word.setText(incompleteWord);
+
+                        words_loaded = true;
 
                     } else {
                         message.setVisibility(View.INVISIBLE);

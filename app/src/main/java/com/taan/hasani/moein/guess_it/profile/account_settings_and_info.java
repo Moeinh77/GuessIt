@@ -3,6 +3,12 @@ package com.taan.hasani.moein.guess_it.profile;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +26,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login;
 import com.taan.hasani.moein.volley.R;
-import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,13 +47,14 @@ public class account_settings_and_info extends Fragment {
     TextView name_textview, username_textview;
     Button logout;
     private EditText old_password, new_password, repeat_password;
-    private Button save_bt;
     private final String MY_PREFS_NAME = "username and password";
     private String newPassword_string;
+    private ImageView profile_pic;
     //oldPassword_string;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
     }
 
@@ -62,9 +70,15 @@ public class account_settings_and_info extends Fragment {
         old_password = (EditText) account_info_.findViewById(R.id.old_password);
         new_password = (EditText) account_info_.findViewById(R.id.new_password);
         repeat_password = (EditText) account_info_.findViewById(R.id.repeat_password);
-        save_bt = (Button) account_info_.findViewById(R.id.save_bt);
+        Button save_bt = (Button) account_info_.findViewById(R.id.save_bt);
+        name_textview.setVisibility(View.INVISIBLE);
+        profile_pic = (ImageView) account_info_.findViewById(R.id.profile_pic);
+
 
         getUserInfo();
+
+        //  profile_pic.set
+        //profile_pic.setImageBitmap(getRoundedBitmap(R.drawable.profie));
 
         save_bt.setOnClickListener(new View.OnClickListener() {
                                        @Override
@@ -260,6 +274,8 @@ public class account_settings_and_info extends Fragment {
                     games = new String(response.getString("games").getBytes("ISO-8859-1"), "UTF-8");
                     profilePicture = new String(response.getString("profilePicture").getBytes("ISO-8859-1"), "UTF-8");
                     name_textview.setText(name);
+                    name_textview.setVisibility(View.VISIBLE);
+
                     username_textview.setText(username);
 
 
@@ -280,4 +296,25 @@ public class account_settings_and_info extends Fragment {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
     }
+
+    ////////////////////////////////////////////////////
+    public Bitmap getRoundedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
+    }
+////////////////////////////////////////////////////
 }
