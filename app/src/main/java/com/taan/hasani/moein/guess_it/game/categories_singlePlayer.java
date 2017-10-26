@@ -78,10 +78,12 @@ public class categories_singlePlayer extends AppCompatActivity {
         Button start = (Button) dialog.findViewById(R.id.start);
         Button cancel = (Button) dialog.findViewById(R.id.cancel);
 
+
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                int totalwordsnumber = 13;
                 String rIsChecked = "false";
                 String type = "fast";
 
@@ -89,11 +91,13 @@ public class categories_singlePlayer extends AppCompatActivity {
 
                     type = "fast";
                     rIsChecked = "true";
+                    totalwordsnumber = 13;
                 }
                 if (slow_RadioButton.isChecked()) {
 
                     type = "slow";
                     rIsChecked = "true";
+                    totalwordsnumber = 7;
 
                 }
 
@@ -104,6 +108,7 @@ public class categories_singlePlayer extends AppCompatActivity {
 
                     i.putExtra("category", category);
                     i.putExtra("type", type);
+                    i.putExtra("totalwordsnumber", totalwordsnumber);
 
                     startActivity(i);
                     dialog.cancel();

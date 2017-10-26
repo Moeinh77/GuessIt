@@ -48,12 +48,15 @@ public class single_Player extends AppCompatActivity {
     private int arraylist_i;//baraye gereftane index alamate soal az list
     private Dialog dialog;
     private int length;
+    private TextView wordnumber;
     private TextView yourscore_gameEnd;
     private boolean Counter_started = false;//baraye inke agar ertebat ba net ghat shod moghe
     //khoorooj choon cancel vase timer darim age timer ro intialize nakrde bashim stopped working mide
 
-    private int totalWords_number = 0;
+    //   private int totalWords_number = 0;
     private boolean inGame = true;//baraye inke agar az bazi kharej shodim dg request nade
+    private int currentword_number = 0;
+    private int Toatalwords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class single_Player extends AppCompatActivity {
         timer = (TextView) findViewById(R.id.timer);
         totalScore_view = (TextView) findViewById(R.id.total_score);
         Button Help = (Button) findViewById(R.id.help_bt);
+        wordnumber = (TextView) findViewById(R.id.wordnumber);
 
         prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         id = prefs.getString("userID", null);
@@ -76,11 +80,10 @@ public class single_Player extends AppCompatActivity {
         category = bundle.getString("category");
         difficulty = bundle.getString("difficulty");
         type = bundle.getString("type");
+        Toatalwords = bundle.getInt("totalwordsnumber");
         ///////////////////////////////////////////////////////
 
         newSinglePlayerGame();
-
-        // message.setVisibility(View.INVISIBLE);
 
         Help.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,11 +151,11 @@ public class single_Player extends AppCompatActivity {
 
                 //    if (flag__nextWord_Timer.equals("yes")) {
 
-                    countDownTimer.cancel();
+                countDownTimer.cancel();
 
                 //  } else {
 
-                    sendNextWord();
+                sendNextWord();
 
                 //  }
             }
@@ -162,6 +165,7 @@ public class single_Player extends AppCompatActivity {
 
     public void nextWord_func() {
         //didItOnce = false;
+
 
         totalScore_view.setText("Total score :" + Total_gamescore);
 
@@ -269,14 +273,23 @@ public class single_Player extends AppCompatActivity {
             }, 500);
         } else {
 
-            //horoof  ؟ ro joda kone
+            //horoof  alamate soal ro joda kone
             for (int i = 0; i < length; i++) {
 
-                if (incompleteWord.charAt(i) == '؟') {
+                if (category.equals("2")) {
+                    if (incompleteWord.charAt(i) == '?') {
 
-                    indexlist_of_questionmarks.add(i);
+                        indexlist_of_questionmarks.add(i);
 
+                    }
+                } else {
+                    if (incompleteWord.charAt(i) == '؟') {
+
+                        indexlist_of_questionmarks.add(i);
+
+                    }
                 }
+
             }
             ///////////////////////////////////
         }
@@ -419,11 +432,19 @@ public class single_Player extends AppCompatActivity {
 
         if (inGame) {
 
+            currentword_number++;
+            ////////////////////
+            if (currentword_number == 14)
+                wordnumber.setText(13 + "/" + Toatalwords);
+            else
+                wordnumber.setText(currentword_number + "/" + Toatalwords);
+            ////////////////////
+
             indexlist_of_questionmarks.clear();
 
             arraylist_i = 0;
 
-            totalWords_number++;
+//            totalWords_number++;
 
             HashMap<String, String> info = new HashMap<>();
 
@@ -446,39 +467,49 @@ public class single_Player extends AppCompatActivity {
 
                         if (response.getString("dataIsRight").equals("yes")) {
 
-                            flag__nextWord_Timer = "yes";
+                            if (!response.getJSONObject("word").getString("word").equals("outOfWords"))//agar be outofwords nareside bood
+                            {
+                                flag__nextWord_Timer = "yes";
 
-                            incompleteWord = response.getJSONObject("word").getString("incompleteWord");
+                                incompleteWord = response.getJSONObject("word").getString("incompleteWord");
 
-                            completeWord = response.getJSONObject("word").getString("word");
+                                completeWord = response.getJSONObject("word").getString("word");
 
-                            recivedTime = response.getJSONObject("word").getString("time");
+                                recivedTime = response.getJSONObject("word").getString("time");
 
-                            word_TextView.setText(incompleteWord);
+                                word_TextView.setText(incompleteWord);
 
-                            //////////////////
-                            countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime)) * 1000, 1000) {
+                                //////////////////
+                                countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime)) * 1000, 1000) {
 
-                                public void onTick(long millisUntilFinished) {
-                                    timer.setText("" + millisUntilFinished / 1000);
-                                }
+                                    public void onTick(long millisUntilFinished) {
+                                        timer.setText("" + millisUntilFinished / 1000);
+                                    }
 
-                                public void onFinish() {
-                                    timer.setText("0");
+                                    public void onFinish() {
+                                        timer.setText("0");
 
-                                    nextWord_func();
-                                }
-                            };
-                            ////////////////////////////////////////////
-                            countDownTimer.start();
-                            Counter_started = true;
+                                        nextWord_func();
+                                    }
+                                };
+                                ////////////////////////////////////////////
+                                countDownTimer.start();
+                                Counter_started = true;
 
-                            /////////////////
-                            length = word_TextView.getText().length();
-                            //////////////
+                                /////////////////
+                                length = word_TextView.getText().length();
+                                //////////////
 
 //                            Toast.makeText(getApplicationContext(), String.valueOf(length),
 //                                    Toast.LENGTH_SHORT).show();
+                            } else if (response.getJSONObject("word").getString("word").equals("outOfWords"))//agar kalamt tamam shod
+                                //outofwords miad ke bad dialog ro neshan midim
+                                alert_dialog_function_game_end();
+
+                            {
+
+                            }
+
                         } else {
 
 
@@ -489,8 +520,8 @@ public class single_Player extends AppCompatActivity {
                         }
 
                     } catch (JSONException e) {
-
-                        alert_dialog_function_game_end();
+                        Toast.makeText(getApplicationContext(), e.toString(),
+                                Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -555,6 +586,8 @@ public class single_Player extends AppCompatActivity {
 
         countDownTimer.cancel();
 
+        currentword_number = 0;//kalame hara az avl beshmarad
+
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.game_end_singleplayer_dialog);
         dialog.setCancelable(false);
@@ -592,7 +625,7 @@ public class single_Player extends AppCompatActivity {
         /////////////////////////////////////////////////////////
 
         guesses_true.setText(String.valueOf(number_of_trueGuess));
-        guesses_false.setText(String.valueOf(totalWords_number - number_of_trueGuess));
+        guesses_false.setText(String.valueOf(Toatalwords - number_of_trueGuess));
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override

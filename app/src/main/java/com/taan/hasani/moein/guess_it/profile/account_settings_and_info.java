@@ -77,8 +77,6 @@ public class account_settings_and_info extends Fragment {
 
         getUserInfo();
 
-        //  profile_pic.set
-        //profile_pic.setImageBitmap(getRoundedBitmap(R.drawable.profie));
 
         save_bt.setOnClickListener(new View.OnClickListener() {
                                        @Override
@@ -118,8 +116,10 @@ public class account_settings_and_info extends Fragment {
                             }
                         });
 
+                alertDialogBuilder.setIcon(R.drawable.logout);
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
+
             }
         });
 

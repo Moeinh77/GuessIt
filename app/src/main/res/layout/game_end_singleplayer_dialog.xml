@@ -84,15 +84,16 @@
         app:layout_constraintLeft_toRightOf="@+id/player_score_gameEnd"
         android:layout_marginLeft="8dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/player_score_gameEnd"
-        app:layout_constraintHorizontal_bias="0.666" />
+        app:layout_constraintHorizontal_bias="0.2" />
 
     <TextView
         android:id="@+id/player_score_gameEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="88dp"
+        android:layout_marginTop="14dp"
         android:text="TextView"
+        android:textAlignment="textEnd"
         app:layout_constraintLeft_toLeftOf="@+id/textView25"
         app:layout_constraintTop_toBottomOf="@+id/textView25"
         tools:text="TextView" />
