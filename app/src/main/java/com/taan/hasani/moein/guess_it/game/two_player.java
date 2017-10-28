@@ -1,5 +1,6 @@
 package com.taan.hasani.moein.guess_it.game;
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +35,7 @@ public class two_player extends AppCompatActivity {
             url = "http://online6732.tk/guessIt.php", id, completeWord, incompleteWord;
     private SharedPreferences prefs;
     private String gamedID;
+    private int number_of_trueGuess;
     private TextView word, message, timer, player2_textview, player1_textview;
     private EditText entered_word;
     private Button check_bt, nextWord_bt;
@@ -46,6 +49,9 @@ public class two_player extends AppCompatActivity {
     private boolean flag_counter;//baraye inke dar onDestroy error rokh nade age timer rah nayoftade bood
     private boolean words_loaded;//baraye jelo giri az crash dar soorat zadan next ya check
     //agar kalame load nashode bashad
+    private int currentword_number;
+    private int Total_gamescore;
+    private int Toatalwords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,7 @@ public class two_player extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         category = bundle.getString("category");
         difficulty = bundle.getString("difficulty");
+        //Toatalwords = bundle.getInt("totalwordsnumber");
         ///////////////////////////////////////////////////////
 
         message.setVisibility(View.INVISIBLE);
@@ -111,11 +118,17 @@ public class two_player extends AppCompatActivity {
 
                                 word.setText(completeWord);
                                 message.setText("Congratulations !!! Your guess was RIGHT !");
+
+                                Total_gamescore += Integer.parseInt(Player_score);//showing total score for game ending
+                                number_of_trueGuess++;
+
                                 MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
                                 mediaPlayer.start();
 
                                 setAnswer(entered_word.getText().toString(),
                                         Player_time, Player_score, myturn);
+
+
                                 //baraye check kardan nobat
                                 sendNextWord();
                                 ////////////////////////////
@@ -135,8 +148,6 @@ public class two_player extends AppCompatActivity {
                                 setAnswer(entered_word.getText().toString(),
                                         Player_time, Player_score, myturn);
                             }
-
-
                         }
                     }
                 }
@@ -149,7 +160,6 @@ public class two_player extends AppCompatActivity {
 
                 if (words_loaded) {
                     message.setVisibility(View.INVISIBLE);
-
 
                     if (flag__nextWord_Timer.equals("yes")) {
 
@@ -180,6 +190,11 @@ public class two_player extends AppCompatActivity {
     }
 
     public void newTwoPlayerGame() {
+
+        Total_gamescore = 0;
+        number_of_trueGuess = 0;
+        currentword_number = 0;
+
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "newGame");
@@ -339,74 +354,103 @@ public class two_player extends AppCompatActivity {
     }
 
     public void sendNextWord() {
+        if (inGame) {
 
-        gameInfo_during();
+            gameInfo_during();
 
-        HashMap<String, String> info = new HashMap<>();
+            HashMap<String, String> info = new HashMap<>();
 
-        info.put("action", "sendNextWord");
-        info.put("gameID", gamedID);
-        info.put("userID", id);
+            info.put("action", "sendNextWord");
+            info.put("gameID", gamedID);
+            info.put("userID", id);
 
-        entered_word.setText("");
-        word.setText("");
-        message.setText("");
-        timer.setText("");
+            entered_word.setText("");
+            word.setText("");
+            message.setText("");
+            timer.setText("");
 
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
+            JSONObject jsonObject = new JSONObject(info);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url, jsonObject, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
 
-                try {
+                    try {
 
-                    if (response.getString("dataIsRight").equals("yes")) {
+                        if (response.getString("dataIsRight").equals("yes")) {
+                            //dataIsRight zamani ke nobatet bashe yes miad
 
-                        turn = "myturn";
 
-                        flag__nextWord_Timer = "yes";
+                            //agar kalame ha tamam shode bashad dialog payan ro miare
+                            if (currentword_number == (Toatalwords + 1)) {
 
-                        incompleteWord = response.getJSONObject("word").getString("incompleteWord");
+                                alert_dialog_function_game_end();
 
-                        completeWord = response.getJSONObject("word").getString("word");
+                            }
+                            ///////////////////////////////////////////////////////////
 
-                        recivedTime = response.getJSONObject("word").getString("time");
+                            currentword_number++;
 
-                        ////////////////////////////////////////////
-                        countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime) - spent_time) * 1000, 1000) {
-                            public void onTick(long millisUntilFinished) {
-                                timer.setText(String.valueOf(millisUntilFinished / 1000));
-                                flag_counter = true;
+
+                            //   if(!response.getJSONObject("word").
+                            //           getString("word").equals("outOfWords"))
+                            //baraye inke bebinim kalamt tamoom shode ya na
+                            //   {
+
+                            turn = "myturn";
+
+                            flag__nextWord_Timer = "yes";
+
+                            incompleteWord = response.getJSONObject("word").getString("incompleteWord");
+
+                            completeWord = response.getJSONObject("word").getString("word");
+
+                            recivedTime = response.getJSONObject("word").getString("time");
+
+                            ////////////////////////////////////////////
+                            countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime) - spent_time) * 1000, 1000) {
+                                public void onTick(long millisUntilFinished) {
+                                    timer.setText(String.valueOf(millisUntilFinished / 1000));
+                                    flag_counter = true;
+
+                                }
+
+                                public void onFinish() {
+                                    timer.setText("0");
+                                    setAnswer(entered_word.getText().toString(),
+                                            "0", "0", "no");
+                                    spent_time = 0;
+                                    words_loaded = false;
+                                    // check kardane nobat
+                                    sendNextWord();
+                                    ///////////////////////
+                                }
+                            };
+                            ////////////////////////////////////////////
+                            countDownTimer.start();
+
+                            word.setVisibility(View.VISIBLE);
+                            word.setText(incompleteWord);
+
+                            words_loaded = true;
+
+                            //} else{
+                            //     alert_dialog_function_game_end();
+                            // }
+                        } else {
+
+
+                            if (currentword_number == (Toatalwords)) {
+
+                                alert_dialog_function_game_end();
 
                             }
 
-                            public void onFinish() {
-                                timer.setText("0");
-                                setAnswer(entered_word.getText().toString(),
-                                        "0", "0", "no");
-                                spent_time = 0;
-                                words_loaded = false;
-                                // check kardane nobat
-                                sendNextWord();
-                                ////////////////////////
+                            message.setVisibility(View.INVISIBLE);
+                            word.setVisibility(View.INVISIBLE);
 
-                            }
-                        };
-                        ////////////////////////////////////////////
-                        countDownTimer.start();
+                            turn = "notmyturn";
 
-                        word.setVisibility(View.VISIBLE);
-                        word.setText(incompleteWord);
-
-                        words_loaded = true;
-
-                    } else {
-                        message.setVisibility(View.INVISIBLE);
-                        word.setVisibility(View.INVISIBLE);
-
-                        turn = "notmyturn";
-                        if (inGame) {
                             //Toast.makeText(getApplicationContext(),
                             //        "It's not your turn yet, Please wait...", Toast.LENGTH_SHORT).show();
                             timer.setText("Please wait...");
@@ -419,28 +463,30 @@ public class two_player extends AppCompatActivity {
                                 }
                             }, 1000);
                             //////////////////////////////////////////
+
+                            //   }
                         }
 
+
+                    } catch (JSONException e) {
+                        //  gameInfo_gameEnd(gamedID);
                     }
 
-                } catch (JSONException e) {
-                    gameInfo_gameEnd(gamedID);
+
                 }
 
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(),
+                            "sendNextWord***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
 
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "sendNextWord***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+            AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
 
+        }
     }
 
     public void setAnswer(String entered_word, String player_time,
@@ -525,6 +571,12 @@ public class two_player extends AppCompatActivity {
                         player1_textview.setTextColor(Color.RED);
                     }
 
+                    if (Toatalwords == 0) {
+                        Toatalwords = Integer.parseInt(response.getString("numberOfWords"));
+
+                        Toast.makeText(getApplicationContext(), String.valueOf(Toatalwords)
+                                + "game during word numbers", Toast.LENGTH_SHORT).show();
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -598,6 +650,65 @@ public class two_player extends AppCompatActivity {
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+    }
+
+
+    public void alert_dialog_function_game_end() {
+
+        inGame = false;
+
+        countDownTimer.cancel();
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.game_end_twoplayer_dialog);
+        dialog.setCancelable(false);
+
+        //Button start = (Button) dialog.findViewById(R.id.yes);
+        Button cancel = (Button) dialog.findViewById(R.id.no);
+        TextView guesses_true = (TextView) dialog.findViewById(R.id.guesses_true);
+        TextView yourscore_gameEnd = (TextView) dialog.findViewById(R.id.player_score_gameEnd);
+        TextView guesses_false = (TextView) dialog.findViewById(R.id.guesses_false);
+        // TextView newHighScore_view = (TextView) dialog.findViewById(R.id.newHighscore);
+
+        // newHighScore_view.setVisibility(View.INVISIBLE);
+
+        String endgame_score = String.valueOf(Total_gamescore);
+        yourscore_gameEnd.setText(endgame_score);
+
+        //  int highscore = prefs.getInt("HighScore", 0);//gereftane higscore
+
+        //dar soorat zadane highscore jadid
+//        if (Total_gamescore > highscore) {
+//
+//            //save kardane highscore e jadid
+//            SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME
+//                    , MODE_PRIVATE).edit();
+//            editor.putInt("HighScore", Total_gamescore);
+//            editor.apply();
+//            //////////////////////////////////
+//
+//            newHighScore_view.setVisibility(View.VISIBLE);//neshan dadan payame highscore
+//
+//            MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
+//            mediaPlayer.start();
+//
+//        }
+        /////////////////////////////////////////////////////////
+
+        guesses_true.setText(String.valueOf(number_of_trueGuess));
+        guesses_false.setText(String.valueOf(Toatalwords - number_of_trueGuess));
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+        dialog.show();
+
+
     }
 
 

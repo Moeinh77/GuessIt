@@ -33,7 +33,7 @@ import java.util.HashMap;
 public class single_Player extends AppCompatActivity {
 
     private EditText entered_word;
-    private int number_of_trueGuess = 0;
+    private int number_of_trueGuess;
     private Button check_bt, next_word_bt;
     private TextView word_TextView, timer, guesses_true, guesses_false;
     private String MY_PREFS_NAME = "username and password";
@@ -55,7 +55,7 @@ public class single_Player extends AppCompatActivity {
 
     //   private int totalWords_number = 0;
     private boolean inGame = true;//baraye inke agar az bazi kharej shodim dg request nade
-    private int currentword_number = 0;
+    private int currentword_number;
     private int Toatalwords;
 
     @Override
@@ -104,7 +104,7 @@ public class single_Player extends AppCompatActivity {
                 if (!entered_word.getText().toString().equals(""))
                     //   message.setVisibility(View.VISIBLE);
 
-                    if (entered_word.getText().toString().equals(completeWord) && !timer.getText().toString().equals("0")) {
+                    if (entered_word.getText().toString().equals(completeWord)) {
 
                         countDownTimer.cancel();
 
@@ -326,8 +326,11 @@ public class single_Player extends AppCompatActivity {
 
     public void newSinglePlayerGame() {
 
+        currentword_number = 0;//kalame hara az avl beshmarad
+        number_of_trueGuess = 0;
         Total_gamescore = 0;
         totalScore_view.setText("Total score : " + String.valueOf(0));
+
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "newGame");
@@ -586,7 +589,6 @@ public class single_Player extends AppCompatActivity {
 
         countDownTimer.cancel();
 
-        currentword_number = 0;//kalame hara az avl beshmarad
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.game_end_singleplayer_dialog);
@@ -633,6 +635,7 @@ public class single_Player extends AppCompatActivity {
 
                 word_TextView.setText("");
                 dialog.cancel();
+
                 newSinglePlayerGame();
 
             }
