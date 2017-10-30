@@ -44,8 +44,9 @@ public class account_settings_and_info extends Fragment {
     HashMap<String, String> info = new HashMap<>();
     String url = "http://online6732.tk/guessIt.php";
     String name, username, games, profilePicture;
-    TextView name_textview, username_textview;
-    Button logout;
+    TextView name_textview;
+    EditText username_edittext;
+    Button logout, Edit_username_bt;
     private EditText old_password, new_password, repeat_password;
     private final String MY_PREFS_NAME = "username and password";
     private String newPassword_string;
@@ -65,7 +66,7 @@ public class account_settings_and_info extends Fragment {
         View account_info_ = inflater.inflate(R.layout.fragment_account_settings_info, container, false);
 
         name_textview = (TextView) account_info_.findViewById(R.id.FirstName);
-        username_textview = (TextView) account_info_.findViewById(R.id.username);
+        username_edittext = (EditText) account_info_.findViewById(R.id.username);
         logout = (Button) account_info_.findViewById(R.id.logout_bt);
         old_password = (EditText) account_info_.findViewById(R.id.old_password);
         new_password = (EditText) account_info_.findViewById(R.id.new_password);
@@ -73,10 +74,16 @@ public class account_settings_and_info extends Fragment {
         Button save_bt = (Button) account_info_.findViewById(R.id.save_bt);
         name_textview.setVisibility(View.INVISIBLE);
         profile_pic = (ImageView) account_info_.findViewById(R.id.profile_pic);
-
+        Edit_username_bt = (Button) account_info_.findViewById(R.id.edit_bt);
 
         getUserInfo();
 
+        Edit_username_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeUsername();
+            }
+        });
 
         save_bt.setOnClickListener(new View.OnClickListener() {
                                        @Override
@@ -276,7 +283,7 @@ public class account_settings_and_info extends Fragment {
                     name_textview.setText(name);
                     name_textview.setVisibility(View.VISIBLE);
 
-                    username_textview.setText(username);
+                    username_edittext.setText(username);
 
 
                 } catch (JSONException e) {
@@ -290,6 +297,56 @@ public class account_settings_and_info extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getActivity().getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+    }
+
+
+    private void changeUsername() {
+
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        final String user_id = prefs.getString("userID", null);
+
+        String username_ = username_edittext.getText().toString();
+
+        info.put("action", "changeUsername");
+        info.put("username", username_);
+        info.put("userID", user_id);
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+
+                    if (response.getString("dataIsRight").equals("yes")) {
+
+
+                        Toast.makeText(getActivity(),
+                                "Username changed", Toast.LENGTH_LONG).show();
+
+                    } else {
+                        Toast.makeText(getActivity(),
+                                "username didnt change", Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG);
+
             }
         });
 
