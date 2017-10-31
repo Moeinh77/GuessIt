@@ -34,8 +34,7 @@ public class single_Player extends AppCompatActivity {
 
     private EditText entered_word;
     private int number_of_trueGuess;
-    private Button check_bt, next_word_bt;
-    private TextView word_TextView, timer, guesses_true, guesses_false;
+    private TextView word_TextView, timer;
     private String MY_PREFS_NAME = "username and password";
     private int Total_gamescore = 0;
     private ArrayList<Integer> indexlist_of_questionmarks = new ArrayList<>();
@@ -49,7 +48,6 @@ public class single_Player extends AppCompatActivity {
     private Dialog dialog;
     private int length;
     private TextView wordnumber;
-    private TextView yourscore_gameEnd;
     private boolean Counter_started = false;//baraye inke agar ertebat ba net ghat shod moghe
     //khoorooj choon cancel vase timer darim age timer ro intialize nakrde bashim stopped working mide
 
@@ -63,10 +61,10 @@ public class single_Player extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_player);
 
-        next_word_bt = (Button) findViewById(R.id.next_word_bt);
+        Button next_word_bt = (Button) findViewById(R.id.next_word_bt);
         word_TextView = (TextView) findViewById(R.id.word);
         entered_word = (EditText) findViewById(R.id.enterd_word);
-        check_bt = (Button) findViewById(R.id.check);
+        Button check_bt = (Button) findViewById(R.id.check);
         timer = (TextView) findViewById(R.id.timer);
         totalScore_view = (TextView) findViewById(R.id.total_score);
         Button Help = (Button) findViewById(R.id.help_bt);
@@ -596,9 +594,9 @@ public class single_Player extends AppCompatActivity {
 
         Button start = (Button) dialog.findViewById(R.id.yes);
         Button cancel = (Button) dialog.findViewById(R.id.no);
-        guesses_true = (TextView) dialog.findViewById(R.id.guesses_true);
-        yourscore_gameEnd = (TextView) dialog.findViewById(R.id.player_score_gameEnd);
-        guesses_false = (TextView) dialog.findViewById(R.id.guesses_false);
+        TextView guesses_true = (TextView) dialog.findViewById(R.id.guesses_true);
+        TextView yourscore_gameEnd = (TextView) dialog.findViewById(R.id.player_score_gameEnd);
+        TextView guesses_false = (TextView) dialog.findViewById(R.id.guesses_false);
         TextView newHighScore_view = (TextView) dialog.findViewById(R.id.newHighscore);
 
         newHighScore_view.setVisibility(View.INVISIBLE);
