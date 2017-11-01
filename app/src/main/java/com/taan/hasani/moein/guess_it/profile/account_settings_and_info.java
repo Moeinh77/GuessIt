@@ -41,7 +41,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class account_settings_and_info extends Fragment {
 
-    HashMap<String, String> info = new HashMap<>();
     String url = "http://online6732.tk/guessIt.php";
     String name, username, games, profilePicture;
     TextView name_textview;
@@ -143,6 +142,7 @@ public class account_settings_and_info extends Fragment {
         newPassword_string = new_password.getText().toString();
 //        oldPassword_string = old_password.getText().toString();
 
+        HashMap<String, String> info = new HashMap<>();
 
         if (!old_password.getText().toString().equals(oldpassowrd_from_sharedprefs)) {
             Toast.makeText(getActivity(),
@@ -263,6 +263,7 @@ public class account_settings_and_info extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         String id = prefs.getString("userID", null);
         //////////////////////////////////////////
+        HashMap<String, String> info = new HashMap<>();
 
 
         info.put("action", "sendUserInformation");
@@ -310,6 +311,7 @@ public class account_settings_and_info extends Fragment {
 
         SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         final String user_id = prefs.getString("userID", null);
+        HashMap<String, String> info = new HashMap<>();
 
         String username_ = username_edittext.getText().toString();
 

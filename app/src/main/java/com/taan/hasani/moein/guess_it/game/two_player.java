@@ -32,7 +32,7 @@ import java.util.HashMap;
 public class two_player extends AppCompatActivity {
 
     private String url = "http://online6732.tk/guessIt.php", id, completeWord,
-            incompleteWord, gamedID, recivedTime, category, difficulty;
+            incompleteWord, gamedID, recivedTime, category;
     private int number_of_trueGuess;
     private TextView word, message, timer, player2_textview, player1_textview;
     private EditText entered_word;
@@ -47,10 +47,10 @@ public class two_player extends AppCompatActivity {
     private boolean words_loaded;//baraye jelo giri az crash dar soorat zadan next ya check
     //agar kalame load nashode bashad
     private int currentword_number;
-    private int Toatalwords;
+    private int Toatalwords;//tedad kalamte har bazi ke az server miad
     String Rivalscore_gameEnd, Playerscore_gameEnd;
     private int RivalWordsNumber;//tedad kalameti ke harif dashte
-    private String status;
+    private String status, type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +71,11 @@ public class two_player extends AppCompatActivity {
         player2_textview = (TextView) findViewById(R.id.rivalscore);
         player1_textview = (TextView) findViewById(R.id.yourscore);
 
+
         //difficaulty va category ro az activity ghabl migirad
         Bundle bundle = getIntent().getExtras();
         category = bundle.getString("category");
-        difficulty = bundle.getString("difficulty");
+        type = bundle.getString("type");
         //Toatalwords = bundle.getInt("totalwordsnumber");
         ///////////////////////////////////////////////////////
 
@@ -198,6 +199,7 @@ public class two_player extends AppCompatActivity {
         info.put("action", "newGame");
         info.put("userID", id);
         info.put("mode", "twoPlayer");
+        info.put("type", type);
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -304,9 +306,11 @@ public class two_player extends AppCompatActivity {
         info.put("action", "setGameSetting");
         info.put("userID", id);
         info.put("gameID", gamedID);
-        info.put("level", difficulty);
+
         try {
+
             info.put("categories", URLEncoder.encode(category, "utf-8"));
+
         } catch (UnsupportedEncodingException e) {
             Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
         }
@@ -599,7 +603,6 @@ public class two_player extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-
             }
 
         }, new Response.ErrorListener() {
@@ -612,7 +615,6 @@ public class two_player extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
     }
-
 
     public void alert_dialog_function_game_end() {
 
@@ -708,4 +710,6 @@ public class two_player extends AppCompatActivity {
         }
         super.onDestroy();
     }
+
+
 }

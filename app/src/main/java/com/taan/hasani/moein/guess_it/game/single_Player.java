@@ -1,6 +1,8 @@
 package com.taan.hasani.moein.guess_it.game;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -20,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
+import com.taan.hasani.moein.guess_it.helpingclasses.gameClass;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -54,7 +57,7 @@ public class single_Player extends AppCompatActivity {
     //   private int totalWords_number = 0;
     private boolean inGame = true;//baraye inke agar az bazi kharej shodim dg request nade
     private int currentword_number;
-    private int Toatalwords;
+    private int Toatalwords;//tedad
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -328,6 +331,13 @@ public class single_Player extends AppCompatActivity {
         number_of_trueGuess = 0;
         Total_gamescore = 0;
         totalScore_view.setText("Total score : " + String.valueOf(0));
+
+
+        Context context = getApplicationContext();
+
+        gameClass gameclass = new gameClass();
+        gameclass.Toast_test(context);
+        // Toast_test(Context context);
 
         HashMap<String, String> info = new HashMap<>();
 

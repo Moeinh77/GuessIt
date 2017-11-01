@@ -87,9 +87,11 @@ public class categories_twoPlayer extends AppCompatActivity {
                 String difficulty = "2";
                 String rIsChecked = "false";
 
+
                 if (easy_RadioButton.isChecked()) {
                     difficulty = "1";//easy_RadioButton.getText().toString();
                     rIsChecked = "true";
+
                 }
                 if (hard_RadioButton.isChecked()) {
                     difficulty = "3";
@@ -102,7 +104,8 @@ public class categories_twoPlayer extends AppCompatActivity {
                 if (rIsChecked.equals("true")) {
 
                     i.putExtra("category", category);
-                    i.putExtra("difficulty", difficulty);
+                    i.putExtra("type", difficulty);//ferestadane noe bazi
+
 
                     startActivity(i);
                     dialog.cancel();
