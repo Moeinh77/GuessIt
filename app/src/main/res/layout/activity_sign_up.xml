@@ -7,7 +7,7 @@
     tools:context="com.taan.hasani.moein.volley.com.taan.hasani.moein.guess_it.game_menu.SignUp">
 
     <EditText
-        android:id="@+id/nickname"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="30dp"
@@ -18,32 +18,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/FirstName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:layout_marginLeft="85dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.56"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/nickname" />
-
-    <EditText
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textMultiLine"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/FirstName"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/lastName"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="30dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0" />
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <EditText
         android:id="@+id/password"
@@ -53,26 +36,11 @@
         android:inputType="textMultiLine"
         android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/username"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="21dp"
         app:layout_constraintTop_toBottomOf="@+id/username"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="8dp"
-        android:text="First Name"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/FirstName"
-        app:layout_constraintHorizontal_bias="0.444"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/FirstName" />
 
     <TextView
         android:id="@+id/textView4"
@@ -93,52 +61,24 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="0dp"
+        android:layout_marginLeft="16dp"
         android:text="Username"
         android:textColor="@android:color/darker_gray"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/username"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/textView3" />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/signup"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
+        android:layout_marginTop="56dp"
         android:text="sign up"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:text="Last Name"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/lastName"
-        app:layout_constraintLeft_toLeftOf="parent" />
-
-    <EditText
-        android:id="@+id/lastName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/FirstName"
-        app:layout_constraintLeft_toRightOf="@+id/textView11"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.531" />
 
     <TextView
         android:id="@+id/textView12"
@@ -146,9 +86,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
-        android:text="Nick Name"
-        app:layout_constraintBaseline_toBaselineOf="@+id/nickname"
+        android:text="Name"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/name"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/nickname" />
+        app:layout_constraintRight_toLeftOf="@+id/name" />
 </android.support.constraint.ConstraintLayout>

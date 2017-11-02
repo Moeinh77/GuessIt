@@ -25,9 +25,10 @@ public class SignUp extends AppCompatActivity {
 
     private final String MY_PREFS_NAME ="username and password" ;
     String url = "http://online6732.tk/guessIt.php";
-    private String password, Lname, Fname, username, nickName;
+    private String password, username, name;
     private Button signup;
-    private EditText username_editext, Nname_edittext, password_editext, Fname_editext, Lname_edittext;
+    private EditText username_editext, Nname_edittext, password_editext;
+    // Fname_editext, Lname_edittext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +38,7 @@ public class SignUp extends AppCompatActivity {
         signup=(Button)findViewById(R.id.signup);
         username_editext=(EditText)findViewById(R.id.username);
         password_editext=(EditText)findViewById(R.id.password);
-        Fname_editext = (EditText) findViewById(R.id.FirstName);
-        Lname_edittext = (EditText) findViewById(R.id.lastName);
-        Nname_edittext = (EditText) findViewById(R.id.nickname);
+        Nname_edittext = (EditText) findViewById(R.id.name);
 
         final HashMap<String, String> info = new HashMap<>();
 
@@ -49,16 +48,12 @@ public class SignUp extends AppCompatActivity {
 
                 username=username_editext.getText().toString();
                 password=password_editext.getText().toString();
-                Fname = Fname_editext.getText().toString();
-                Lname = Lname_edittext.getText().toString();
-                nickName = Nname_edittext.getText().toString();
+                name = Nname_edittext.getText().toString();
 
                 info.put("action","signup");
                 info.put("password",password);
                 info.put("username",username);
-                info.put("firstName", Fname);
-                info.put("lastName", Lname);
-                info.put("name", nickName);
+                info.put("name", name);
 
                 JSONObject jsonObject=new JSONObject(info);
                 JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST,
@@ -68,8 +63,8 @@ public class SignUp extends AppCompatActivity {
 
 
                         try {
-                            if (response.getString("dataIsRight").toString().equals("yes")) {
-                                save_user_and_pass(username, password);
+                            if (response.getString("dataIsRight").equals("yes")) {
+                                save_userInfo(username, password, name);
                                 Intent intent = new Intent(SignUp.this, Loading.class);
                                 startActivity(intent);
                                 finish();
@@ -101,15 +96,14 @@ public class SignUp extends AppCompatActivity {
     }
 
     //highscore default ham injast
-    public void save_user_and_pass(String username__,String password__){
+    public void save_userInfo(String username__, String password__, String name_) {
 
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putString("username", username__);
         editor.putString("password", password__);
+        editor.putString("name", name_);
         editor.putInt("HighScore", 0);
         editor.apply();
-//        Toast.makeText(getApplicationContext(),
-//                "user :"+username__+"pass :"+password__,Toast.LENGTH_LONG).show();
 
     }
 }

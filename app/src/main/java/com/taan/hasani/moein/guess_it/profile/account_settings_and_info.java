@@ -42,7 +42,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class account_settings_and_info extends Fragment {
 
     String url = "http://online6732.tk/guessIt.php";
-    String name, username, games, profilePicture;
+    String name, username, profilePicture;
     TextView name_textview;
     EditText username_edittext;
     Button logout, Edit_username_bt;
@@ -279,8 +279,8 @@ public class account_settings_and_info extends Fragment {
 
                     name = new String(response.getString("name").getBytes("ISO-8859-1"), "UTF-8");
                     username = new String(response.getString("username").getBytes("ISO-8859-1"), "UTF-8");
-                    games = new String(response.getString("games").getBytes("ISO-8859-1"), "UTF-8");
-                    profilePicture = new String(response.getString("profilePicture").getBytes("ISO-8859-1"), "UTF-8");
+//                    games = new String(response.getString("games").getBytes("ISO-8859-1"), "UTF-8");
+                    //profilePicture = new String(response.getString("profilePicture").getBytes("ISO-8859-1"), "UTF-8");
                     name_textview.setText(name);
                     name_textview.setVisibility(View.VISIBLE);
 
@@ -313,7 +313,7 @@ public class account_settings_and_info extends Fragment {
         final String user_id = prefs.getString("userID", null);
         HashMap<String, String> info = new HashMap<>();
 
-        String username_ = username_edittext.getText().toString();
+        final String username_ = username_edittext.getText().toString();
 
         info.put("action", "changeUsername");
         info.put("username", username_);
@@ -333,6 +333,12 @@ public class account_settings_and_info extends Fragment {
 
                         Toast.makeText(getActivity(),
                                 "Username changed", Toast.LENGTH_LONG).show();
+
+                        SharedPreferences.Editor editor = getActivity().
+                                getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                        editor.putString("username", username_);
+                        editor.apply();
+
 
                     } else {
                         Toast.makeText(getActivity(),
