@@ -1,16 +1,17 @@
 package com.taan.hasani.moein.guess_it.helpingclasses;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
 
-public class gameClass {
+public class functions {
 
-    private Context Activitycontext;
+    private Activity activity;
 
-    gameClass(Context context) {
+    functions(Activity activity) {
 
-        Activitycontext = context;
+        this.activity = activity;
 
     }
 

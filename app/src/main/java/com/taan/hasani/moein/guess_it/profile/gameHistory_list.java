@@ -29,7 +29,7 @@ import java.util.HashMap;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class account_games_info extends Fragment {
+public class gameHistory_list extends Fragment {
 
 
     String url = "http://online6732.tk/guessIt.php";
@@ -37,12 +37,13 @@ public class account_games_info extends Fragment {
     String Playerscores, Rivalscore;
     String[] array = null;
     ListView listView;
+    private TextView message;
     ArrayList<gameHistory_object> scoreList = new ArrayList<>();//*************
     gameHistory_object gameHistory_object;
     ProgressBar progressBar;
     HashMap<String, String> info = new HashMap<>();
 
-    public account_games_info() {
+    public gameHistory_list() {
         // Required empty public constructor
     }
 
@@ -61,7 +62,8 @@ public class account_games_info extends Fragment {
         listView = (ListView) games_info.findViewById(R.id.listView);
         progressBar = (ProgressBar) games_info.findViewById(R.id.progressBar2);
         get_user_games_ids();
-
+        message = (TextView) games_info.findViewById(R.id.message);
+        message.setVisibility(View.INVISIBLE);
 
         return games_info;
     }
@@ -84,28 +86,36 @@ public class account_games_info extends Fragment {
             public void onResponse(JSONObject response) {
                 try {
 
-                    gameHistory_object = new gameHistory_object();
-                    if (id.equals(response.getString("playerOneID"))) {
+                    if (response.getString("playerOneTotalScore") != null) {
 
-                        Playerscores = response.getString("playerOneTotalScore");
-                        Rivalscore = response.getString("playerTwoTotalScore");
+                        gameHistory_object = new gameHistory_object();
 
-                        gameHistory_object.setRivalUsername(response.getString("playerTwoUsername"));
-                        gameHistory_object.setPlayerScore(Playerscores);
-                        gameHistory_object.setRivalScore(Rivalscore);
+                        if (id.equals(response.getString("playerOneID"))) {
 
+                            Playerscores = response.getString("playerOneTotalScore");
+                            Rivalscore = response.getString("playerTwoTotalScore");
+
+                            gameHistory_object.setRivalUsername(response.getString("playerTwoUsername"));
+                            gameHistory_object.setPlayerScore(Playerscores);
+                            gameHistory_object.setRivalScore(Rivalscore);
+
+                        } else {
+
+                            Playerscores = response.getString("playerTwoTotalScore");
+                            Rivalscore = response.getString("playerTwoTotalScore");
+
+                            gameHistory_object.setRivalUsername(response.getString("playerOneUsername"));
+                            gameHistory_object.setPlayerScore(Playerscores);
+                            gameHistory_object.setRivalScore(Rivalscore);
+
+                        }
+
+                        scoreList.add(gameHistory_object);//*************
                     } else {
 
-                        Playerscores = response.getString("playerTwoTotalScore");
-                        Rivalscore = response.getString("playerTwoTotalScore");
-
-                        gameHistory_object.setRivalUsername(response.getString("playerOneUsername"));
-                        gameHistory_object.setPlayerScore(Playerscores);
-                        gameHistory_object.setRivalScore(Rivalscore);
+                        message.setVisibility(View.VISIBLE);
 
                     }
-
-                    scoreList.add(gameHistory_object);//*************
 
                 } catch (JSONException e) {
                     e.printStackTrace();

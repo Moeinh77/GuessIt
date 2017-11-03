@@ -1,6 +1,5 @@
 package com.taan.hasani.moein.guess_it.game;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,7 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.helpingclasses.gameClass;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -335,9 +333,7 @@ public class single_Player extends AppCompatActivity {
 
         Context context = getApplicationContext();
 
-        gameClass gameclass = new gameClass();
-        gameclass.Toast_test(context);
-        // Toast_test(Context context);
+        //functions gameclass = new functions(context);
 
         HashMap<String, String> info = new HashMap<>();
 
