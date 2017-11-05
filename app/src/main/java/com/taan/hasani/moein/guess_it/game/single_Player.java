@@ -20,14 +20,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.helpingclasses.Functions;
+import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -39,7 +37,7 @@ public class single_Player extends AppCompatActivity {
     private String MY_PREFS_NAME = "username and password";
     private int Total_gamescore = 0;
     private ArrayList<Integer> indexlist_of_questionmarks = new ArrayList<>();
-    private String incompleteWord, id, completeWord, game_ID,
+    private String incompleteWord, id, completeWord, game_ID = "test",
             url = "http://online6732.tk/guessIt.php";
     private TextView totalScore_view;
     private SharedPreferences prefs;
@@ -56,14 +54,14 @@ public class single_Player extends AppCompatActivity {
     private boolean inGame = true;//baraye inke agar az bazi kharej shodim dg request nade
     private int currentword_number;
     private int Toatalwords;//tedad
-    private Functions functions;
+    private Functions_ functions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_player);
 
-        functions = new Functions(this);
+        functions = new Functions_(this);
 
         Button next_word_bt = (Button) findViewById(R.id.next_word_bt);
         word_TextView = (TextView) findViewById(R.id.word);
@@ -333,21 +331,19 @@ public class single_Player extends AppCompatActivity {
         Total_gamescore = 0;
         totalScore_view.setText("Total score : " + String.valueOf(0));
 
-        if (!functions.f_newSinglePlayerGame(id, type).equals(""))
-            setGameSettings();
+        functions.f_newSinglePlayerGame(id, type);
 
-        else
-            newSinglePlayerGame();
+        game_ID = functions.getGame_ID();
+
+        setGameSettings();
 
     }
 
     public void setGameSettings() {
 
-        if (functions.f_setGameSettings(id, game_ID, difficulty, category))
-            sendNextWord();
-        else
-            setGameSettings();
+        functions.f_setGameSettings(id, game_ID, difficulty, category);
 
+        sendNextWord();
     }
 
     public void sendNextWord() {

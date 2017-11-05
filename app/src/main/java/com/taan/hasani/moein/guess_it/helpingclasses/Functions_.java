@@ -1,7 +1,6 @@
 package com.taan.hasani.moein.guess_it.helpingclasses;
 
 import android.app.Activity;
-import android.content.Context;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -18,19 +17,23 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 
 
-public class Functions {
+public class Functions_ {
 
     private String url = "http://online6732.tk/guessIt.php";
     private String game_ID;
     private Boolean gameset_flag;
     private Activity activity;
 
-    public Functions(Activity activity) {
+    public Functions_(Activity activity) {
 
         this.activity = activity;
     }
 
-    public String f_newSinglePlayerGame(final String id, final String type) {
+    public String getGame_ID() {
+        return game_ID;
+    }
+
+    public void f_newSinglePlayerGame(final String id, final String type) {
 
 
         final HashMap<String, String> info = new HashMap<>();
@@ -59,9 +62,7 @@ public class Functions {
 
                     } else {
 
-                        Toast.makeText(activity, " sth went wrong... trying again"
-                                , Toast.LENGTH_SHORT).show();
-                        game_ID = "";
+                        Toast.makeText(activity, " sth went wrong... ", Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -80,7 +81,6 @@ public class Functions {
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-        return game_ID;
 
 
     }
@@ -116,7 +116,9 @@ public class Functions {
 
                     } else {
 
-                        Toast.makeText(activity, response.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, response.toString(),
+                                Toast.LENGTH_LONG).show();
+
                         gameset_flag = false;
                     }
 
