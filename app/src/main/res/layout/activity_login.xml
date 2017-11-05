@@ -15,11 +15,11 @@
         android:ems="10"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/password"
-        app:layout_constraintHorizontal_bias="0.657"
+        app:layout_constraintHorizontal_bias="0.354"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.583" />
+        app:layout_constraintVertical_bias="0.588" />
 
     <EditText
         android:id="@+id/password"
@@ -29,7 +29,7 @@
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.656"
+        app:layout_constraintHorizontal_bias="0.354"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -37,25 +37,29 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="username"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        android:text="نام کاربری :"
         android:textAllCaps="true"
         android:textColor="#BDBDBD"
+        android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:layout_editor_absoluteY="124dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/username"
+        app:layout_constraintLeft_toRightOf="@+id/username"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="password"
+        android:layout_marginRight="37dp"
+        android:text="رمز ورود :"
         android:textAllCaps="true"
         android:textColor="#BDBDBD"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/password"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/login"
@@ -63,7 +67,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="88dp"
-        android:text="login"
+        android:text="ورود"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />

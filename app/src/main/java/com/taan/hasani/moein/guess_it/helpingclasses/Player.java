@@ -15,14 +15,18 @@ import com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login;
 import com.taan.hasani.moein.guess_it.game_menu.Loading;
 import com.taan.hasani.moein.guess_it.game_menu.Login;
 import com.taan.hasani.moein.guess_it.game_menu.Main_menu;
+import com.taan.hasani.moein.guess_it.profile.gameHistory_object;
+import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.taan.hasani.moein.volley.R.id.message;
 
 
 /**
@@ -32,7 +36,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class Player {
 
     private Activity activity;
-
+    private ArrayList<gameHistory_object> scoreList = new ArrayList<>();
     private String url = "http://online6732.tk/guessIt.php";
     //agar jaee lazem shod mishe az inja avord choon public e
 
@@ -49,6 +53,11 @@ public class Player {
         this.activity = activity_;
         prefs = activity_.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         editor = activity_.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        id = prefs.getString("userID", null);
+        password = prefs.getString("password", null);
+        username = prefs.getString("username", null);
+        name = prefs.getString("name", null);
+
 
     }
 
@@ -93,6 +102,10 @@ public class Player {
     public String getId() {
         id = prefs.getString("userID", null);
         return id;
+    }
+
+    public ArrayList<gameHistory_object> getScoreList() {
+        return scoreList;
     }
 
     public void login(final String username_, final String password_) {
@@ -369,6 +382,73 @@ public class Player {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
     }
+
+
+    public ArrayList getUserGamesInfo(String gameID) {
+
+        HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "sendGameInformation");
+        info.put("userID", getId());
+        info.put("gameID", gameID);
+
+        JSONObject jsonObject = new JSONObject(info);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                    if (response.getString("playerOneTotalScore") != null) {
+
+                        gameHistory_object gameHistory_object = new gameHistory_object();
+
+                        if (id.equals(response.getString("playerOneID"))) {
+
+                            String Playerscores = response.getString("playerOneTotalScore");
+                            String Rivalscore = response.getString("playerTwoTotalScore");
+
+                            gameHistory_object.setRivalUsername(response.getString("playerTwoUsername"));
+                            gameHistory_object.setPlayerScore(Playerscores);
+                            gameHistory_object.setRivalScore(Rivalscore);
+
+                        } else {
+
+                            String Playerscores = response.getString("playerTwoTotalScore");
+                            String Rivalscore = response.getString("playerTwoTotalScore");
+
+                            gameHistory_object.setRivalUsername(response.getString("playerOneUsername"));
+                            gameHistory_object.setPlayerScore(Playerscores);
+                            gameHistory_object.setRivalScore(Rivalscore);
+
+                        }
+
+                        scoreList.add(gameHistory_object);
+
+                    } else {
+
+                        activity.findViewById(R.id.message_history).setVisibility(View.VISIBLE);
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+        return scoreList;
+    }
+
 
     //hargah inra seda konim etelaat ro az server migire mirize too pref
     private void getUserInfo() {

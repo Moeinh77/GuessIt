@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
+import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -34,14 +35,13 @@ public class gameHistory_list extends Fragment {
 
     String url = "http://online6732.tk/guessIt.php";
     String recived_games_id;
-    String Playerscores, Rivalscore;
     String[] array = null;
     ListView listView;
     private TextView message;
     ArrayList<gameHistory_object> scoreList = new ArrayList<>();//*************
-    gameHistory_object gameHistory_object;
     ProgressBar progressBar;
     HashMap<String, String> info = new HashMap<>();
+    Player player;
 
     public gameHistory_list() {
         // Required empty public constructor
@@ -58,81 +58,18 @@ public class gameHistory_list extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View games_info = inflater.inflate(R.layout.fragment_account_games_info, container, false);
+        View games_info = inflater.inflate(R.layout.fragment_games_history, container, false);
         listView = (ListView) games_info.findViewById(R.id.listView);
         progressBar = (ProgressBar) games_info.findViewById(R.id.progressBar2);
+
+        player = new Player(getActivity());
+
         get_user_games_ids();
-        message = (TextView) games_info.findViewById(R.id.message);
+        message = (TextView) games_info.findViewById(R.id.message_history);
         message.setVisibility(View.INVISIBLE);
 
         return games_info;
     }
-
-    private void getUserGamesInfo(String gameID) {
-
-        final String MY_PREFS_NAME = "username and password";
-        SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME,
-                MODE_PRIVATE);
-        final String id = prefs.getString("userID", null);
-
-        info.put("action", "sendGameInformation");
-        info.put("userID", id);
-        info.put("gameID", gameID);
-
-        JSONObject jsonObject = new JSONObject(info);
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-
-                    if (response.getString("playerOneTotalScore") != null) {
-
-                        gameHistory_object = new gameHistory_object();
-
-                        if (id.equals(response.getString("playerOneID"))) {
-
-                            Playerscores = response.getString("playerOneTotalScore");
-                            Rivalscore = response.getString("playerTwoTotalScore");
-
-                            gameHistory_object.setRivalUsername(response.getString("playerTwoUsername"));
-                            gameHistory_object.setPlayerScore(Playerscores);
-                            gameHistory_object.setRivalScore(Rivalscore);
-
-                        } else {
-
-                            Playerscores = response.getString("playerTwoTotalScore");
-                            Rivalscore = response.getString("playerTwoTotalScore");
-
-                            gameHistory_object.setRivalUsername(response.getString("playerOneUsername"));
-                            gameHistory_object.setPlayerScore(Playerscores);
-                            gameHistory_object.setRivalScore(Rivalscore);
-
-                        }
-
-                        scoreList.add(gameHistory_object);//*************
-                    } else {
-
-                        message.setVisibility(View.VISIBLE);
-
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-    }
-
 
     public void get_user_games_ids() {
 
@@ -159,10 +96,10 @@ public class gameHistory_list extends Fragment {
                     // miaym har khoone az array ro mifresim be oon yeki
                     //function ta etelaat ro bar asas id biare va hamaro bokone ye string ta too ye view bezarim
                     for (int i = 0; i < array.length; i++) {
-                        getUserGamesInfo(array[i]);
+                        player.getUserGamesInfo(array[i]);
                     }
                     ////////////////////////
-
+                    scoreList = player.getScoreList();
 
                     startUpTheList(array.length);
 

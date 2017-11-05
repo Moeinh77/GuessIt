@@ -1,7 +1,6 @@
 package com.taan.hasani.moein.guess_it.game;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -21,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
+import com.taan.hasani.moein.guess_it.helpingclasses.Functions;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -56,11 +56,14 @@ public class single_Player extends AppCompatActivity {
     private boolean inGame = true;//baraye inke agar az bazi kharej shodim dg request nade
     private int currentword_number;
     private int Toatalwords;//tedad
+    private Functions functions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_player);
+
+        functions = new Functions(this);
 
         Button next_word_bt = (Button) findViewById(R.id.next_word_bt);
         word_TextView = (TextView) findViewById(R.id.word);
@@ -330,108 +333,20 @@ public class single_Player extends AppCompatActivity {
         Total_gamescore = 0;
         totalScore_view.setText("Total score : " + String.valueOf(0));
 
+        if (!functions.f_newSinglePlayerGame(id, type).equals(""))
+            setGameSettings();
 
-        Context context = getApplicationContext();
+        else
+            newSinglePlayerGame();
 
-        //functions gameclass = new functions(context);
-
-        HashMap<String, String> info = new HashMap<>();
-
-        info.put("action", "newGame");
-        info.put("mode", "singlePlayer");
-        info.put("userID", id);
-        info.put("type", type);
-
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-
-                    //    Toast.makeText(getApplicationContext(),
-                    //          response.toString(), Toast.LENGTH_LONG).show();
-                    game_ID = response.getString("gameID");
-
-                    if (response.getString("dataIsRight").equals("yes")) {
-                        setGameSettings();
-                    } else {
-
-                        Toast.makeText(getApplicationContext(), " data is right=no ,sth went wrong..."
-                                , Toast.LENGTH_SHORT).show();
-                        newSinglePlayerGame();
-                    }
-
-
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            "newSinglePlayerGame " + e.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "*newSinglePlayerGame**Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
     public void setGameSettings() {
-        HashMap<String, String> info = new HashMap<>();
 
-        info.put("action", "setGameSetting");
-        info.put("userID", id);
-        info.put("gameID", game_ID);
-        info.put("level", difficulty);
-        try {
-            info.put("categories", URLEncoder.encode(category, "utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
-        }
-
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-
-                    if (response.getString("dataIsRight").equals("yes")) {
-
-                        sendNextWord();
-
-                    } else {
-
-                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
-
-                    }
-
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "setGameSetting***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
+        if (functions.f_setGameSettings(id, game_ID, difficulty, category))
+            sendNextWord();
+        else
+            setGameSettings();
 
     }
 
