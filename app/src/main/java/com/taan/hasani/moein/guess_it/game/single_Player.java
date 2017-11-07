@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
+import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -55,6 +56,8 @@ public class single_Player extends AppCompatActivity {
     private int currentword_number;
     private int Toatalwords;//tedad
     private Functions_ functions;
+    private Player player;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class single_Player extends AppCompatActivity {
 
         functions = new Functions_(this);
 
+        player = new Player(this);
         Button next_word_bt = (Button) findViewById(R.id.next_word_bt);
         word_TextView = (TextView) findViewById(R.id.word);
         entered_word = (EditText) findViewById(R.id.enterd_word);
@@ -71,9 +75,6 @@ public class single_Player extends AppCompatActivity {
         totalScore_view = (TextView) findViewById(R.id.total_score);
         Button Help = (Button) findViewById(R.id.help_bt);
         wordnumber = (TextView) findViewById(R.id.wordnumber);
-
-        prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        id = prefs.getString("userID", null);
 
         //difficaulty va category va type ro az activity ghabl migirad
         Bundle bundle = getIntent().getExtras();
@@ -330,6 +331,8 @@ public class single_Player extends AppCompatActivity {
         number_of_trueGuess = 0;
         Total_gamescore = 0;
         totalScore_view.setText("Total score : " + String.valueOf(0));
+
+        id = player.getId();
 
         functions.f_newSinglePlayerGame(id, type);
 

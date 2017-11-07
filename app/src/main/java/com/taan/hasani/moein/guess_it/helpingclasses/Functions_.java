@@ -35,7 +35,6 @@ public class Functions_ {
 
     public void f_newSinglePlayerGame(final String id, final String type) {
 
-
         final HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "newGame");
@@ -52,9 +51,6 @@ public class Functions_ {
             public void onResponse(JSONObject response) {
 
                 try {
-
-                    //    Toast.makeText(getApplicationContext(),
-                    //          response.toString(), Toast.LENGTH_LONG).show();
 
                     if (response.getString("dataIsRight").equals("yes")) {
 
@@ -116,7 +112,7 @@ public class Functions_ {
 
                     } else {
 
-                        Toast.makeText(activity, response.toString(),
+                        Toast.makeText(activity, "settings ***" + response.toString(),
                                 Toast.LENGTH_LONG).show();
 
                         gameset_flag = false;
