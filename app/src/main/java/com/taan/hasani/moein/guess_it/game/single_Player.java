@@ -1,6 +1,7 @@
 package com.taan.hasani.moein.guess_it.game;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -8,7 +9,9 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,25 +23,26 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
-import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class single_Player extends AppCompatActivity {
 
     private EditText entered_word;
+    private Button Edit;
     private int number_of_trueGuess;
     private TextView word_TextView, timer;
     private String MY_PREFS_NAME = "username and password";
     private int Total_gamescore = 0;
     private ArrayList<Integer> indexlist_of_questionmarks = new ArrayList<>();
-    private String incompleteWord, id, completeWord, game_ID = "test",
+    private String incompleteWord, id, completeWord, game_ID,
             url = "http://online6732.tk/guessIt.php";
     private TextView totalScore_view;
     private SharedPreferences prefs;
@@ -55,18 +59,12 @@ public class single_Player extends AppCompatActivity {
     private boolean inGame = true;//baraye inke agar az bazi kharej shodim dg request nade
     private int currentword_number;
     private int Toatalwords;//tedad
-    private Functions_ functions;
-    private Player player;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_player);
 
-        functions = new Functions_(this);
-
-        player = new Player(this);
         Button next_word_bt = (Button) findViewById(R.id.next_word_bt);
         word_TextView = (TextView) findViewById(R.id.word);
         entered_word = (EditText) findViewById(R.id.enterd_word);
@@ -74,7 +72,11 @@ public class single_Player extends AppCompatActivity {
         timer = (TextView) findViewById(R.id.timer);
         totalScore_view = (TextView) findViewById(R.id.total_score);
         Button Help = (Button) findViewById(R.id.help_bt);
+        Edit = (Button) findViewById(R.id.edit);//**************
         wordnumber = (TextView) findViewById(R.id.wordnumber);
+
+        prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        id = prefs.getString("userID", null);
 
         //difficaulty va category va type ro az activity ghabl migirad
         Bundle bundle = getIntent().getExtras();
@@ -162,11 +164,60 @@ public class single_Player extends AppCompatActivity {
             }
         });
 
+        timer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor();
+            }
+        });
+
     }
 
-    public void nextWord_func() {
-        //didItOnce = false;
+    //*****************************
+    private void editor() {
 
+        countDownTimer.cancel();
+        word_TextView.setText(completeWord);
+
+        Edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                HashMap<String, String> info = new HashMap<>();
+
+                /////////////////////////
+                info.put("action", "addWordToWordsDatabase");
+                info.put("word", entered_word.getText().toString());
+                info.put("userID", id);
+                /////////////////////////
+
+                JSONObject jsonObject = new JSONObject(info);
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                        url, jsonObject, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Toast.makeText(getApplicationContext(),
+                                "word added successfully !", Toast.LENGTH_LONG).show();
+
+                    }
+
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),
+                                "addword***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+            }
+        });
+
+    }
+    //*****************************
+
+    public void nextWord_func() {
 
         totalScore_view.setText("Total score :" + Total_gamescore);
 
@@ -332,21 +383,111 @@ public class single_Player extends AppCompatActivity {
         Total_gamescore = 0;
         totalScore_view.setText("Total score : " + String.valueOf(0));
 
-        id = player.getId();
+        //Functions gameclass = new Functions(context);
 
-        functions.f_newSinglePlayerGame(id, type);
+        HashMap<String, String> info = new HashMap<>();
 
-        game_ID = functions.getGame_ID();
+        info.put("action", "newGame");
+        info.put("mode", "singlePlayer");
+        info.put("userID", id);
+        info.put("type", type);
 
-        setGameSettings();
+        //game_ID=Functions.newSinglePlayerGame(info);
 
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    //    Toast.makeText(getApplicationContext(),
+                    //          response.toString(), Toast.LENGTH_LONG).show();
+                    game_ID = response.getString("gameID");
+
+                    if (response.getString("dataIsRight").equals("yes")) {
+                        setGameSettings();
+                    } else {
+
+                        Toast.makeText(getApplicationContext(), " data is right=no ,sth went wrong..."
+                                , Toast.LENGTH_SHORT).show();
+                        newSinglePlayerGame();
+                    }
+
+
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(),
+                            "newSinglePlayerGame " + e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),
+                        "*newSinglePlayerGame**Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
     public void setGameSettings() {
 
-        functions.f_setGameSettings(id, game_ID, difficulty, category);
 
-        sendNextWord();
+        HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "setGameSetting");
+        info.put("userID", id);
+        info.put("gameID", game_ID);
+        info.put("level", difficulty);
+        try {
+            info.put("categories", URLEncoder.encode(category, "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
+        }
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    if (response.getString("dataIsRight").equals("yes")) {
+
+                        sendNextWord();
+
+                    } else {
+
+                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+
+                    }
+
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(),
+                            e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),
+                        "setGameSetting***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+
     }
 
     public void sendNextWord() {
@@ -354,18 +495,15 @@ public class single_Player extends AppCompatActivity {
         if (inGame) {
 
             currentword_number++;
-            ////////////////////
-            if (currentword_number == 14)
-                wordnumber.setText(13 + "/" + Toatalwords);
+////////////////////////////////////////////////////////////////////////////////
+            if (currentword_number == Toatalwords + 1)
+                wordnumber.setText(Toatalwords + "/" + Toatalwords);
             else
                 wordnumber.setText(currentword_number + "/" + Toatalwords);
-            ////////////////////
-
+////////////////////////////////////////////////////////////////////////////////
             indexlist_of_questionmarks.clear();
 
             arraylist_i = 0;
-
-//            totalWords_number++;
 
             HashMap<String, String> info = new HashMap<>();
 
@@ -374,9 +512,8 @@ public class single_Player extends AppCompatActivity {
             info.put("userID", id);
 
             word_TextView.setText("");
-            //message.setText("");
-            incompleteWord = "";//intialize bekhatere getting_qmarks_index()
 
+            incompleteWord = "";//intialize bekhatere getting_qmarks_index()
 
             JSONObject jsonObject = new JSONObject(info);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -569,6 +706,36 @@ public class single_Player extends AppCompatActivity {
 
         dialog.show();
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        //  super.onBackPressed();
+
+        AlertDialog.Builder alertDialogBuilder =
+                new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
+        alertDialogBuilder.setTitle("ترک بازی");
+        alertDialogBuilder
+                .setMessage("آیا میخواهید از بازی را ترک کنید ؟")
+                .setCancelable(false)
+                .setPositiveButton("بلی", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        finish();
+
+                    }
+                })
+                .setNegativeButton("خیر", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+
+                    }
+                });
+
+        alertDialogBuilder.setIcon(R.drawable.logout);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
 
     }
 

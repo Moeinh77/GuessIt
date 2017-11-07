@@ -41,6 +41,8 @@
 
         <activity
             android:name="com.taan.hasani.moein.guess_it.game_menu.Main_menu"
+            android:windowSoftInputMode="adjustPan"
+
             android:theme="@style/MyMaterialTheme2"
             android:screenOrientation="portrait" />
 
