@@ -20,18 +20,105 @@ import java.util.HashMap;
 public class Functions_ {
 
     private String url = "http://online6732.tk/guessIt.php";
-    private String game_ID;
     private Boolean gameset_flag;
     private Activity activity;
+
+    private Player player;
 
     public Functions_(Activity activity) {
 
         this.activity = activity;
+        player = new Player(activity);
+
     }
 
-    public String getGame_ID() {
-        return game_ID;
+    // public String getGame_ID() {
+//        return game_ID;
+//    }
+
+
+    public void addWordtoDB(String new_incompleteWord
+            , JSONObject recievedWord_Jsonobj) {
+
+        HashMap<String, String> info = new HashMap<>();
+
+        JSONObject edited_wordobj = recievedWord_Jsonobj;
+
+
+        try {
+            edited_wordobj.put("incompleteWord", new_incompleteWord);
+            info.put("word", edited_wordobj.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        /////////////////////////
+        info.put("action", "addWordToWordsDatabase");
+        info.put("userID", player.getId());
+        /////////////////////////
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Toast.makeText(activity,
+                        "word added successfully !", Toast.LENGTH_LONG).show();
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activity,
+                        "addword***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
+
+    public void setAnswer(String game_ID, String entered_word, String player_time,
+                          String player_score) {
+
+        HashMap<String, String> info = new HashMap<>();
+        HashMap<String, String> answer_hashmap = new HashMap<>();
+        /////////////////////////
+        answer_hashmap.put("time", player_time);
+        answer_hashmap.put("score", player_score);
+        answer_hashmap.put("answer", entered_word);
+
+        JSONObject answer = new JSONObject(answer_hashmap);
+
+        /////////////////////////
+        info.put("action", "setAnswer");
+        info.put("gameID", game_ID);
+        info.put("userID", player.getId());
+        info.put("answer", answer.toString());
+        /////////////////////////
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                //  Toast.makeText(getApplicationContext(),
+                //         "setAnswer response  :" + response.toString(), Toast.LENGTH_LONG).show();
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activity,
+                        "setAnswer***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+    }
+
 
     public void f_newSinglePlayerGame(final String id, final String type) {
 
@@ -54,7 +141,7 @@ public class Functions_ {
 
                     if (response.getString("dataIsRight").equals("yes")) {
 
-                        game_ID = response.getString("gameID");
+                        //game_ID = response.getString("gameID");
 
                     } else {
 

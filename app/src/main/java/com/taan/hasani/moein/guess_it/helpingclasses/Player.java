@@ -41,13 +41,26 @@ public class Player {
     //agar jaee lazem shod mishe az inja avord choon public e
 
     private String username;
+
+
+    private String accountType;
     private String password;
     private String id;
     private String name;//@@@@@dakhele user info dare meghdar dehi mishe
     private String MY_PREFS_NAME = "username and password";
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
+    private int Highscore;
 
+    public int getHighscore() {
+        Highscore = prefs.getInt("HighScore", 0);
+        return Highscore;
+    }
+
+    public void setHighscore(int highscore) {
+        editor.putInt("HighScore", highscore);
+        editor.apply();
+    }
 
     public Player(Activity activity_) {
         this.activity = activity_;
@@ -59,6 +72,16 @@ public class Player {
         name = prefs.getString("name", null);
 
 
+    }
+
+    public String getAccountType() {
+        accountType = prefs.getString("accountType", null);
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        editor.putString("accountType", accountType);
+        editor.apply();
     }
 
     public void setUsername(String username) {

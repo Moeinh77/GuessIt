@@ -23,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
+import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
+import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -39,7 +41,6 @@ public class single_Player extends AppCompatActivity {
     private Button Edit;
     private int number_of_trueGuess;
     private TextView word_TextView, timer;
-    private String MY_PREFS_NAME = "username and password";
     private int Total_gamescore = 0;
     private ArrayList<Integer> indexlist_of_questionmarks = new ArrayList<>();
     private String incompleteWord, id, completeWord, game_ID,
@@ -59,12 +60,17 @@ public class single_Player extends AppCompatActivity {
     private boolean inGame = true;//baraye inke agar az bazi kharej shodim dg request nade
     private int currentword_number;
     private int Toatalwords;//tedad
+    private JSONObject recievedWord_Jsonobj;
+    private Functions_ functions;
+    private Player player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_player);
 
+        player = new Player(this);
+        functions = new Functions_(this);
         Button next_word_bt = (Button) findViewById(R.id.next_word_bt);
         word_TextView = (TextView) findViewById(R.id.word);
         entered_word = (EditText) findViewById(R.id.enterd_word);
@@ -75,8 +81,7 @@ public class single_Player extends AppCompatActivity {
         Edit = (Button) findViewById(R.id.edit);//**************
         wordnumber = (TextView) findViewById(R.id.wordnumber);
 
-        prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        id = prefs.getString("userID", null);
+        id = player.getId();
 
         //difficaulty va category va type ro az activity ghabl migirad
         Bundle bundle = getIntent().getExtras();
@@ -119,7 +124,8 @@ public class single_Player extends AppCompatActivity {
 
                         Total_gamescore += Integer.parseInt(Player_score);//showing total score for game ending
 
-                        setAnswer(entered_word.getText().toString(),
+                        //setAnswer*******
+                        functions.setAnswer(game_ID, entered_word.getText().toString(),
                                 Player_time, Player_score);
 
                         Snackbar.make(findViewById(R.id.singlePlayerActivity), "Congratulations !!! Your guess was RIGHT !"
@@ -144,23 +150,14 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // didItOnce = false;
-
-                //  message.setVisibility(View.INVISIBLE);
-
                 totalScore_view.setText("Total score :" + Total_gamescore);
 
                 entered_word.setText("");
 
-                //    if (flag__nextWord_Timer.equals("yes")) {
-
                 countDownTimer.cancel();
-
-                //  } else {
 
                 sendNextWord();
 
-                //  }
             }
         });
 
@@ -182,39 +179,12 @@ public class single_Player extends AppCompatActivity {
         Edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                HashMap<String, String> info = new HashMap<>();
-
-                /////////////////////////
-                info.put("action", "addWordToWordsDatabase");
-                info.put("word", entered_word.getText().toString());
-                info.put("userID", id);
-                /////////////////////////
-
-                JSONObject jsonObject = new JSONObject(info);
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                        url, jsonObject, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        Toast.makeText(getApplicationContext(),
-                                "word added successfully !", Toast.LENGTH_LONG).show();
-
-                    }
-
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),
-                                "addword***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                });
-
-                AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+                functions.addWordtoDB(entered_word.getText().toString()
+                        , recievedWord_Jsonobj);
             }
         });
-
     }
+
     //*****************************
 
     public void nextWord_func() {
@@ -527,13 +497,16 @@ public class single_Player extends AppCompatActivity {
 
                             if (!response.getJSONObject("word").getString("word").equals("outOfWords"))//agar be outofwords nareside bood
                             {
+
+                                recievedWord_Jsonobj = response.getJSONObject("word");
+
                                 flag__nextWord_Timer = "yes";
 
-                                incompleteWord = response.getJSONObject("word").getString("incompleteWord");
+                                incompleteWord = recievedWord_Jsonobj.getString("incompleteWord");
 
-                                completeWord = response.getJSONObject("word").getString("word");
+                                completeWord = recievedWord_Jsonobj.getString("word");
 
-                                recivedTime = response.getJSONObject("word").getString("time");
+                                recivedTime = recievedWord_Jsonobj.getString("time");
 
                                 word_TextView.setText(incompleteWord);
 
@@ -598,48 +571,6 @@ public class single_Player extends AppCompatActivity {
 
     }
 
-    public void setAnswer(String entered_word, String player_time,
-                          String player_score) {
-
-        HashMap<String, String> info = new HashMap<>();
-        HashMap<String, String> answer_hashmap = new HashMap<>();
-        /////////////////////////
-        answer_hashmap.put("time", player_time);
-        answer_hashmap.put("score", player_score);
-        answer_hashmap.put("answer", entered_word);
-
-        JSONObject answer = new JSONObject(answer_hashmap);
-
-        /////////////////////////
-        info.put("action", "setAnswer");
-        info.put("gameID", game_ID);
-        info.put("userID", id);
-        info.put("answer", answer.toString());
-        /////////////////////////
-
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                //  Toast.makeText(getApplicationContext(),
-                //         "setAnswer response  :" + response.toString(), Toast.LENGTH_LONG).show();
-
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "setAnswer***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-    }
-
-
     public void alert_dialog_function_game_end() {
 
         countDownTimer.cancel();
@@ -661,16 +592,12 @@ public class single_Player extends AppCompatActivity {
         String endgame_score = String.valueOf(Total_gamescore);
         yourscore_gameEnd.setText(endgame_score);
 
-        int highscore = prefs.getInt("HighScore", 0);//gereftane higscore
 
         //dar soorat zadane highscore jadid
-        if (Total_gamescore > highscore) {
+        if (Total_gamescore > player.getHighscore()) {
 
             //save kardane highscore e jadid
-            SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME
-                    , MODE_PRIVATE).edit();
-            editor.putInt("HighScore", Total_gamescore);
-            editor.apply();
+            player.setHighscore(Total_gamescore);
             //////////////////////////////////
 
             newHighScore_view.setVisibility(View.VISIBLE);//neshan dadan payame highscore
