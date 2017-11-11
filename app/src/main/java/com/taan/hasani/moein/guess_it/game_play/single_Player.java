@@ -185,7 +185,7 @@ public class single_Player extends AppCompatActivity {
         Edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                functions.addWordtoDB(entered_word.getText().toString()
+                functions.addWordtoDB(completeWord, entered_word.getText().toString()
                         , recievedWord_Jsonobj);
             }
         });

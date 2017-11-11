@@ -37,13 +37,14 @@ public class Functions_ {
 //    }
 
 
-    public void addWordtoDB(String new_incompleteWord
+    public void addWordtoDB(String completeWord, String new_incompleteWord
             , JSONObject recievedWord_Jsonobj) {
 
         HashMap<String, String> info = new HashMap<>();
 
         try {
             recievedWord_Jsonobj.put("incompleteWord", new_incompleteWord);
+            recievedWord_Jsonobj.put("word", completeWord);
             info.put("word", recievedWord_Jsonobj.toString());
             Toast.makeText(activity, recievedWord_Jsonobj.toString(), Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
