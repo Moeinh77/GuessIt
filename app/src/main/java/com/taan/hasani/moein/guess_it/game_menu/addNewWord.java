@@ -23,16 +23,17 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
 
     private String category;
     JSONObject word_;
+    Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_word);
+        spinner = (Spinner) findViewById(R.id.spinner);
 
         spinner_menu();
 
         final Functions_ functions_ = new Functions_(this);
-        final Player player = new Player(this);
         Button send = (Button) findViewById(R.id.send);
         final EditText completeWord = (EditText) findViewById(R.id.completeword);
         final EditText incompleteWord = (EditText) findViewById(R.id.incompleteword);
@@ -61,10 +62,7 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
 
     private void spinner_menu() {
 
-
 // Spinner element
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-
         // Spinner click listener
         spinner.setOnItemSelectedListener(this);
 
@@ -94,7 +92,7 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
         category = parent.getItemAtPosition(position).toString();
 
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + category, Toast.LENGTH_LONG).show();
+        //  Toast.makeText(parent.getContext(), "Selected: " + category, Toast.LENGTH_LONG).show();
     }
 
     public void onNothingSelected(AdapterView<?> arg0) {
