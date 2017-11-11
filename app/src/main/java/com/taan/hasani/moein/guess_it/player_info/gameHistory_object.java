@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.guess_it.profile;
+package com.taan.hasani.moein.guess_it.player_info;
 
 /**
  * Created by Moein on 9/27/2017.

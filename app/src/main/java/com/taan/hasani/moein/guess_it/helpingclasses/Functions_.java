@@ -42,17 +42,15 @@ public class Functions_ {
 
         HashMap<String, String> info = new HashMap<>();
 
-        JSONObject edited_wordobj = recievedWord_Jsonobj;
-
-
         try {
-            edited_wordobj.put("incompleteWord", new_incompleteWord);
-            info.put("word", edited_wordobj.toString());
+            recievedWord_Jsonobj.put("incompleteWord", new_incompleteWord);
+            info.put("word", recievedWord_Jsonobj.toString());
+            Toast.makeText(activity, recievedWord_Jsonobj.toString(), Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         /////////////////////////
-        info.put("action", "addWordToWordsDatabase");
+        info.put("action", "addWord");
         info.put("userID", player.getId());
         /////////////////////////
 

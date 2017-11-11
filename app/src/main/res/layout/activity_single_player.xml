@@ -140,7 +140,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="8dp"
+        android:backgroundTint="@android:color/holo_orange_light"
         android:text="edit"
+        android:textColor="@android:color/black"
         app:layout_constraintBaseline_toBaselineOf="@+id/check"
         app:layout_constraintLeft_toRightOf="@+id/check"
         app:layout_constraintRight_toRightOf="parent" />

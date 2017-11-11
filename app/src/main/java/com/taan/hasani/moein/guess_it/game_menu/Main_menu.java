@@ -2,46 +2,40 @@ package com.taan.hasani.moein.guess_it.game_menu;
 
 import android.app.Dialog;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.Leader_board.leader_board_fragment;
-import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.game.choosing_games_fragment;
-import com.taan.hasani.moein.guess_it.profile.gameHistory_list;
-import com.taan.hasani.moein.guess_it.profile.account_settings_and_info;
+import com.taan.hasani.moein.guess_it.game_play.choosing_games_fragment;
+import com.taan.hasani.moein.guess_it.helpingclasses.Player;
+import com.taan.hasani.moein.guess_it.player_info.gameHistory_list;
+import com.taan.hasani.moein.guess_it.player_info.account_settings_and_info;
 import com.taan.hasani.moein.volley.R;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Main_menu extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewpager;
+    private Player player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-
+        player = new Player(this);
         ////////////////////////
 
         viewpager = (ViewPager) findViewById(R.id.viewpager_mainmenu);
@@ -59,7 +53,25 @@ public class Main_menu extends AppCompatActivity {
         viewpager.setCurrentItem(2);//baraye ijad e tab e default
     }
 
-    ///////////////////////
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.add:
+                startActivity(new Intent(this, addNewWord.class));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     public void alert_dialog_function() {
 
@@ -144,48 +156,7 @@ public class Main_menu extends AppCompatActivity {
     @Override
     protected void onDestroy() {
 
-        SharedPreferences prefs = getSharedPreferences("username and password", MODE_PRIVATE);
-        String id = prefs.getString("userID", null);
-
-        final HashMap<String, String> info = new HashMap<>();
-        final String url = "http://online6732.tk/guessIt.php";
-
-        info.put("action", "logout");
-        info.put("userID", id);
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    if (response.getString("dataIsRight").equals("yes")) {
-
-                        Log.v("", response.getString("dataIsRight"));
-
-                        Toast.makeText(getApplicationContext(),
-                                "Logged out successfully ", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(),
-                                "There was error in logging out...", Toast.LENGTH_LONG).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "There was error in logging out...", Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
+        player.onAppExit();
         super.onDestroy();
 
     }

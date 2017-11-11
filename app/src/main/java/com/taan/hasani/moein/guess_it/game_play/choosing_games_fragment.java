@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.guess_it.game;
+package com.taan.hasani.moein.guess_it.game_play;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -3,6 +3,7 @@ package com.taan.hasani.moein.guess_it.helpingclasses;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,10 +13,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login;
-import com.taan.hasani.moein.guess_it.game_menu.Loading;
-import com.taan.hasani.moein.guess_it.game_menu.Login;
 import com.taan.hasani.moein.guess_it.game_menu.Main_menu;
-import com.taan.hasani.moein.guess_it.profile.gameHistory_object;
+import com.taan.hasani.moein.guess_it.player_info.gameHistory_object;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.taan.hasani.moein.volley.R.id.message;
 
 
 /**
@@ -43,7 +41,7 @@ public class Player {
     private String username;
 
 
-    private String accountType;
+    private String role;
     private String password;
     private String id;
     private String name;//@@@@@dakhele user info dare meghdar dehi mishe
@@ -52,15 +50,6 @@ public class Player {
     private SharedPreferences.Editor editor;
     private int Highscore;
 
-    public int getHighscore() {
-        Highscore = prefs.getInt("HighScore", 0);
-        return Highscore;
-    }
-
-    public void setHighscore(int highscore) {
-        editor.putInt("HighScore", highscore);
-        editor.apply();
-    }
 
     public Player(Activity activity_) {
         this.activity = activity_;
@@ -74,13 +63,56 @@ public class Player {
 
     }
 
-    public String getAccountType() {
-        accountType = prefs.getString("accountType", null);
-        return accountType;
+    //hargah inra seda konim etelaat ro az server migire mirize too pref
+    public void getUserInfo() {
+
+        HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "sendUserInformation");
+        info.put("userID", id);
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    //Toast.makeText(activity, response.toString(), Toast.LENGTH_SHORT).show();
+
+                    String name = new String(response.getString("name").getBytes("ISO-8859-1"), "UTF-8");
+                    String username = new String(response.getString("username").getBytes("ISO-8859-1"), "UTF-8");
+                    String password = new String(response.getString("password").getBytes("ISO-8859-1"), "UTF-8");
+                    String id = new String(response.getString("id").getBytes("ISO-8859-1"), "UTF-8");
+                    String acc_type = new String(response.getString("role").getBytes("ISO-8859-1"), "UTF-8");
+
+                    setName(name);
+                    setId(id);
+                    setPassword(password);
+                    setUsername(username);
+                    setrole(acc_type);
+
+                } catch (JSONException e) {
+                    Toast.makeText(activity.getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                } catch (UnsupportedEncodingException e) {
+                    Toast.makeText(activity.getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activity.getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
     }
 
-    public void setAccountType(String accountType) {
-        editor.putString("accountType", accountType);
+    public void setrole(String role) {
+        editor.putString("role", role);
         editor.apply();
     }
 
@@ -105,6 +137,22 @@ public class Player {
         editor.putString("name", name);
         editor.apply();
 
+    }
+
+    ////////////////////////////////////////////////////////////
+    public int getHighscore() {
+        Highscore = prefs.getInt("HighScore", 0);
+        return Highscore;
+    }
+
+    public void setHighscore(int highscore) {
+        editor.putInt("HighScore", highscore);
+        editor.apply();
+    }
+
+    public String getrole() {
+        role = prefs.getString("role", null);
+        return role;
     }
 
     public String getName() {
@@ -150,8 +198,14 @@ public class Player {
                     //         response.toString(),Toast.LENGTH_LONG).show();
                     if (response.getString("dataIsRight").equals("yes")) {
 
-                        String id = response.getString("userID");
-                        String name = response.getString("name");
+                        String user = response.getString("user");
+                        JSONObject userObject = new JSONObject(user);
+
+                        //naghshe user
+                        setrole(userObject.getString("role"));
+
+                        String id = userObject.getString("id");
+                        String name = userObject.getString("name");
 
                         setName(name);
                         setId(id);
@@ -209,6 +263,7 @@ public class Player {
                         editor.putString("userID", null);
                         editor.putString("name", null);
                         editor.putInt("HighScore", 0);
+                        editor.putString("role", null);
                         editor.apply();
 
                         Intent intent = new Intent(activity, Entrance_signup_login.class);
@@ -239,7 +294,6 @@ public class Player {
 
 
     }
-
 
     public void change_password_func(String Entered_oldpass,
                                      final String Entered_newpass,
@@ -351,7 +405,6 @@ public class Player {
 
     }
 
-
     public void app_reopening() {
 
         final HashMap<String, String> info = new HashMap<>();
@@ -362,7 +415,7 @@ public class Player {
         info.put("username", getUsername());
         info.put("password", getPassword());
 
-        JSONObject jsonObject = new JSONObject(info);
+        final JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
@@ -372,6 +425,13 @@ public class Player {
 
                     if (response.getString("dataIsRight").equals("yes")) {
 
+                        String user = response.getString("user");
+                        JSONObject jsonObject1 = new JSONObject(user);
+
+                        //naghshe user
+                        setrole(jsonObject1.getString("role"));
+
+                        //Toast.makeText(activity, response.toString(), Toast.LENGTH_SHORT).show();
 
                         Toast.makeText(activity, "Welcome " + getUsername(), Toast.LENGTH_LONG).show();
 
@@ -380,7 +440,7 @@ public class Player {
                         activity.finish();
                     } else {
                         Toast.makeText(activity,
-                                "Error in login", Toast.LENGTH_LONG).show();
+                                "خطا در ورود به حساب", Toast.LENGTH_LONG).show();
                         activity.finish();
                     }
 
@@ -396,13 +456,57 @@ public class Player {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(activity,
-                        "No internet connection found ...", Toast.LENGTH_LONG).show();
+                        "ارتباط با اینترنت پیدا نشد ...", Toast.LENGTH_LONG).show();
                 activity.finish();
 
             }
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    public void onAppExit() {
+
+
+        final HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "logout");
+        info.put("userID", id);
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (response.getString("dataIsRight").equals("yes")) {
+
+                        Log.v("", response.getString("dataIsRight"));
+
+                        Toast.makeText(activity,
+                                "Logged out successfully ", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(activity,
+                                "There was error in logging out...", Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activity,
+                        "There was error in logging out...", Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
 
     }
 
@@ -470,51 +574,6 @@ public class Player {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
         return scoreList;
-    }
-
-
-    //hargah inra seda konim etelaat ro az server migire mirize too pref
-    private void getUserInfo() {
-
-        HashMap<String, String> info = new HashMap<>();
-
-        info.put("action", "sendUserInformation");
-        info.put("userID", id);
-
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-
-                    String name = new String(response.getString("name").getBytes("ISO-8859-1"), "UTF-8");
-                    String username = new String(response.getString("username").getBytes("ISO-8859-1"), "UTF-8");
-                    String password = new String(response.getString("password").getBytes("ISO-8859-1"), "UTF-8");
-                    String id = new String(response.getString("id").getBytes("ISO-8859-1"), "UTF-8");
-
-                    setName(name);
-                    setId(id);
-                    setPassword(password);
-                    setUsername(username);
-
-                } catch (JSONException e) {
-                    Toast.makeText(activity.getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                } catch (UnsupportedEncodingException e) {
-                    Toast.makeText(activity.getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activity.getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
     }
 
 }

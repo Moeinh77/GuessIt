@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.guess_it.game;
+package com.taan.hasani.moein.guess_it.game_play;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -78,7 +78,10 @@ public class single_Player extends AppCompatActivity {
         timer = (TextView) findViewById(R.id.timer);
         totalScore_view = (TextView) findViewById(R.id.total_score);
         Button Help = (Button) findViewById(R.id.help_bt);
+
         Edit = (Button) findViewById(R.id.edit);//**************
+        Edit.setVisibility(View.INVISIBLE);
+
         wordnumber = (TextView) findViewById(R.id.wordnumber);
 
         id = player.getId();
@@ -172,6 +175,9 @@ public class single_Player extends AppCompatActivity {
 
     //*****************************
     private void editor() {
+
+        if (player.getrole().equals("admin"))
+            Edit.setVisibility(View.VISIBLE);
 
         countDownTimer.cancel();
         word_TextView.setText(completeWord);
@@ -495,7 +501,10 @@ public class single_Player extends AppCompatActivity {
 
                         if (response.getString("dataIsRight").equals("yes")) {
 
-                            if (!response.getJSONObject("word").getString("word").equals("outOfWords"))//agar be outofwords nareside bood
+                            Boolean lastWordCheck = response.getJSONObject("word")
+                                    .getString("word").equals("outOfWords");
+
+                            if (!lastWordCheck)//agar be outofwords nareside bood
                             {
 
                                 recievedWord_Jsonobj = response.getJSONObject("word");

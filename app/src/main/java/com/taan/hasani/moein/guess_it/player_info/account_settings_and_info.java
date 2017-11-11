@@ -1,8 +1,6 @@
-package com.taan.hasani.moein.guess_it.profile;
+package com.taan.hasani.moein.guess_it.player_info;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -22,33 +20,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 public class account_settings_and_info extends Fragment {
 
-    String url = "http://online6732.tk/guessIt.php";
     String profilePicture;
     TextView name_textview;
     EditText username_edittext;
     Button logout, Edit_username_bt;
     private EditText old_password, new_password, repeat_password;
-    private final String MY_PREFS_NAME = "username and password";
     private ImageView profile_pic;
     private Player player;
 
@@ -142,7 +124,7 @@ public class account_settings_and_info extends Fragment {
     }
 
     ////////////////////////////////////////////////////
-    public Bitmap getRoundedBitmap(Bitmap bitmap) {
+    private Bitmap getRoundedBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);

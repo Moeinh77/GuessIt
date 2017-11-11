@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.taan.hasani.moein.guess_it.game.two_player"
+    tools:context="com.taan.hasani.moein.guess_it.game_play.two_player"
     android:id="@+id/twoPlayerActivity">
 
     <TextView

@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.guess_it.game;
+package com.taan.hasani.moein.guess_it.game_play;
 
 import android.app.Dialog;
 import android.content.SharedPreferences;
