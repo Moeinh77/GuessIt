@@ -1,7 +1,6 @@
 package com.taan.hasani.moein.guess_it.game_menu;
 
 import android.app.Dialog;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -14,12 +13,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.taan.hasani.moein.guess_it.Leader_board.leader_board_fragment;
 import com.taan.hasani.moein.guess_it.game_play.choosing_games_fragment;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
-import com.taan.hasani.moein.guess_it.player_info.gameHistory_list;
 import com.taan.hasani.moein.guess_it.player_info.account_settings_and_info;
+import com.taan.hasani.moein.guess_it.player_info.gameHistory_list;
 import com.taan.hasani.moein.volley.R;
 
 import java.util.ArrayList;
@@ -63,14 +63,22 @@ public class Main_menu extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.add:
-                startActivity(new Intent(this, addNewWord.class));
-                return true;
+        if (player.getrole().equals("admin")) {
 
-            default:
-                return super.onOptionsItemSelected(item);
+            switch (item.getItemId()) {
+                case R.id.add:
+                    startActivity(new Intent(this, addNewWord.class));
+                    return true;
+
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        } else {
+
+            Toast.makeText(getApplicationContext(), "متاسفانه اجازه دسترسی به این قسمت را ندارید...",
+                    Toast.LENGTH_LONG).show();
         }
+        return false;
     }
 
     public void alert_dialog_function() {

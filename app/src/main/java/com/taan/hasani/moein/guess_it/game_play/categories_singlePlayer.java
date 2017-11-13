@@ -13,25 +13,25 @@ import com.taan.hasani.moein.volley.R;
 
 public class categories_singlePlayer extends AppCompatActivity {
 
-    Button varzeshi, english, bazigar, film;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
 
-        varzeshi = (Button) findViewById(R.id.varzeshi);
-        english = (Button) findViewById(R.id.english);
-        bazigar = (Button) findViewById(R.id.bazigar);
-        film = (Button) findViewById(R.id.film);
+        Button varzeshi = (Button) findViewById(R.id.varzeshi);
+        Button english = (Button) findViewById(R.id.english);
+        Button bazigar = (Button) findViewById(R.id.bazigar);
+        Button film = (Button) findViewById(R.id.film);
+        Button music_per = (Button) findViewById(R.id.moosighi_irani);
+        Button music_english = (Button) findViewById(R.id.moosighi_khareji);
+
 
         //////////////////////////
         varzeshi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                alert_dialog_function("1");
+                alert_dialog_function("ورزشی");
 
             }
         });
@@ -40,7 +40,7 @@ public class categories_singlePlayer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                alert_dialog_function("2");
+                alert_dialog_function("انگلیسی");
 
             }
         });
@@ -49,7 +49,7 @@ public class categories_singlePlayer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                alert_dialog_function("3");
+                alert_dialog_function("فیلم ایرانی");
 
             }
         });
@@ -58,12 +58,30 @@ public class categories_singlePlayer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                alert_dialog_function("4");
+                alert_dialog_function("بازیگر ایرانی");
 
             }
         });
         //////////////////////////
 
+        music_per.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alert_dialog_function("موسیقی ایرانی");
+
+            }
+        });
+        //////////////////////////
+
+        music_english.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alert_dialog_function("موسیقی خارجی");
+
+            }
+        });
     }
 
     public void alert_dialog_function(final String category) {

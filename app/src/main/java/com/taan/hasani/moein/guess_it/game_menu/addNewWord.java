@@ -11,7 +11,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
-import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -52,6 +51,9 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
                     functions_.addWordtoDB(completeWord.getText().toString(),
                             incompleteWord.getText().toString(), word_);
 
+                    completeWord.setText("");
+                    incompleteWord.setText("");
+
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "به نظر در وارد کردن کلمات اشتباهی کرده اید", Toast.LENGTH_LONG).show();
@@ -70,8 +72,8 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
         ArrayList<String> categories = new ArrayList<String>();
         categories.add("انگلیسی");
         categories.add("ورزشی");
-        categories.add("بازیگر");
-        categories.add("فیلم");
+        categories.add("بازیگر ایرانی");
+        categories.add("فیلم ایرانی");
         categories.add("موسیقی ایرانی");
         categories.add("موسیقی خارجی");
 

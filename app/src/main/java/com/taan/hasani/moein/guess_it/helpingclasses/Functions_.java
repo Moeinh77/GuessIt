@@ -37,7 +37,7 @@ public class Functions_ {
 //    }
 
 
-    public void addWordtoDB(String completeWord, String new_incompleteWord
+    public void addWordtoDB(final String completeWord, String new_incompleteWord
             , JSONObject recievedWord_Jsonobj) {
 
         HashMap<String, String> info = new HashMap<>();
@@ -46,7 +46,7 @@ public class Functions_ {
             recievedWord_Jsonobj.put("incompleteWord", new_incompleteWord);
             recievedWord_Jsonobj.put("word", completeWord);
             info.put("word", recievedWord_Jsonobj.toString());
-            Toast.makeText(activity, recievedWord_Jsonobj.toString(), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(activity, recievedWord_Jsonobj.toString(), Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,9 +60,11 @@ public class Functions_ {
                 url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+//                Toast.makeText(activity,
+//                       response.toString(), Toast.LENGTH_LONG).show();
 
                 Toast.makeText(activity,
-                        "word added successfully !", Toast.LENGTH_LONG).show();
+                        "\"" + completeWord + "\"" + "با موفقیت اضافه شد !", Toast.LENGTH_LONG).show();
 
             }
 

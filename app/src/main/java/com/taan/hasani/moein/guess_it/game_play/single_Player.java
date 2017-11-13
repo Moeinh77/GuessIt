@@ -46,7 +46,6 @@ public class single_Player extends AppCompatActivity {
     private String incompleteWord, id, completeWord, game_ID,
             url = "http://online6732.tk/guessIt.php";
     private TextView totalScore_view;
-    private SharedPreferences prefs;
     private CountDownTimer countDownTimer;
     private String category, flag__nextWord_Timer, difficulty, type, recivedTime;
     private int arraylist_i;//baraye gereftane index alamate soal az list
@@ -56,13 +55,13 @@ public class single_Player extends AppCompatActivity {
     private boolean Counter_started = false;//baraye inke agar ertebat ba net ghat shod moghe
     //khoorooj choon cancel vase timer darim age timer ro intialize nakrde bashim stopped working mide
 
-    //   private int totalWords_number = 0;
     private boolean inGame = true;//baraye inke agar az bazi kharej shodim dg request nade
     private int currentword_number;
     private int Toatalwords;//tedad
     private JSONObject recievedWord_Jsonobj;
     private Functions_ functions;
     private Player player;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +77,7 @@ public class single_Player extends AppCompatActivity {
         timer = (TextView) findViewById(R.id.timer);
         totalScore_view = (TextView) findViewById(R.id.total_score);
         Button Help = (Button) findViewById(R.id.help_bt);
+        textView = (TextView) findViewById(R.id.time_text);
 
         Edit = (Button) findViewById(R.id.edit);//**************
         Edit.setVisibility(View.INVISIBLE);
@@ -164,12 +164,6 @@ public class single_Player extends AppCompatActivity {
             }
         });
 
-        timer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor();
-            }
-        });
 
     }
 
@@ -421,11 +415,11 @@ public class single_Player extends AppCompatActivity {
         info.put("userID", id);
         info.put("gameID", game_ID);
         info.put("level", difficulty);
-        try {
-            info.put("categories", URLEncoder.encode(category, "utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
-        }
+        // try {
+        info.put("categories", category);
+//        } catch (UnsupportedEncodingException e) {
+//            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
+//        }
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -467,6 +461,21 @@ public class single_Player extends AppCompatActivity {
     }
 
     public void sendNextWord() {
+
+
+        timer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor();
+            }
+        });
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor();
+            }
+        });
 
         if (inGame) {
 
