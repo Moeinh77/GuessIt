@@ -462,7 +462,6 @@ public class single_Player extends AppCompatActivity {
 
     public void sendNextWord() {
 
-
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
