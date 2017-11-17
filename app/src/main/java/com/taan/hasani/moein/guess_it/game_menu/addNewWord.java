@@ -55,6 +55,8 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
 
                     complete_word = completeWord_view.getText().toString();
                     incomplete_word = incompleteWord_view.getText().toString();
+
+                    //montabegh kardane alamate soal ba zaban******
                     ////////////////////////////////////////////////////
                     if (!complete_word.matches("[A-Za-z]+?")) {
 
@@ -68,9 +70,9 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
 
                         for (int i = 0; i < indexlist_of_questionmarks.size(); i++) {
 
-                            Toast.makeText(getApplicationContext(),
-                                    String.valueOf(indexlist_of_questionmarks.get(i)),
-                                    Toast.LENGTH_LONG).show();
+                            //  Toast.makeText(getApplicationContext(),
+                            //        String.valueOf(indexlist_of_questionmarks.get(i)),
+                            // Toast.LENGTH_LONG).show();
                             stringBuilder.setCharAt(indexlist_of_questionmarks.get(i), '؟');
 
                         }
@@ -78,17 +80,11 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
                         incomplete_word = stringBuilder.toString();
 
                         ////////////////////////////////////////////////////
-                        Toast.makeText(getApplicationContext(),
-                                "not English", Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(getApplicationContext(),
+                        //         "not English", Toast.LENGTH_SHORT).show();
 
-
-                    } else {
-
-                        Toast.makeText(getApplicationContext(),
-                                "English", Toast.LENGTH_SHORT).show();
 
                     }
-
 
                     functions_.addWordtoDB(complete_word,
                             incomplete_word, word_obj);
