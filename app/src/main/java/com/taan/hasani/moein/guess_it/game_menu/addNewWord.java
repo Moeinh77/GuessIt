@@ -1,7 +1,9 @@
 package com.taan.hasani.moein.guess_it.game_menu;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,8 +23,10 @@ import java.util.ArrayList;
 public class addNewWord extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private String category;
-    JSONObject word_;
+    JSONObject word_obj;
     Spinner spinner;
+    String complete_word, incomplete_word;
+    ArrayList<Integer> indexlist_of_questionmarks = new ArrayList<Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,25 +38,63 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
 
         final Functions_ functions_ = new Functions_(this);
         Button send = (Button) findViewById(R.id.send);
-        final EditText completeWord = (EditText) findViewById(R.id.completeword);
-        final EditText incompleteWord = (EditText) findViewById(R.id.incompleteword);
+        final EditText completeWord_view = (EditText) findViewById(R.id.completeword);
+        final EditText incompleteWord_view = (EditText) findViewById(R.id.incompleteword);
+
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (completeWord.getText().toString().length()
-                        == incompleteWord.getText().toString().length()) {
-                    word_ = new JSONObject();
+                if (completeWord_view.getText().toString().length()
+                        == incompleteWord_view.getText().toString().length()) {
+                    word_obj = new JSONObject();
                     try {
-                        word_.put("category", category);
+                        word_obj.put("category", category);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    functions_.addWordtoDB(completeWord.getText().toString(),
-                            incompleteWord.getText().toString(), word_);
+                    complete_word = completeWord_view.getText().toString();
+                    incomplete_word = incompleteWord_view.getText().toString();
+                    ////////////////////////////////////////////////////
+                    if (!complete_word.matches("[A-Za-z]+?")) {
 
-                    completeWord.setText("");
-                    incompleteWord.setText("");
+                        for (int i = 0; i < incomplete_word.length(); i++) {
+                            if (incomplete_word.charAt(i) == '?')
+                                indexlist_of_questionmarks.add(i);
+                        }
+                        ////////////////////////////////////////////////////
+
+                        StringBuilder stringBuilder = new StringBuilder(incomplete_word);
+
+                        for (int i = 0; i < indexlist_of_questionmarks.size(); i++) {
+
+                            Toast.makeText(getApplicationContext(),
+                                    String.valueOf(indexlist_of_questionmarks.get(i)),
+                                    Toast.LENGTH_LONG).show();
+                            stringBuilder.setCharAt(indexlist_of_questionmarks.get(i), '؟');
+
+                        }
+
+                        incomplete_word = stringBuilder.toString();
+
+                        ////////////////////////////////////////////////////
+                        Toast.makeText(getApplicationContext(),
+                                "not English", Toast.LENGTH_SHORT).show();
+
+
+                    } else {
+
+                        Toast.makeText(getApplicationContext(),
+                                "English", Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                    functions_.addWordtoDB(complete_word,
+                            incomplete_word, word_obj);
+
+                    completeWord_view.setText("");
+                    incompleteWord_view.setText("");
 
                 } else {
                     Toast.makeText(getApplicationContext(),

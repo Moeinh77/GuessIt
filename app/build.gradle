@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.taan.hasani.moein.volley"
-        minSdkVersion 19
+        minSdkVersion 15
         multiDexEnabled true
         targetSdkVersion 25
         versionCode 1
