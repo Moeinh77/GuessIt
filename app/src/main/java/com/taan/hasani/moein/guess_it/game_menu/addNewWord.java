@@ -58,7 +58,7 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
 
                     //montabegh kardane alamate soal ba zaban******
                     ////////////////////////////////////////////////////
-                    if (!complete_word.matches("[A-Za-z]+?")) {
+                    if (!complete_word.matches("[A-Za-z ]+?")) {
 
                         for (int i = 0; i < incomplete_word.length(); i++) {
                             if (incomplete_word.charAt(i) == '?')

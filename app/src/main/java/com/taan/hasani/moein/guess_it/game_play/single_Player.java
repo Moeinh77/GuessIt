@@ -2,7 +2,6 @@ package com.taan.hasani.moein.guess_it.game_play;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -30,8 +29,6 @@ import com.taan.hasani.moein.volley.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -42,6 +39,7 @@ public class single_Player extends AppCompatActivity {
     private int number_of_trueGuess;
     private TextView word_TextView, timer;
     private int Total_gamescore = 0;
+    private ArrayList<Integer> indexlist_of_questionmarks = new ArrayList<>();
     private String incompleteWord, id, completeWord, game_ID,
             url = "http://online6732.tk/guessIt.php";
     private TextView totalScore_view;
@@ -175,21 +173,51 @@ public class single_Player extends AppCompatActivity {
         countDownTimer.cancel();
         word_TextView.setText(completeWord);
 
-        final String new_incompleteWord = entered_word.getText().toString();
-
 
         Edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (completeWord.length() == new_incompleteWord.length())
-                    functions.addWordtoDB(completeWord, new_incompleteWord
-                        , recievedWord_Jsonobj);
-                else {
-                    Toast.makeText(getApplicationContext(),
-                            "به نظر در نوشتن کلمه اشتباهی کرده اید", Toast.LENGTH_SHORT).show();
+                indexlist_of_questionmarks.clear();
+
+                String newIncomlpeteword = entered_word.getText().toString();
+
+                //age zabane farsi ro khastim edit konim alamat soal haro dors kone
+                ////////////////////////////////////////////////////
+                if (!completeWord.matches("[A-Za-z ]+?")) {
+
+                    for (int i = 0; i < newIncomlpeteword.length(); i++) {
+                        if (newIncomlpeteword.charAt(i) == '?')
+                            indexlist_of_questionmarks.add(i);
+                    }
+                    ////////////////////////////////////////////////////
+
+                    StringBuilder stringBuilder = new StringBuilder(newIncomlpeteword);
+
+                    for (int i = 0; i < indexlist_of_questionmarks.size(); i++) {
+
+                        //  Toast.makeText(getApplicationContext(),
+                        //        String.valueOf(indexlist_of_questionmarks.get(i)),
+                        // Toast.LENGTH_LONG).show();
+                        stringBuilder.setCharAt(indexlist_of_questionmarks.get(i), '؟');
+
+                    }
+
+                    newIncomlpeteword = stringBuilder.toString();
                 }
+                ////////////////////////////////////////////////////
+
+                if (completeWord.length() == newIncomlpeteword.length())
+
+                    functions.addWordtoDB(completeWord, newIncomlpeteword,
+                            recievedWord_Jsonobj);
+
+                else
+                    Toast.makeText(getApplicationContext(),
+                            "به نظر در وارد کردن کلمه اشتباهی کرده اید..",
+                            Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     //*****************************
@@ -255,6 +283,7 @@ public class single_Player extends AppCompatActivity {
         Button no = (Button) dialog.findViewById(R.id.no);
         dialog.show();
 
+
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -268,10 +297,7 @@ public class single_Player extends AppCompatActivity {
 
 
                 } else {
-                    ArrayList<Integer> indexlist_of_questionmarks = new ArrayList<>();
-                    indexlist_of_questionmarks.clear();
-                    indexlist_of_questionmarks = getting_qmarks_index(incompleteWord);
-                    replace_char(indexlist_of_questionmarks);
+                    replace_char();
                     dialog.cancel();
                     counterResume(timeLeft_onDialogPause);
                 }
@@ -291,40 +317,33 @@ public class single_Player extends AppCompatActivity {
     }
 
     //peyda kardane index e horoofe ؟
-    public ArrayList getting_qmarks_index(final String incompleteWord) {
-
-        ArrayList<Integer> indexlist = new ArrayList<>();
-
+    public void getting_qmarks_index(final String incompleteWord) {
         //hey check mikonim bebinim ke incompleet daryaft shode ya na
-        if (!(length > 0)) {
+        if (!(completeWord.length() > 0) && inGame) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     getting_qmarks_index(incompleteWord);
-                    Toast.makeText(getApplicationContext(), "لطفا کمی صبر کنید...",
+                    Toast.makeText(getApplicationContext(), "Please wait...",
                             Toast.LENGTH_SHORT).show();
                 }
             }, 500);
         } else {
 
             //horoof  alamate soal ro joda kone
-            for (int i = 0; i < length; i++) {
+            for (int i = 0; i < completeWord.length(); i++) {
 
-                //age be zabane engilis bood
-                if (completeWord.matches("[A-Za-z]+?")) {
+                if (completeWord.matches("[A-Za-z ]+?")) {
 
                     if (incompleteWord.charAt(i) == '?') {
 
-                        indexlist.add(i);
+                        indexlist_of_questionmarks.add(i);
 
                     }
-
-                    //age be zabane engilis Nabood
-
                 } else {
                     if (incompleteWord.charAt(i) == '؟') {
 
-                        indexlist.add(i);
+                        indexlist_of_questionmarks.add(i);
 
                     }
                 }
@@ -332,19 +351,19 @@ public class single_Player extends AppCompatActivity {
             }
             ///////////////////////////////////
         }
-        return indexlist;
     }
     /////////////////////////////////////////////////////
 
     //baz kardan alamate soal ha va jaygozari harfe asli
-    public void replace_char(final ArrayList indexlist_of_questionmarks) {
+    public void replace_char() {
 
-        if (indexlist_of_questionmarks.isEmpty()) {
+        if (indexlist_of_questionmarks.isEmpty() && inGame) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    replace_char(indexlist_of_questionmarks);
-                    Toast.makeText(getApplicationContext(), "لطفا کمی صبر کنید...",
+                    getting_qmarks_index(incompleteWord);
+                    replace_char();
+                    Toast.makeText(getApplicationContext(), "indexlist_of_questionmarks.isEmpty",
                             Toast.LENGTH_SHORT).show();
                 }
             }, 500);
@@ -352,7 +371,7 @@ public class single_Player extends AppCompatActivity {
         } else {
             //  Toast.makeText(getApplicationContext(),"replace char working",Toast.LENGTH_SHORT)
             //     .show();
-            int i = (int) indexlist_of_questionmarks.get(arraylist_i);
+            int i = indexlist_of_questionmarks.get(arraylist_i);
             char unlocked_char = completeWord.charAt(i);
             StringBuilder stringBuilder = new StringBuilder(incompleteWord);
             stringBuilder.setCharAt(i, unlocked_char);
@@ -503,7 +522,7 @@ public class single_Player extends AppCompatActivity {
             else
                 wordnumber.setText(currentword_number + "/" + Toatalwords);
 ////////////////////////////////////////////////////////////////////////////////
-            //indexlist_of_questionmarks.clear();
+            indexlist_of_questionmarks.clear();
 
             arraylist_i = 0;
 
@@ -545,6 +564,10 @@ public class single_Player extends AppCompatActivity {
 
                                 word_TextView.setText(incompleteWord);
 
+                                //////////////////joda kardane alamat hay soal
+                                getting_qmarks_index(incompleteWord);
+                                //////////////////
+
                                 //////////////////
                                 countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime)) * 1000, 1000) {
 
@@ -563,7 +586,7 @@ public class single_Player extends AppCompatActivity {
                                 Counter_started = true;
 
                                 /////////////////
-                                length = word_TextView.getText().length();
+                                //length = word_TextView.getText().length();
                                 //////////////
 
 //                            Toast.makeText(getApplicationContext(), String.valueOf(length),
@@ -609,7 +632,6 @@ public class single_Player extends AppCompatActivity {
     public void alert_dialog_function_game_end() {
 
         countDownTimer.cancel();
-
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.game_end_singleplayer_dialog);
