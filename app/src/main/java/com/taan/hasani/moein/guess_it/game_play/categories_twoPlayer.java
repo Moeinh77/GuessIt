@@ -25,13 +25,15 @@ public class categories_twoPlayer extends AppCompatActivity {
         english = (Button) findViewById(R.id.english);
         bazigar = (Button) findViewById(R.id.bazigar);
         film = (Button) findViewById(R.id.film);
+        Button music_per = (Button) findViewById(R.id.moosighi_irani);
+        Button music_english = (Button) findViewById(R.id.moosighi_khareji);
 
         //////////////////////////
         varzeshi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                alert_dialog_function("1");
+                alert_dialog_function("ورزشی");
 
             }
         });
@@ -40,7 +42,7 @@ public class categories_twoPlayer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                alert_dialog_function("2");
+                alert_dialog_function("انگلیسی");
 
             }
         });
@@ -49,7 +51,7 @@ public class categories_twoPlayer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                alert_dialog_function("3");
+                alert_dialog_function("فیلم ایرانی");
 
             }
         });
@@ -58,12 +60,30 @@ public class categories_twoPlayer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                alert_dialog_function("4");
+                alert_dialog_function("بازیگر ایرانی");
 
             }
         });
         //////////////////////////
 
+        music_per.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alert_dialog_function("موسیقی ایرانی");
+
+            }
+        });
+        //////////////////////////
+
+        music_english.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alert_dialog_function("موسیقی خارجی");
+
+            }
+        });
     }
 
     public void alert_dialog_function(final String category) {

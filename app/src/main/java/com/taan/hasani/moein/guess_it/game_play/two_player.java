@@ -50,7 +50,7 @@ public class two_player extends AppCompatActivity {
     private int Toatalwords;//tedad kalamte har bazi ke az server miad
     String Rivalscore_gameEnd, Playerscore_gameEnd;
     private int RivalWordsNumber;//tedad kalameti ke harif dashte
-    private String status, type;
+    private String status = " ", type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -357,9 +357,11 @@ public class two_player extends AppCompatActivity {
 
     public void sendNextWord() {
 
-        if (inGame) {
+        gameInfo();
 
-            gameInfo_during();
+        if (!status.equals("game ended")) {
+
+            gameInfo();
 
             HashMap<String, String> info = new HashMap<>();
 
@@ -386,7 +388,8 @@ public class two_player extends AppCompatActivity {
 
                             //agar kalame ha tamam shode bashad dialog payan ro miare
                             if (currentword_number == (Toatalwords + 1)) {
-                                alert_dialog_function_game_end();
+
+                                alert_dialog_function_game_end();//send next word
                             }
                             ///////////////////////////////////////////////////////////
 
@@ -535,7 +538,7 @@ public class two_player extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
-    public void gameInfo_during() {
+    public void gameInfo() {
 
         final String MY_PREFS_NAME = "username and password";
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
@@ -618,10 +621,11 @@ public class two_player extends AppCompatActivity {
 
     public void alert_dialog_function_game_end() {
 
-        gameInfo_during();
+        gameInfo();
 
-        Toast.makeText(getApplicationContext(), "Rival words:" + String.valueOf(RivalWordsNumber),
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Rival words:" + String.valueOf(RivalWordsNumber),
+        //        Toast.LENGTH_SHORT).show();
+
         //agar ke tedad javab hay harif be andaze player bood
         //dialog payan ro biar age nabood request bede ta andaze hsode bashe ****
         if (status.equals("game ended")) {
