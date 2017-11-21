@@ -234,7 +234,7 @@
                 android:layout_below="@+id/exit_textview"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:background="@android:color/holo_red_dark"
+                android:backgroundTint="@android:color/holo_red_dark"
                 android:text="خروج"
                 android:textColorLink="@android:color/holo_red_dark"
                 tools:layout_editor_absoluteX="136dp"

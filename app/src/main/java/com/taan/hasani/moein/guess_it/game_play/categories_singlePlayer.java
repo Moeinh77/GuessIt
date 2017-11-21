@@ -21,7 +21,8 @@ public class categories_singlePlayer extends AppCompatActivity {
         Button varzeshi = (Button) findViewById(R.id.varzeshi);
         Button english = (Button) findViewById(R.id.english);
         Button bazigar = (Button) findViewById(R.id.bazigar);
-        Button film = (Button) findViewById(R.id.film);
+        Button filmirani = (Button) findViewById(R.id.filmirani);
+        Button filmkhareji = (Button) findViewById(R.id.filmkhareji);
         Button music_per = (Button) findViewById(R.id.moosighi_irani);
         Button music_english = (Button) findViewById(R.id.moosighi_khareji);
 
@@ -45,7 +46,7 @@ public class categories_singlePlayer extends AppCompatActivity {
             }
         });
         //////////////////////////
-        film.setOnClickListener(new View.OnClickListener() {
+        filmirani.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -79,6 +80,16 @@ public class categories_singlePlayer extends AppCompatActivity {
             public void onClick(View v) {
 
                 alert_dialog_function("موسیقی خارجی");
+
+            }
+        });
+
+        //////////////////////////
+        filmkhareji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alert_dialog_function("فیلم و سریال خارجی");
 
             }
         });

@@ -13,7 +13,7 @@ import com.taan.hasani.moein.volley.R;
 
 public class categories_twoPlayer extends AppCompatActivity {
 
-    Button varzeshi, english, bazigar, film;
+    Button varzeshi, english, bazigar, filmirani;
 
 
     @Override
@@ -21,10 +21,11 @@ public class categories_twoPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
 
-        varzeshi = (Button) findViewById(R.id.varzeshi);
-        english = (Button) findViewById(R.id.english);
-        bazigar = (Button) findViewById(R.id.bazigar);
-        film = (Button) findViewById(R.id.film);
+        Button varzeshi = (Button) findViewById(R.id.varzeshi);
+        Button english = (Button) findViewById(R.id.english);
+        Button bazigar = (Button) findViewById(R.id.bazigar);
+        Button filmirani = (Button) findViewById(R.id.filmirani);
+        Button filmkhareji = (Button) findViewById(R.id.filmkhareji);
         Button music_per = (Button) findViewById(R.id.moosighi_irani);
         Button music_english = (Button) findViewById(R.id.moosighi_khareji);
 
@@ -47,7 +48,7 @@ public class categories_twoPlayer extends AppCompatActivity {
             }
         });
         //////////////////////////
-        film.setOnClickListener(new View.OnClickListener() {
+        filmirani.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -84,13 +85,22 @@ public class categories_twoPlayer extends AppCompatActivity {
 
             }
         });
+
+        filmkhareji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alert_dialog_function("فیلم و سریال خارجی");
+
+            }
+        });
     }
 
     public void alert_dialog_function(final String category) {
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.difficulty_dialog);
-        dialog.setTitle("This is my custom dialog box");
+        //dialog.setTitle("This is my custom dialog box");
         dialog.setCancelable(true);
 
         final RadioButton easy_RadioButton = (RadioButton) dialog.findViewById(R.id.slow);

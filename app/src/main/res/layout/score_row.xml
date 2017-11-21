@@ -64,10 +64,11 @@
         android:layout_height="wrap_content"
         android:text="v.s"
         android:textAllCaps="true"
+        android:textColor="@android:color/black"
         android:textSize="17sp"
         android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/rival_username"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@+id/rival_username" />
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

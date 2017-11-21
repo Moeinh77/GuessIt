@@ -47,7 +47,6 @@ public class single_Player extends AppCompatActivity {
     private String category, flag__nextWord_Timer, difficulty, type, recivedTime;
     private int arraylist_i;//baraye gereftane index alamate soal az list
     private Dialog dialog;
-    private int length;
     private TextView wordnumber;
     private boolean Counter_started = false;//baraye inke agar ertebat ba net ghat shod moghe
     //khoorooj choon cancel vase timer darim age timer ro intialize nakrde bashim stopped working mide
@@ -112,7 +111,7 @@ public class single_Player extends AppCompatActivity {
                 if (!entered_word.getText().toString().equals(""))
                     //   message.setVisibility(View.VISIBLE);
 
-                    if (entered_word.getText().toString().equals(completeWord)) {
+                    if (entered_word.getText().toString().equalsIgnoreCase(completeWord)) {
 
                         countDownTimer.cancel();
 

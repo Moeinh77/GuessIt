@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
+import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -31,7 +32,7 @@ import java.util.HashMap;
 
 public class two_player extends AppCompatActivity {
 
-    private String url = "http://online6732.tk/guessIt.php", id, completeWord,
+    private String url = "http://online6732.tk/guessIt.php", completeWord,
             incompleteWord, gamedID, recivedTime, category;
     private int number_of_trueGuess;
     private TextView word, message, timer, player2_textview, player1_textview;
@@ -51,16 +52,13 @@ public class two_player extends AppCompatActivity {
     String Rivalscore_gameEnd, Playerscore_gameEnd;
     private int RivalWordsNumber;//tedad kalameti ke harif dashte
     private String status = " ", type;
+    private Player player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_two_player);
-
-        String MY_PREFS_NAME = "username and password";
-        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        id = prefs.getString("userID", null);
 
         Button check_bt = (Button) findViewById(R.id.check_bt);
         Button nextWord_bt = (Button) findViewById(R.id.nextWord_bt);
@@ -70,7 +68,7 @@ public class two_player extends AppCompatActivity {
         timer = (TextView) findViewById(R.id.timer);
         player2_textview = (TextView) findViewById(R.id.rivalscore);
         player1_textview = (TextView) findViewById(R.id.yourscore);
-
+        player = new Player(this);
 
         //difficaulty va category ro az activity ghabl migirad
         Bundle bundle = getIntent().getExtras();
@@ -103,7 +101,7 @@ public class two_player extends AppCompatActivity {
 
                         if (!entered_word.getText().toString().equals("")) {
 
-                            if (entered_word.getText().toString().equals(completeWord)) {
+                            if (entered_word.getText().toString().equalsIgnoreCase(completeWord)) {
 
                                 countDownTimer.cancel();
 
@@ -197,7 +195,7 @@ public class two_player extends AppCompatActivity {
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "newGame");
-        info.put("userID", id);
+        info.put("userID", player.getId());
         info.put("mode", "twoPlayer");
         info.put("type", type);
 
@@ -248,7 +246,7 @@ public class two_player extends AppCompatActivity {
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "isMyGameReady");
-        info.put("userID", id);
+        info.put("userID", player.getId());
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -304,17 +302,9 @@ public class two_player extends AppCompatActivity {
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "setGameSetting");
-        info.put("userID", id);
+        info.put("userID", player.getId());
         info.put("gameID", gamedID);
-
-        try {
-
-            info.put("categories", URLEncoder.encode(category, "utf-8"));
-
-        } catch (UnsupportedEncodingException e) {
-            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
-        }
-
+        info.put("categories", category);
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -361,13 +351,11 @@ public class two_player extends AppCompatActivity {
 
         if (!status.equals("game ended")) {
 
-            gameInfo();
-
             HashMap<String, String> info = new HashMap<>();
 
             info.put("action", "sendNextWord");
             info.put("gameID", gamedID);
-            info.put("userID", id);
+            info.put("userID", player.getId());
 
             entered_word.setText("");
             word.setText("");
@@ -438,9 +426,6 @@ public class two_player extends AppCompatActivity {
 
                             words_loaded = true;
 
-                            //} else{
-                            //     alert_dialog_function_game_end();
-                            // }
                         } else {
 
 
@@ -512,7 +497,7 @@ public class two_player extends AppCompatActivity {
         /////////////////////////
         info.put("action", "setAnswer");
         info.put("gameID", gamedID);
-        info.put("userID", id);
+        info.put("userID", player.getId());
         info.put("answer", answer.toString());
         /////////////////////////
 
@@ -540,14 +525,10 @@ public class two_player extends AppCompatActivity {
 
     public void gameInfo() {
 
-        final String MY_PREFS_NAME = "username and password";
-        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        final String id = prefs.getString("userID", null);
-
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "sendGameInformation");
-        info.put("userID", id);
+        info.put("userID", player.getId());
         info.put("gameID", gamedID);
 
         JSONObject jsonObject = new JSONObject(info);
@@ -564,7 +545,7 @@ public class two_player extends AppCompatActivity {
                     status = response.getString("status");//baraye inke bebinim
                     //bazi tamoom shode ya na
 
-                    if (id.equals(response.getString("playerOneID"))) {
+                    if (player.getId().equals(response.getString("playerOneID"))) {
 
                         player2_textview.setText("امتیاز " + response.getString("playerTwoID")
                                 + " : " + rival_score);
@@ -579,7 +560,7 @@ public class two_player extends AppCompatActivity {
                         RivalWordsNumber = Integer.parseInt(
                                 response.getString("playerTwoRounds"));
 
-                    } else if (id.equals(response.getString("playerTwoID"))) {
+                    } else if (player.getId().equals(response.getString("playerTwoID"))) {
 
                         player2_textview.setText("امتیاز شما : " + rival_score);
                         player1_textview.setText("امتیاز " + response.getString("playerOneID") +

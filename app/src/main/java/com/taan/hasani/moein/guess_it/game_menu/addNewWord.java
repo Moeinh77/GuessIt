@@ -111,7 +111,8 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
         categories.add("انگلیسی");
         categories.add("ورزشی");
         categories.add("بازیگر ایرانی");
-        categories.add("فیلم ایرانی");
+        categories.add("فیلم");
+        categories.add("فیلم و سریال خارجی");
         categories.add("موسیقی ایرانی");
         categories.add("موسیقی خارجی");
 

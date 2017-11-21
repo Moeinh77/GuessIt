@@ -19,7 +19,7 @@
             android:layout_height="69dp"
             android:layout_marginTop="96dp"
             android:background="@drawable/single"
-            android:backgroundTint="#7E57C2"
+            android:backgroundTint="#e91e63"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textStyle="bold"
@@ -36,46 +36,52 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/onlinegame"
-            android:backgroundTint="#C62828"
+            android:backgroundTint="#ff5722"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Single_Player"
-            app:layout_constraintVertical_bias="0.432"
-            app:layout_constraintHorizontal_bias="0.501" />
+            app:layout_constraintVertical_bias="0.432" />
 
         <TextView
             android:id="@+id/textView10"
-            android:layout_width="78dp"
-            android:layout_height="32dp"
+            android:layout_width="99dp"
+            android:layout_height="47dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:text="بازی تک نفره"
-            android:textSize="16sp"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/twoPlayer_bt"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Single_Player"
-            app:layout_constraintVertical_bias="0.161" />
+            app:layout_constraintVertical_bias="0.157"
+            tools:layout_editor_absoluteY="178dp" />
 
         <TextView
             android:id="@+id/textView22"
-            android:layout_width="74dp"
-            android:layout_height="33dp"
+            android:layout_width="118dp"
+            android:layout_height="36dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:text="بازی دو نفره"
-            android:textSize="16sp"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/twoPlayer_bt"
-            app:layout_constraintVertical_bias="0.07" />
+            app:layout_constraintVertical_bias="0.082" />
     </android.support.constraint.ConstraintLayout>
 
 
