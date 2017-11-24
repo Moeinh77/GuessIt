@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.taan.hasani.moein.volley.com.taan.hasani.moein.guess_it.game_menu.Loading"
-    android:background="#c51162">
+    android:background="#ed006b">
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="133dp"
         android:layout_height="132dp"
-        android:indeterminateTint="@android:color/black"
+        android:indeterminateTint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintLeft_toLeftOf="parent"

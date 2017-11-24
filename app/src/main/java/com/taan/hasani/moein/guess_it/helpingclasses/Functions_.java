@@ -80,7 +80,8 @@ public class Functions_ {
     }
 
     public void setAnswer(String game_ID, String entered_word, String player_time,
-                          String player_score) {
+                          String player_score, String turn) {
+
 
         HashMap<String, String> info = new HashMap<>();
         HashMap<String, String> answer_hashmap = new HashMap<>();
@@ -88,6 +89,7 @@ public class Functions_ {
         answer_hashmap.put("time", player_time);
         answer_hashmap.put("score", player_score);
         answer_hashmap.put("answer", entered_word);
+        answer_hashmap.put("myTurn", turn);
 
         JSONObject answer = new JSONObject(answer_hashmap);
 
@@ -104,8 +106,8 @@ public class Functions_ {
             @Override
             public void onResponse(JSONObject response) {
 
-                //  Toast.makeText(getApplicationContext(),
-                //         "setAnswer response  :" + response.toString(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(),
+                //       "setAnswer response  :" + response.toString(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -113,7 +115,7 @@ public class Functions_ {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(activity,
-                        "setAnswer***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+                        "setAnswer***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 

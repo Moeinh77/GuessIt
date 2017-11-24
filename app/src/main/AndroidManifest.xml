@@ -50,7 +50,13 @@
         <activity
             android:name="com.taan.hasani.moein.guess_it.game_play.categories_singlePlayer"
             android:screenOrientation="portrait" />
-        <activity android:name="com.taan.hasani.moein.guess_it.game_menu.addNewWord"></activity>
+        <activity
+            android:name="com.taan.hasani.moein.guess_it.game_menu.addNewWord"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.taan.hasani.moein.guess_it.game_play.playerGame_loading"
+            android:label="@string/title_activity_game_loading"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 
 </manifest>

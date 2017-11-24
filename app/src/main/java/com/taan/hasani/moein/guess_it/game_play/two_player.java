@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
+import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
@@ -43,16 +44,15 @@ public class two_player extends AppCompatActivity {
     //agar shode bashad timer be karoftade
     private int spent_time = 0;
     private boolean inGame = true;
-    private boolean flag_counter;//baraye inke dar onDestroy error rokh nade age timer rah nayoftade bood
 
     private boolean words_loaded;//baraye jelo giri az crash dar soorat zadan next ya check
     //agar kalame load nashode bashad
     private int currentword_number;
     private int Toatalwords;//tedad kalamte har bazi ke az server miad
     String Rivalscore_gameEnd, Playerscore_gameEnd;
-    private int RivalWordsNumber;//tedad kalameti ke harif dashte
     private String status = " ", type;
     private Player player;
+    private Functions_ functions_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class two_player extends AppCompatActivity {
         player2_textview = (TextView) findViewById(R.id.rivalscore);
         player1_textview = (TextView) findViewById(R.id.yourscore);
         player = new Player(this);
-
+        functions_ = new Functions_(this);
         //difficaulty va category ro az activity ghabl migirad
         Bundle bundle = getIntent().getExtras();
         category = bundle.getString("category");
@@ -80,7 +80,8 @@ public class two_player extends AppCompatActivity {
         message.setVisibility(View.INVISIBLE);
         word.setVisibility(View.INVISIBLE);
 
-
+        number_of_trueGuess = 0;
+        currentword_number = 0;
         newTwoPlayerGame();
 
         check_bt.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +122,7 @@ public class two_player extends AppCompatActivity {
                                 mediaPlayer.start();
                                 ////////////////////////////////////////////////////////
 
-                                setAnswer(entered_word.getText().toString(),
+                                functions_.setAnswer(gamedID, entered_word.getText().toString(),
                                         Player_time, Player_score, myturn);
 
                                 //baraye check kardan nobat
@@ -135,7 +136,7 @@ public class two_player extends AppCompatActivity {
 
                                 myturn = "yes";//javab ghalatehamchenan nobat bazikon baghi mimanad
 
-                                setAnswer(entered_word.getText().toString(),
+                                functions_.setAnswer(gamedID, entered_word.getText().toString(),
                                         Player_time, Player_score, myturn);
 
                             }
@@ -189,8 +190,7 @@ public class two_player extends AppCompatActivity {
 
     public void newTwoPlayerGame() {
 
-        number_of_trueGuess = 0;
-        currentword_number = 0;
+
 
         HashMap<String, String> info = new HashMap<>();
 
@@ -218,7 +218,7 @@ public class two_player extends AppCompatActivity {
 
                     } else {
 
-                        gamedID = response.getString("gameID");
+                        gamedID = response.getString("gameID");//bayad ba intent montaghel beshe
 
                         setGameSettings();
                         Toast.makeText(getApplicationContext(),
@@ -403,13 +403,12 @@ public class two_player extends AppCompatActivity {
                             countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime) - spent_time) * 1000, 1000) {
                                 public void onTick(long millisUntilFinished) {
                                     timer.setText(String.valueOf(millisUntilFinished / 1000));
-                                    flag_counter = true;
 
                                 }
 
                                 public void onFinish() {
                                     timer.setText("0");
-                                    setAnswer(entered_word.getText().toString(),
+                                    functions_.setAnswer(gamedID, entered_word.getText().toString(),
                                             "0", "0", "no");
                                     spent_time = 0;
                                     words_loaded = false;
@@ -481,47 +480,47 @@ public class two_player extends AppCompatActivity {
         }
     }
 
-    public void setAnswer(String entered_word, String player_time,
-                          String player_score, String myturn) {
-
-        HashMap<String, String> info = new HashMap<>();
-        HashMap<String, String> answer_hashmap = new HashMap<>();
-        /////////////////////////
-        answer_hashmap.put("time", player_time);
-        answer_hashmap.put("score", player_score);
-        answer_hashmap.put("answer", entered_word);
-        answer_hashmap.put("myTurn", myturn);
-
-        JSONObject answer = new JSONObject(answer_hashmap);
-
-        /////////////////////////
-        info.put("action", "setAnswer");
-        info.put("gameID", gamedID);
-        info.put("userID", player.getId());
-        info.put("answer", answer.toString());
-        /////////////////////////
-
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                // Toast.makeText(getApplicationContext(),
-                //       "setAnswer response  :" + response.toString(), Toast.LENGTH_SHORT).show();
-
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "setAnswer***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-    }
+//    public void setAnswer(String entered_word, String player_time,
+//                          String player_score, String myturn) {
+//
+//        HashMap<String, String> info = new HashMap<>();
+//        HashMap<String, String> answer_hashmap = new HashMap<>();
+//        /////////////////////////
+//        answer_hashmap.put("time", player_time);
+//        answer_hashmap.put("score", player_score);
+//        answer_hashmap.put("answer", entered_word);
+//        answer_hashmap.put("myTurn", myturn);
+//
+//        JSONObject answer = new JSONObject(answer_hashmap);
+//
+//        /////////////////////////
+//        info.put("action", "setAnswer");
+//        info.put("gameID", gamedID);
+//        info.put("userID", player.getId());
+//        info.put("answer", answer.toString());
+//        /////////////////////////
+//
+//        JSONObject jsonObject = new JSONObject(info);
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+//                url, jsonObject, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//
+//                // Toast.makeText(getApplicationContext(),
+//                //       "setAnswer response  :" + response.toString(), Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(getApplicationContext(),
+//                        "setAnswer***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+//    }
 
     public void gameInfo() {
 
@@ -556,9 +555,9 @@ public class two_player extends AppCompatActivity {
 
                         Rivalscore_gameEnd = rival_score;
                         Playerscore_gameEnd = your_score;
-
-                        RivalWordsNumber = Integer.parseInt(
-                                response.getString("playerTwoRounds"));
+//
+//                        RivalWordsNumber = Integer.parseInt(
+//                                response.getString("playerTwoRounds"));
 
                     } else if (player.getId().equals(response.getString("playerTwoID"))) {
 
@@ -572,8 +571,8 @@ public class two_player extends AppCompatActivity {
                         Rivalscore_gameEnd = your_score;
                         Playerscore_gameEnd = rival_score;
 
-                        RivalWordsNumber = Integer.parseInt(
-                                response.getString("playerOneRounds"));
+                        //RivalWordsNumber = Integer.parseInt(
+                        //        response.getString("playerOneRounds"));
                     }
 
                     if (Toatalwords == 0) {
@@ -607,8 +606,7 @@ public class two_player extends AppCompatActivity {
         //Toast.makeText(getApplicationContext(), "Rival words:" + String.valueOf(RivalWordsNumber),
         //        Toast.LENGTH_SHORT).show();
 
-        //agar ke tedad javab hay harif be andaze player bood
-        //dialog payan ro biar age nabood request bede ta andaze hsode bashe ****
+
         if (status.equals("game ended")) {
 
             inGame = false;
@@ -690,7 +688,7 @@ public class two_player extends AppCompatActivity {
     protected void onDestroy() {
         inGame = false;
 
-        if (flag_counter) {
+        if (countDownTimer != null) {
             countDownTimer.cancel();
         }
         super.onDestroy();
