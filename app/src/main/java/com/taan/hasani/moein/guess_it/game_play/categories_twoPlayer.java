@@ -13,9 +13,6 @@ import com.taan.hasani.moein.volley.R;
 
 public class categories_twoPlayer extends AppCompatActivity {
 
-    Button varzeshi, english, bazigar, filmirani;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,7 +126,7 @@ public class categories_twoPlayer extends AppCompatActivity {
 
                 }
 
-                Intent i = new Intent(categories_twoPlayer.this, two_player.class);
+                Intent i = new Intent(categories_twoPlayer.this, playerGame_loading.class);
 
                 if (rIsChecked.equals("true")) {
 

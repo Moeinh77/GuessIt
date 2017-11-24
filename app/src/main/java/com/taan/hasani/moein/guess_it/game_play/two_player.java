@@ -1,6 +1,7 @@
 package com.taan.hasani.moein.guess_it.game_play;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -8,7 +9,9 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +37,7 @@ import java.util.HashMap;
 public class two_player extends AppCompatActivity {
 
     private String url = "http://online6732.tk/guessIt.php", completeWord,
-            incompleteWord, gamedID, recivedTime, category;
+            incompleteWord, gamedID, recivedTime;
     private int number_of_trueGuess;
     private TextView word, message, timer, player2_textview, player1_textview;
     private EditText entered_word;
@@ -50,7 +53,7 @@ public class two_player extends AppCompatActivity {
     private int currentword_number;
     private int Toatalwords;//tedad kalamte har bazi ke az server miad
     String Rivalscore_gameEnd, Playerscore_gameEnd;
-    private String status = " ", type;
+    private String status = " ";
     private Player player;
     private Functions_ functions_;
 
@@ -70,11 +73,10 @@ public class two_player extends AppCompatActivity {
         player1_textview = (TextView) findViewById(R.id.yourscore);
         player = new Player(this);
         functions_ = new Functions_(this);
+
         //difficaulty va category ro az activity ghabl migirad
         Bundle bundle = getIntent().getExtras();
-        category = bundle.getString("category");
-        type = bundle.getString("type");
-        //Toatalwords = bundle.getInt("totalwordsnumber");
+        gamedID = bundle.getString("gamedID");
         ///////////////////////////////////////////////////////
 
         message.setVisibility(View.INVISIBLE);
@@ -82,7 +84,8 @@ public class two_player extends AppCompatActivity {
 
         number_of_trueGuess = 0;
         currentword_number = 0;
-        newTwoPlayerGame();
+
+        sendNextWord();
 
         check_bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,162 +191,6 @@ public class two_player extends AppCompatActivity {
 
     }
 
-    public void newTwoPlayerGame() {
-
-
-
-        HashMap<String, String> info = new HashMap<>();
-
-        info.put("action", "newGame");
-        info.put("userID", player.getId());
-        info.put("mode", "twoPlayer");
-        info.put("type", type);
-
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-
-                    Toast.makeText(getApplicationContext(),
-                            response.toString(), Toast.LENGTH_SHORT).show();
-
-                    if (response.getString("gameID").equals("-1")) {
-
-                        isMyGameReady();
-
-                    } else {
-
-                        gamedID = response.getString("gameID");//bayad ba intent montaghel beshe
-
-                        setGameSettings();
-                        Toast.makeText(getApplicationContext(),
-                                gamedID, Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            "newTwoPlayerGame " + e.toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "*newTwoPlayerGame**Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-    }
-
-    public void isMyGameReady() {
-        HashMap<String, String> info = new HashMap<>();
-
-        info.put("action", "isMyGameReady");
-        info.put("userID", player.getId());
-
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-
-                    Toast.makeText(getApplicationContext(),
-                            response.getString("responseData"), Toast.LENGTH_SHORT).show();
-                    if (inGame) {
-                        if (response.getString("gameID").equals("-1")) {
-
-
-                            new Handler().postDelayed(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    isMyGameReady();
-                                }
-                            }, 3000);
-
-
-                        } else {
-                            gamedID = response.getString("gameID");
-                            setGameSettings();
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "isMyGameReady***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
-    }
-
-    public void setGameSettings() {
-
-        HashMap<String, String> info = new HashMap<>();
-
-        info.put("action", "setGameSetting");
-        info.put("userID", player.getId());
-        info.put("gameID", gamedID);
-        info.put("categories", category);
-
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-
-                    if (response.getString("dataIsRight").equals("yes")) {
-
-                        sendNextWord();
-
-                    } else {
-
-                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
-
-                    }
-
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            "setGameSetting " + e.toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "setGameSetting***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
-
-    }
 
     public void sendNextWord() {
 
@@ -546,7 +393,7 @@ public class two_player extends AppCompatActivity {
 
                     if (player.getId().equals(response.getString("playerOneID"))) {
 
-                        player2_textview.setText("امتیاز " + response.getString("playerTwoID")
+                        player2_textview.setText("امتیاز " + response.getString("playerTwoUsername")
                                 + " : " + rival_score);
                         player1_textview.setText("امتیاز شما : " + your_score);
 
@@ -562,7 +409,7 @@ public class two_player extends AppCompatActivity {
                     } else if (player.getId().equals(response.getString("playerTwoID"))) {
 
                         player2_textview.setText("امتیاز شما : " + rival_score);
-                        player1_textview.setText("امتیاز " + response.getString("playerOneID") +
+                        player1_textview.setText("امتیاز " + response.getString("playerOneUsername") +
                                 " : " + your_score);
 
                         player2_textview.setTextColor(Color.GREEN);
@@ -682,6 +529,34 @@ public class two_player extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        AlertDialog.Builder alertDialogBuilder =
+                new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
+        alertDialogBuilder.setTitle("ترک بازی");
+        alertDialogBuilder
+                .setMessage("آیا میخواهید از بازی را ترک کنید ؟")
+                .setCancelable(false)
+                .setPositiveButton("بلی", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        finish();
+
+                    }
+                })
+                .setNegativeButton("خیر", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+
+                    }
+                });
+
+        alertDialogBuilder.setIcon(R.drawable.logout);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     @Override
