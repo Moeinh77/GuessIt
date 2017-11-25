@@ -50,7 +50,7 @@ public class playerGame_loading extends Activity {
 
     public void newTwoPlayerGame() {
 
-        //status_textview.setText("در حال ساخت بازی...");
+        status_textview.setText("در حال ساخت بازی...");
 
         HashMap<String, String> info = new HashMap<>();
 

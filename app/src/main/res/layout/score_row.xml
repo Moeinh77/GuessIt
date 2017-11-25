@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="207dp"
         android:text="Rival :"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@android:color/holo_blue_dark"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/playerScore"

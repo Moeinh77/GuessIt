@@ -7,23 +7,22 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="152dp"
         android:background="@color/colorPrimary"
+        app:layout_constraintHorizontal_bias="0.36"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintDimensionRatio="w,1:1">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/profile_pic"
             android:layout_width="108dp"
             android:layout_height="90dp"
-            android:layout_marginTop="2dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/profile_rounded" />
+            app:srcCompat="@drawable/profile_rounded"
+            android:layout_marginTop="8dp" />
 
 
         <TextView
@@ -85,7 +84,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:text="نام کاربری :"
-                android:textColor="#0288D1"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="188dp"
@@ -100,6 +99,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="14dp"
+                android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView7"
@@ -194,6 +194,7 @@
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/round_corner_bt"
                 android:backgroundTint="#00695C"
                 android:text="اعمال تغییر"
                 android:textColor="@android:color/white"
@@ -231,9 +232,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/username"
+                android:layout_marginBottom="10dp"
                 android:layout_below="@+id/exit_textview"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/round_corner_bt"
                 android:backgroundTint="@android:color/holo_red_dark"
                 android:text="خروج"
                 android:textColorLink="@android:color/holo_red_dark"
