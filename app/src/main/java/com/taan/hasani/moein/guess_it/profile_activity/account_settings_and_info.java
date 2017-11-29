@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.guess_it.player_info;
+package com.taan.hasani.moein.guess_it.profile_activity;
 
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -27,8 +27,7 @@ import com.taan.hasani.moein.volley.R;
 public class account_settings_and_info extends Fragment {
 
     String profilePicture;
-    TextView name_textview;
-    EditText username_edittext;
+    EditText username_edittext, name_edittext;//bara inke final nashe
     Button logout, Edit_username_bt;
     private EditText old_password, new_password, repeat_password;
     private ImageView profile_pic;
@@ -48,7 +47,7 @@ public class account_settings_and_info extends Fragment {
 
         player = new Player(getActivity());//intialize e class Player
 
-        name_textview = (TextView) account_info_.findViewById(R.id.FirstName);
+        name_edittext = (EditText) account_info_.findViewById(R.id.FirstName);
         username_edittext = (EditText) account_info_.findViewById(R.id.username);
         logout = (Button) account_info_.findViewById(R.id.logout_bt);
         old_password = (EditText) account_info_.findViewById(R.id.old_password);
@@ -57,9 +56,17 @@ public class account_settings_and_info extends Fragment {
         Button save_bt = (Button) account_info_.findViewById(R.id.save_bt);
         profile_pic = (ImageView) account_info_.findViewById(R.id.profile_pic);
         Edit_username_bt = (Button) account_info_.findViewById(R.id.edit_bt);
+        Button Edit_name_bt = (Button) account_info_.findViewById(R.id.editname_bt);
 
-        name_textview.setText(player.getName());
+        name_edittext.setText(player.getName());
         username_edittext.setText(player.getUsername());
+
+        Edit_name_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player.changeName(name_edittext.getText().toString());
+            }
+        });
 
         Edit_username_bt.setOnClickListener(new View.OnClickListener() {
             @Override

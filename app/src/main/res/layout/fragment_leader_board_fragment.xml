@@ -19,7 +19,7 @@
             android:layout_marginStart="27dp"
             android:layout_marginTop="49dp"
             android:text="جایگاه شما :"
-            android:textColor="#dadada"
+            android:textColor="#424242"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintRight_toRightOf="@+id/textView8"
@@ -32,7 +32,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="49dp"
-            android:textColor="#03A9F4"
+            android:textColor="#1565c0"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintHorizontal_bias="1.0"
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="30dp"
-                    android:textColor="#dadada"
+                    android:textColor="#424242"
                     android:textStyle="bold" />
 
                 <TextView
@@ -91,7 +91,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/wordScore_frag"
                     android:text=""
-                    android:textColor="#fcf400" />
+                    android:textColor="#fcf400"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 

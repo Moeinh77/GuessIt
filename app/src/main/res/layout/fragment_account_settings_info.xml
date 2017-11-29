@@ -24,15 +24,29 @@
             app:srcCompat="@drawable/profile_rounded"
             android:layout_marginTop="8dp" />
 
+        <Button
+            android:id="@+id/editname_bt"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="88dp"
+            android:layout_height="48dp"
+            android:textAlignment="textStart"
+            android:text="Edit"
+            android:textAllCaps="false"
+            app:layout_constraintBaseline_toBaselineOf="@+id/FirstName"
+            android:layout_marginRight="39dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/FirstName"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginEnd="39dp" />
 
-        <TextView
+        <EditText
             android:id="@+id/FirstName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:padding="8dp"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -46,7 +60,7 @@
 
     <ScrollView
         android:id="@+id/scrollView3"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="309dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
@@ -73,7 +87,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/username"
                 android:layout_marginBottom="20dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@color/colorPrimary" />
 
             <TextView
 
@@ -116,7 +130,8 @@
                 android:layout_toEndOf="@+id/username"
                 android:text="Edit"
                 android:textAlignment="textStart"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="#ed006b" />
 
             <TextView
                 android:id="@+id/changepasstext"
@@ -196,7 +211,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/round_corner_bt"
                 android:backgroundTint="#00695C"
-                android:text="اعمال تغییر"
+                android:text="تعویض"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -206,12 +221,12 @@
 
             <View
                 android:id="@+id/line2"
-                android:layout_width="260dp"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/save_bt"
-                android:gravity="center"
                 android:layout_marginBottom="20dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@color/colorPrimary"
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/exit_textview"
@@ -232,9 +247,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/username"
-                android:layout_marginBottom="10dp"
                 android:layout_below="@+id/exit_textview"
                 android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/round_corner_bt"
                 android:backgroundTint="@android:color/holo_red_dark"

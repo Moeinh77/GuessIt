@@ -18,8 +18,8 @@ import android.widget.Toast;
 import com.taan.hasani.moein.guess_it.Leader_board.leader_board_fragment;
 import com.taan.hasani.moein.guess_it.game_play.choosing_games_fragment;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
-import com.taan.hasani.moein.guess_it.player_info.account_settings_and_info;
-import com.taan.hasani.moein.guess_it.player_info.gameHistory_list;
+import com.taan.hasani.moein.guess_it.profile_activity.account_settings_and_info;
+import com.taan.hasani.moein.guess_it.profile_activity.gameHistory_list;
 import com.taan.hasani.moein.volley.R;
 
 import java.util.ArrayList;

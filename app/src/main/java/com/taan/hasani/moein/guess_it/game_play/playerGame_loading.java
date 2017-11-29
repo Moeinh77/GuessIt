@@ -69,8 +69,8 @@ public class playerGame_loading extends Activity {
 
                 try {
 
-                    // Toast.makeText(getApplicationContext(),
-                    //        "newSingle #"+response.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "newSingle #" + response.toString(), Toast.LENGTH_SHORT).show();
 
                     if (response.getString("gameID").equals("-1")) {
 

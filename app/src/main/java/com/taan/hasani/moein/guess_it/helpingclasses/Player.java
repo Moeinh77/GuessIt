@@ -14,7 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login;
 import com.taan.hasani.moein.guess_it.game_menu.Main_menu;
-import com.taan.hasani.moein.guess_it.player_info.gameHistory_object;
+import com.taan.hasani.moein.guess_it.profile_activity.gameHistory_object;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -386,6 +386,53 @@ public class Player {
                     } else {
                         Toast.makeText(activity,
                                 "username didnt change", Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activity, error.toString(), Toast.LENGTH_LONG);
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    public void changeName(final String name_) {
+
+
+        HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "changeName");
+        info.put("name", name_);
+        info.put("userID", getId());
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+
+                    if (response.getString("dataIsRight").equals("yes")) {
+
+                        Toast.makeText(activity,
+                                "name changed", Toast.LENGTH_LONG).show();
+
+                        setName(name_);
+
+                    } else {
+                        Toast.makeText(activity,
+                                "Couldn't change the name !", Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {

@@ -160,7 +160,8 @@ public class two_player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (words_loaded) {
+                if (word != null)//taghie dadam words loaded ro hazf kardam
+                {
 
                     if (flag__nextWord_Timer.equals("yes")) {
 
