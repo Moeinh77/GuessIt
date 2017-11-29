@@ -14,7 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login;
 import com.taan.hasani.moein.guess_it.game_menu.Main_menu;
-import com.taan.hasani.moein.guess_it.profile_activity.gameHistory_object;
+import com.taan.hasani.moein.guess_it.gameHistory.gameHistory_object;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;

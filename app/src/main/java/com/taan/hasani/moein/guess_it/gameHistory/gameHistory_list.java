@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.guess_it.profile_activity;
+package com.taan.hasani.moein.guess_it.gameHistory;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -73,13 +73,9 @@ public class gameHistory_list extends Fragment {
 
     public void get_user_games_ids() {
 
-        //getting id for the player
-        final String MY_PREFS_NAME = "username and password";
-        SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String id = prefs.getString("userID", null);
-        //////////////////////////////////////////
+
         info.put("action", "sendUserInformation");
-        info.put("userID", id);
+        info.put("userID", player.getId());
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject, new Response.Listener<JSONObject>() {
