@@ -46,6 +46,7 @@
             android:layout_height="16dp"
             android:layout_marginTop="14dp"
             android:text="____________________________________________________________________________________________________"
+            android:textColor="@android:color/darker_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/your_place_frag" />
@@ -64,7 +65,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8"
-            app:layout_constraintVertical_bias="0.042"
+            app:layout_constraintVertical_bias="0.157"
             app:layout_constraintHorizontal_bias="0.51" />
 
         <ProgressBar

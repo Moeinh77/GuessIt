@@ -1,15 +1,27 @@
 package com.taan.hasani.moein.guess_it.Leader_board;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.volley.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Moein on 11/29/2017.
@@ -20,6 +32,8 @@ public class ListViewAdapter_leaderboard extends ArrayAdapter<leaderBoard_object
     private int Layoutresource;//adress e row e nemoone
     private Activity activity;//activity ee ke list dar an ast
     private ArrayList<leaderBoard_object> score_list = new ArrayList<>();
+    private TextView username, name, totalscore;
+    private Button rank;
 
     public ListViewAdapter_leaderboard(Activity act,
                                        int resource,
@@ -87,29 +101,105 @@ public class ListViewAdapter_leaderboard extends ArrayAdapter<leaderBoard_object
         holder.playerPlace.setText(holder.leaderBoardObject.getPlayer_place());
         ///////////////////////////////////
 
-        // final Viewholder finalHolder = holder;
-//        row.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent i=new Intent(activity,Show_note.class);
-//
-//                Bundle mBundle=new Bundle();
-//                mBundle.putSerializable("My object", finalHolder.note);
-//                i.putExtras(mBundle);
-//                activity.startActivity(i);
-//
-//            }
-//        });
+        final Viewholder finalHolder = holder;
+
+        //onClick
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(activity);
+
+                //  Toast.makeText(activity,
+                //                  "test", Toast.LENGTH_LONG).show();
+
+                dialog.setContentView(R.layout.user_onclickdialog);
+                dialog.setCancelable(true);
+
+                Button close = (Button) activity.findViewById(R.id.close_bt);
+
+
+                sendUserInformationByUsername(
+                        finalHolder.leaderBoardObject.getPlayer_username());
+
+//                close.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.cancel();
+//                    }
+//                });
+
+                dialog.show();
+
+            }
+        });
         return row;
     }
 
-
-    public class Viewholder {
+    private class Viewholder {
 
         leaderBoard_object leaderBoardObject;
         TextView playerScore;
         TextView playerUsername;
         TextView playerPlace;
     }
+
+    private void sendUserInformationByUsername(String username_) {
+
+
+        HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "sendUserInformationByUsername");
+        info.put("username", username_);
+
+        String url = "http://online6732.tk/guessIt.php";
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    if (response.getString("dataIsRight").equals("yes")) {
+
+//                        Toast.makeText(activity,
+//                                "Username changed", Toast.LENGTH_LONG).show();
+                        username = (TextView) activity.findViewById(R.id.username_dilog);
+                        name = (TextView) activity.findViewById(R.id.name_dialog);
+                        totalscore = (TextView) activity.findViewById(R.id.totalscore_dialog);
+                        rank = (Button) activity.findViewById(R.id.rank_bt);
+
+
+                        username.setText(response.getString("username"));
+                        name.setText(response.getString("name"));
+                        totalscore.setText(response.getString("totalScore"));
+                        rank.setText(response.getString("position"));
+
+
+                    } else {
+
+                        Toast.makeText(activity,
+                                response.getString("responseData"), Toast.LENGTH_LONG).show();
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activity, error.toString(), Toast.LENGTH_LONG);
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+
+    }
+
 }

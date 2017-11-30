@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -101,11 +102,11 @@ public class leader_board_fragment extends Fragment {
                     yourPlace.setText(response.getString("yourPosition"));
 
 
-                    ListViewAdapter_leaderboard listViewAdapter_gamesInfo = new ListViewAdapter_leaderboard
+                    ListViewAdapter_leaderboard listViewAdapter_leaderboard = new ListViewAdapter_leaderboard
                             (getActivity(), R.layout.leaderboard_row, arrayList);
                     progressBar.setVisibility(View.INVISIBLE);
-                    listView.setAdapter(listViewAdapter_gamesInfo);
-                    listViewAdapter_gamesInfo.notifyDataSetChanged();
+                    listView.setAdapter(listViewAdapter_leaderboard);
+                    listViewAdapter_leaderboard.notifyDataSetChanged();
 
                 } catch (JSONException e) {
 
