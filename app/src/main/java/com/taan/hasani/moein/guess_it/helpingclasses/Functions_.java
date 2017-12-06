@@ -44,8 +44,8 @@ public class Functions_ {
         HashMap<String, String> info = new HashMap<>();
 
         try {
-            recievedWord_Jsonobj.put("incompleteWord", new_incompleteWord);
-            recievedWord_Jsonobj.put("word", completeWord);
+            recievedWord_Jsonobj.put("incompleteWord", new_incompleteWord.trim());
+            recievedWord_Jsonobj.put("word", completeWord.trim());
             info.put("word", recievedWord_Jsonobj.toString());
             // Toast.makeText(activity, recievedWord_Jsonobj.toString(), Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {

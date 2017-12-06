@@ -105,7 +105,8 @@ public class single_Player extends AppCompatActivity {
                 if (!entered_word.getText().toString().equals(""))
                     //   message.setVisibility(View.VISIBLE);
 
-                    if (entered_word.getText().toString().equalsIgnoreCase(completeWord)) {
+                    if (entered_word.getText().toString()
+                            .trim().equalsIgnoreCase(completeWord)) {
 
                         countDownTimer.cancel();
 

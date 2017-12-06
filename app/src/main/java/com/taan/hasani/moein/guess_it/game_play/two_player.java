@@ -105,7 +105,7 @@ public class two_player extends AppCompatActivity {
 
                         if (!entered_word.getText().toString().equals("")) {
 
-                            if (entered_word.getText().toString().equalsIgnoreCase(completeWord)) {
+                            if (entered_word.getText().toString().trim().equalsIgnoreCase(completeWord)) {
 
                                 countDownTimer.cancel();
 
