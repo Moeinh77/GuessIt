@@ -21,6 +21,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.taan.hasani.moein.guess_it.Gson.recieved_word;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
@@ -211,8 +213,8 @@ public class single_Player extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
             }
         });
-
     }
+
 
     //*****************************
 
@@ -515,13 +517,25 @@ public class single_Player extends AppCompatActivity {
 
                     try {
 
+                        recieved_word recievedWord;
+                        Gson gson=new Gson();
+                        recievedWord=gson.fromJson(response.getJSONObject("word").toString()
+                                , recieved_word.class);
+
+                        Toast.makeText(getApplicationContext(),
+                                "gson test @@@"+recievedWord.incompleteWord,Toast.LENGTH_LONG).show();
+
                         if (response.getString("dataIsRight").equals("yes")) {
+
 
                             Boolean lastWordCheck = response.getJSONObject("word")
                                     .getString("word").equals("outOfWords");
 
                             if (!lastWordCheck)//agar be outofwords nareside bood
                             {
+
+                                 Toast.makeText(getApplicationContext(),
+                                         response.toString(),Toast.LENGTH_LONG).show();
 
                                 recievedWord_Jsonobj = response.getJSONObject("word");
 

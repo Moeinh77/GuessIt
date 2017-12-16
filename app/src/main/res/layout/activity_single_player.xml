@@ -31,6 +31,7 @@
         android:ems="10"
         android:hint="حدست چیه؟"
         android:inputType="textMultiLine"
+        android:textColor="#0277BD"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -85,15 +86,16 @@
         android:id="@+id/time_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="زمان باقی مانده :"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintRight_toLeftOf="@+id/wordnumber"
         android:layout_marginRight="133dp"
-        app:layout_constraintLeft_toRightOf="@+id/timer"
+        android:layout_marginTop="16dp"
         android:padding="10dp"
-        app:layout_constraintHorizontal_bias="0.0" />
+        android:text="زمان باقی مانده :"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/timer"
+        app:layout_constraintRight_toLeftOf="@+id/wordnumber"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/total_score"
@@ -124,16 +126,15 @@
         android:id="@+id/wordnumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-4dp"
         android:padding="10dp"
+        android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
-        tools:text="TextView"
-        android:layout_marginRight="0dp"
+        app:layout_constraintHorizontal_bias="0.976"
+        app:layout_constraintLeft_toLeftOf="@+id/total_score"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="-4dp"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/total_score"
-        app:layout_constraintHorizontal_bias="0.976" />
+        tools:text="TextView" />
 
     <Button
         android:id="@+id/edit"
