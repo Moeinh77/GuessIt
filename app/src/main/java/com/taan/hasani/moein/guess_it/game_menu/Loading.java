@@ -60,5 +60,4 @@ public class Loading extends AppCompatActivity {
         }, TIME_OUT);
 
     }
-
 }
