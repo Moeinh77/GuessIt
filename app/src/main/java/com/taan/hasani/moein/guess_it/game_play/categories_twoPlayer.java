@@ -18,13 +18,13 @@ public class categories_twoPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
 
-        Button varzeshi = (Button) findViewById(R.id.varzeshi);
-        Button english = (Button) findViewById(R.id.english);
-        Button bazigar = (Button) findViewById(R.id.bazigar);
-        Button filmirani = (Button) findViewById(R.id.filmirani);
-        Button filmkhareji = (Button) findViewById(R.id.filmkhareji);
-        Button music_per = (Button) findViewById(R.id.moosighi_irani);
-        Button music_english = (Button) findViewById(R.id.moosighi_khareji);
+        Button varzeshi = findViewById(R.id.varzeshi);
+        Button english = findViewById(R.id.english);
+        Button bazigar = findViewById(R.id.bazigar);
+        Button filmirani = findViewById(R.id.filmirani);
+        Button filmkhareji = findViewById(R.id.filmkhareji);
+        Button music_per = findViewById(R.id.moosighi_irani);
+        Button music_english = findViewById(R.id.moosighi_khareji);
 
         //////////////////////////
         varzeshi.setOnClickListener(new View.OnClickListener() {
@@ -111,17 +111,17 @@ public class categories_twoPlayer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String difficulty = "2";
+                //  String difficulty = "2";
                 String rIsChecked = "false";
 
 
                 if (easy_RadioButton.isChecked()) {
-                    difficulty = "1";//easy_RadioButton.getText().toString();
+                    //  difficulty = "1";//easy_RadioButton.getText().toString();
                     rIsChecked = "true";
 
                 }
                 if (hard_RadioButton.isChecked()) {
-                    difficulty = "3";
+                    //    difficulty = "3";
                     rIsChecked = "true";
 
                 }
@@ -131,7 +131,7 @@ public class categories_twoPlayer extends AppCompatActivity {
                 if (rIsChecked.equals("true")) {
 
                     i.putExtra("category", category);
-                    i.putExtra("type", difficulty);//ferestadane noe bazi
+                    //   i.putExtra("type", difficulty);//ferestadane noe bazi
 
 
                     startActivity(i);

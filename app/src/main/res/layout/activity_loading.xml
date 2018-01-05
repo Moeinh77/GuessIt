@@ -5,20 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.taan.hasani.moein.volley.com.taan.hasani.moein.guess_it.game_menu.Loading"
-    android:background="#ed006b">
+    android:background="@color/colorPrimaryDark">
 
 
-    <pl.droidsonroids.gif.GifTextView
-        android:layout_width="353dp"
-        android:layout_height="287dp"
-        android:background="@drawable/loading2"
-        android:layout_marginTop="112dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="168dp"
+        android:layout_height="206dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!--<com.airbnb.lottie.LottieAnimationView-->
+    <!--android:id="@+id/animation_view"-->
+    <!--android:layout_width="159dp"-->
+    <!--android:layout_height="230dp"-->
+    <!--app:lottie_autoPlay="true"-->
+    <!--app:lottie_fileName="hello-world.json"-->
+    <!--app:lottie_loop="true" />-->
 </android.support.constraint.ConstraintLayout>

@@ -64,7 +64,7 @@ public class two_player extends AppCompatActivity {
         setContentView(R.layout.activity_two_player);
 
         Button check_bt = (Button) findViewById(R.id.check_bt);
-        Button nextWord_bt = (Button) findViewById(R.id.nextWord_bt);
+        //Button nextWord_bt = (Button) findViewById(R.id.nextWord_bt);
         word = (TextView) findViewById(R.id.word);
         message = (TextView) findViewById(R.id.message);
         entered_word = (EditText) findViewById(R.id.enteredWord);
@@ -144,54 +144,47 @@ public class two_player extends AppCompatActivity {
 
                             }
 
-//                            if (timer.getText().toString().equals("0")) {
-//                                myturn = "no";
-//                                Toast.makeText(getApplicationContext(), "Times up!", Toast.LENGTH_SHORT).show();
-//                                setAnswer(entered_word.getText().toString(),
-//                                        Player_time, Player_score, myturn);
-//                            }
                         }
                     }
                 }
             }
         });
 
-        nextWord_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (word != null)//taghie dadam words loaded ro hazf kardam
-                {
-
-                    if (flag__nextWord_Timer.equals("yes")) {
-
-                        countDownTimer.cancel();
-
-                        if (timer.getText().toString() != recivedTime) {
-
-                            spent_time = Integer.parseInt(recivedTime)
-                                    - Integer.parseInt(timer.getText().toString());
-
-                            sendNextWord();
-
-                        } else {
-
-                            sendNextWord();
-                        }
-
-                    } else {
-
-                        sendNextWord();
-
-                    }
-                }
-            }
-
-        });
+//        nextWord_bt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if (word != null)//taghie dadam words loaded ro hazf kardam
+//                {
+//
+//                    if (flag__nextWord_Timer.equals("yes")) {
+//
+//                        countDownTimer.cancel();
+//
+//                        if (timer.getText().toString() != recivedTime) {
+//
+//                            spent_time = Integer.parseInt(recivedTime)
+//                                    - Integer.parseInt(timer.getText().toString());
+//
+//                            sendNextWord();
+//
+//                        } else {
+//
+//                            sendNextWord();
+//                        }
+//
+//                    } else {
+//
+//                        sendNextWord();
+//
+//                    }
+//                }
+//            }
+//
+//        });
 
 
     }
-
 
     public void sendNextWord() {
 
@@ -327,48 +320,6 @@ public class two_player extends AppCompatActivity {
 
         }
     }
-
-//    public void setAnswer(String entered_word, String player_time,
-//                          String player_score, String myturn) {
-//
-//        HashMap<String, String> info = new HashMap<>();
-//        HashMap<String, String> answer_hashmap = new HashMap<>();
-//        /////////////////////////
-//        answer_hashmap.put("time", player_time);
-//        answer_hashmap.put("score", player_score);
-//        answer_hashmap.put("answer", entered_word);
-//        answer_hashmap.put("myTurn", myturn);
-//
-//        JSONObject answer = new JSONObject(answer_hashmap);
-//
-//        /////////////////////////
-//        info.put("action", "setAnswer");
-//        info.put("gameID", gamedID);
-//        info.put("userID", player.getId());
-//        info.put("answer", answer.toString());
-//        /////////////////////////
-//
-//        JSONObject jsonObject = new JSONObject(info);
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-//                url, jsonObject, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//
-//                // Toast.makeText(getApplicationContext(),
-//                //       "setAnswer response  :" + response.toString(), Toast.LENGTH_SHORT).show();
-//
-//            }
-//
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(getApplicationContext(),
-//                        "setAnswer***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-//    }
 
     public void gameInfo() {
 

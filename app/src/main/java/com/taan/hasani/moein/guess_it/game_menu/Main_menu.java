@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.taan.hasani.moein.guess_it.Leader_board.leader_board_fragment;
 import com.taan.hasani.moein.guess_it.game_play.choosing_games_fragment;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
-import com.taan.hasani.moein.guess_it.profile_activity.account_settings_and_info;
+import com.taan.hasani.moein.guess_it.profile_activity.profile;
 import com.taan.hasani.moein.guess_it.gameHistory.gameHistory_list;
 import com.taan.hasani.moein.volley.R;
 
@@ -117,7 +117,7 @@ public class Main_menu extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         Main_menu.ViewPagerAdapter adapter = new
                 Main_menu.ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new account_settings_and_info(), "");
+        adapter.addFragment(new profile(), "");
         adapter.addFragment(new gameHistory_list(), "");
         adapter.addFragment(new choosing_games_fragment(), "");
         adapter.addFragment(new leader_board_fragment(), "");

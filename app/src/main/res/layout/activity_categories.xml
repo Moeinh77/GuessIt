@@ -8,14 +8,14 @@
 
 
     <ScrollView
-        android:layout_width="308dp"
-        android:layout_height="416dp"
+        android:layout_width="328dp"
+        android:layout_height="496dp"
         android:fadeScrollbars="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.494">
+        app:layout_constraintVertical_bias="0.492">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,13 +25,14 @@
             <Button
                 android:id="@+id/english"
                 style="@style/Widget.AppCompat.Button"
-                android:layout_width="105dp"
+                android:layout_width="126dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:backgroundTint="#FFF59D"
+                android:background="@drawable/round_corner_bt"
+                android:backgroundTint="#EF6C00"
                 android:text="انگلیسی"
-                android:textColor="#4E342E"
+                android:textColor="@android:color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/varzeshi" />
@@ -39,11 +40,12 @@
             <Button
                 android:id="@+id/varzeshi"
 
-                android:layout_width="105dp"
+                android:layout_width="126dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
-                android:backgroundTint="#EF6C00"
+                android:background="@drawable/round_corner_bt"
+                android:backgroundTint="#06d309"
                 android:fontFamily="sans-serif-smallcaps"
                 android:text="ورزشی"
                 android:textColor="@android:color/black"
@@ -54,11 +56,12 @@
             <Button
                 android:id="@+id/bazigar"
 
-                android:layout_width="101dp"
+                android:layout_width="126dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
-                android:backgroundTint="@android:color/holo_purple"
+                android:background="@drawable/round_corner_bt"
+                android:backgroundTint="#4A148C"
                 android:text="بازیگر"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -67,11 +70,12 @@
             <Button
                 android:id="@+id/filmirani"
 
-                android:layout_width="wrap_content"
+                android:layout_width="126dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="32dp"
+                android:background="@drawable/round_corner_bt"
                 android:backgroundTint="#FFFF00"
                 android:text="فیلم و سریال ایرانی"
                 android:textColor="@android:color/black"
@@ -84,11 +88,12 @@
             <Button
                 android:id="@+id/filmkhareji"
 
-                android:layout_width="wrap_content"
+                android:layout_width="126dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="32dp"
+                android:background="@drawable/round_corner_bt"
                 android:backgroundTint="#FFFF00"
                 android:text="فیلم و سریال خارجی"
                 android:textColor="@android:color/black"
@@ -101,10 +106,11 @@
             <Button
                 android:id="@+id/moosighi_irani"
 
-                android:layout_width="wrap_content"
+                android:layout_width="126dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
+                android:background="@drawable/round_corner_bt"
                 android:backgroundTint="#795548"
                 android:text="موسیقی ایرانی"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -114,11 +120,12 @@
             <Button
                 android:id="@+id/moosighi_khareji"
 
-                android:layout_width="wrap_content"
+                android:layout_width="126dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
-                android:backgroundTint="#0091EA"
+                android:background="@drawable/round_corner_bt"
+                android:backgroundTint="#F50057"
                 android:text="موسیقی خارجی"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

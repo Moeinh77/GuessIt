@@ -1,0 +1,295 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <!--<android.support.constraint.ConstraintLayout-->
+    <!--android:id="@+id/constraintLayout"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="153dp"-->
+    <!--android:background="@color/colorPrimary"-->
+    <!--app:layout_constraintHorizontal_bias="0.36"-->
+    <!--app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--app:layout_constraintRight_toRightOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent">-->
+
+
+    <!--</android.support.constraint.ConstraintLayout>-->
+    <ImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="108dp"
+        android:layout_height="90dp"
+
+        android:layout_marginTop="44dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/profile_rounded" />
+
+    <Button
+        android:id="@+id/editname_bt"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginRight="39dp"
+        android:text="Edit"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        app:layout_constraintBaseline_toBaselineOf="@+id/FirstName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/FirstName"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <EditText
+        android:id="@+id/FirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_pic"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="name" />
+
+    <!--view-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="3dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="4dp"-->
+    <!--android:background="@android:color/white"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.0"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@id/FirstName" />-->
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimaryDark"
+        android:fadeScrollbars="false"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editname_bt">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="24dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="220dp"
+                android:layout_height="1dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/username"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/white" />
+
+            <TextView
+
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:text="نام کاربری :"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="188dp"
+                tools:layout_editor_absoluteY="138dp" />
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textView7"
+                android:layout_below="@+id/textView7"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="14dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView7"
+                app:layout_constraintRight_toLeftOf="@+id/textView7"
+                tools:text="username" />
+
+            <Button
+                android:id="@+id/edit_bt"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="70dp"
+                android:layout_height="35dp"
+                android:layout_alignBaseline="@+id/username"
+                android:layout_alignBottom="@+id/username"
+                android:layout_toEndOf="@+id/username"
+                android:text="Edit"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/changepasstext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/username"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+
+                android:layout_marginTop="17dp"
+                android:text="تغییر کلمه عبور"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/old_password"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/changepasstext"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="کلمه عبور قدیمی"
+                android:inputType="textPassword"
+                android:textAlignment="textStart"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/new_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/old_password"
+                android:layout_below="@+id/old_password"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:hint="کلمه عبور جدید"
+                android:inputType="textPassword"
+                android:textAlignment="textStart"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/old_password" />
+
+            <EditText
+                android:id="@+id/repeat_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/new_password"
+                android:layout_below="@+id/new_password"
+                android:layout_gravity="center"
+                android:layout_marginTop="9dp"
+                android:ems="10"
+                android:hint="تکرار کلمه عبور جدید "
+                android:inputType="textPassword"
+                android:textAlignment="textStart"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/new_password" />
+
+            <Button
+                android:id="@+id/save_bt"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/changepasstext"
+                android:layout_below="@+id/repeat_password"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corner_bt"
+                android:backgroundTint="@color/colorAccent"
+                android:text="تعویض"
+                android:textColor="@android:color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/repeat_password"
+                app:layout_constraintVertical_bias="0.081" />
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/save_bt"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/white"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/exit_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/save_bt"
+                android:layout_below="@+id/save_bt"
+                android:layout_gravity="center"
+                android:layout_marginTop="11dp"
+                android:text="خروج از حساب"
+
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/logout_bt"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/username"
+                android:layout_below="@+id/exit_textview"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corner_bt"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:text="خروج"
+
+                android:textColorLink="@android:color/holo_red_dark" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/addWord"
+        android:layout_width="38dp"
+        android:layout_height="34dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/editname_bt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.876"
+        app:layout_constraintStart_toEndOf="@+id/profile_pic"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/plusss12" />
+
+</android.support.constraint.ConstraintLayout>

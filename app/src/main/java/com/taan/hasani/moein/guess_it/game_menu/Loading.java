@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieComposition;
+import com.airbnb.lottie.LottieDrawable;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,6 +31,13 @@ public class Loading extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
+
+        // LottieAnimationView animationView = (LottieAnimationView) findViewById(R.id.Loading_intro);
+//        LottieDrawable drawable = new LottieDrawable();
+//        LottieComposition.Factory.fromAssetFileName(getApplicationContext(),
+//                "hello-world.json", (composition) -> {
+//            drawable.setComposition(composition);
+//        });
 
         player = new Player(this);
 
