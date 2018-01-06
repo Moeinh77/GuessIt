@@ -1,9 +1,8 @@
 package com.taan.hasani.moein.guess_it.game_menu;
 
-import android.os.Handler;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
+import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class addNewWord extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    Player player;
     private String category;
     JSONObject word_obj;
     Spinner spinner;
@@ -32,6 +33,16 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_word);
+
+        player = new Player(this);
+
+        if (!player.getrole().equals("admin")) {
+
+            finish();
+            Toast.makeText(getApplicationContext(), "متاسفانه اجازه دسترسی به این قسمت را ندارید...",
+                    Toast.LENGTH_LONG).show();
+        }
+
         spinner = (Spinner) findViewById(R.id.spinner);
 
         spinner_menu();

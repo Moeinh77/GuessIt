@@ -101,43 +101,45 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String Player_score = timer.getText().toString();
-                String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
+                if (timer != null) {
+                    String Player_score = timer.getText().toString();
+                    String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
 
-                if (!entered_word.getText().toString().equals(""))
-                    //   message.setVisibility(View.VISIBLE);
+                    if (!entered_word.getText().toString().equals(""))
+                        //   message.setVisibility(View.VISIBLE);
 
-                    if (entered_word.getText().toString()
-                            .trim().equalsIgnoreCase(completeWord)) {
+                        if (entered_word.getText().toString()
+                                .trim().equalsIgnoreCase(completeWord)) {
 
-                        countDownTimer.cancel();
+                            countDownTimer.cancel();
 
-                        word_TextView.setText(completeWord);
-                        //  message.setText();
-                        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
-                        mediaPlayer.start();
-                        //  didItOnce = true;
+                            word_TextView.setText(completeWord);
+                            //  message.setText();
+                            MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
+                            mediaPlayer.start();
+                            //  didItOnce = true;
 
-                        Total_gamescore += Integer.parseInt(Player_score);//showing total score for game ending
+                            Total_gamescore += Integer.parseInt(Player_score);//showing total score for game ending
 
-                        //setAnswer*******
-                        functions.setAnswer(game_ID, entered_word.getText().toString(),
-                                Player_time, Player_score, "yes");
+                            //setAnswer*******
+                            functions.setAnswer(game_ID, entered_word.getText().toString(),
+                                    Player_time, Player_score, "yes");
 
-                        Snackbar.make(findViewById(R.id.singlePlayerActivity), "Congratulations !!! Your guess was RIGHT !"
-                                , Snackbar.LENGTH_LONG)
-                                .setActionTextColor(Color.YELLOW).show();
+                            Snackbar.make(findViewById(R.id.singlePlayerActivity), "Congratulations !!! Your guess was RIGHT !"
+                                    , Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.YELLOW).show();
 
-                        number_of_trueGuess++;
+                            number_of_trueGuess++;
 
-                        nextWord_func();
-                    } else {
+                            nextWord_func();
+                        } else {
 
-                        Snackbar.make(findViewById(R.id.singlePlayerActivity), "No guess again !!!"
-                                , Snackbar.LENGTH_LONG)
-                                .setActionTextColor(Color.YELLOW).show();
-                    }
+                            Snackbar.make(findViewById(R.id.singlePlayerActivity), "No guess again !!!"
+                                    , Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.YELLOW).show();
+                        }
 
+                }
             }
         });
 
@@ -522,8 +524,8 @@ public class single_Player extends AppCompatActivity {
                         recievedWord=gson.fromJson(response.getJSONObject("word").toString()
                                 , recieved_word.class);
 
-                        Toast.makeText(getApplicationContext(),
-                                "gson test @@@"+recievedWord.incompleteWord,Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getApplicationContext(),
+                        //         "gson test @@@"+recievedWord.incompleteWord,Toast.LENGTH_LONG).show();
 
                         if (response.getString("dataIsRight").equals("yes")) {
 
@@ -534,8 +536,8 @@ public class single_Player extends AppCompatActivity {
                             if (!lastWordCheck)//agar be outofwords nareside bood
                             {
 
-                                 Toast.makeText(getApplicationContext(),
-                                         response.toString(),Toast.LENGTH_LONG).show();
+                                //   Toast.makeText(getApplicationContext(),
+                                //          response.toString(),Toast.LENGTH_LONG).show();
 
                                 recievedWord_Jsonobj = response.getJSONObject("word");
 

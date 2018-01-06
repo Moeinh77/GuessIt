@@ -21,10 +21,12 @@
         android:id="@+id/your_place_frag"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="30dp"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/listview_leaderboard"
         app:layout_constraintHorizontal_bias="0.962"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/textView6"
@@ -33,10 +35,9 @@
 
     <View
         android:id="@+id/textView8"
-        android:layout_width="300dp"
-        android:layout_height="3dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_margin="8dp"
         android:background="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/listview_leaderboard"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -46,18 +47,18 @@
 
     <ListView
         android:id="@+id/listview_leaderboard"
-        android:layout_width="301dp"
-        android:layout_height="413dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_margin="16dp"
         android:divider="@color/colorPrimaryDark"
         android:dividerHeight="2dp"
         android:fadeScrollbars="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ProgressBar
         android:id="@+id/progressBar_leaderboard"
