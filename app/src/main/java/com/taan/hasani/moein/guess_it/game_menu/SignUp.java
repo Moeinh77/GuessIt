@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class SignUp extends AppCompatActivity {
 
     private final String MY_PREFS_NAME ="username and password" ;
-    String url = "http://online6732.tk/guessIt.php";
+    String url = "http://mamadgram.tk/guessIt.php";
     private String password, username, name;
     private Button signup;
     private EditText username_editext, Nname_edittext, password_editext;

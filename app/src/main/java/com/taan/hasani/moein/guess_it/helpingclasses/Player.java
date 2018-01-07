@@ -35,7 +35,7 @@ public class Player {
 
     private Activity activity;
     private ArrayList<gameHistory_object> scoreList = new ArrayList<>();
-    private String url = "http://online6732.tk/guessIt.php";
+    private String url = "http://mamadgram.tk/guessIt.php";
     //agar jaee lazem shod mishe az inja avord choon public e
 
     private String username;

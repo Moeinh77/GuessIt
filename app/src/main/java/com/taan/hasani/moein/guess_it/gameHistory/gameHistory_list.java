@@ -33,7 +33,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class gameHistory_list extends Fragment {
 
 
-    String url = "http://online6732.tk/guessIt.php";
+    String url = "http://mamadgram.tk/guessIt.php";
     String recived_games_id;
     String[] array = null;
     ListView listView;

@@ -36,7 +36,7 @@ import java.util.HashMap;
 
 public class two_player extends AppCompatActivity {
 
-    private String url = "http://online6732.tk/guessIt.php", completeWord,
+    private String url = "http://mamadgram.tk/guessIt.php", completeWord,
             incompleteWord, gamedID, recivedTime;
     private int number_of_trueGuess;
     private TextView word, message, timer, player2_textview, player1_textview;

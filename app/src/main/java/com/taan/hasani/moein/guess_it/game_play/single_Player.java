@@ -42,7 +42,7 @@ public class single_Player extends AppCompatActivity {
     private int Total_gamescore = 0;
     private ArrayList<Integer> indexlist_of_questionmarks = new ArrayList<>();
     private String incompleteWord, id, completeWord, game_ID,
-            url = "http://online6732.tk/guessIt.php";
+            url = "http://mamadgram.tk/guessIt.php";
     private TextView totalScore_view;
     private CountDownTimer countDownTimer;
     private String category, difficulty, type, recivedTime;

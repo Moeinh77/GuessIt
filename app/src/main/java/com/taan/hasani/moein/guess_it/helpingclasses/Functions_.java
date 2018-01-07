@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 public class Functions_ {
 
-    private String url = "http://online6732.tk/guessIt.php";
+    private String url = "http://mamadgram.tk/guessIt.php";
     private Boolean gameset_flag;
     private Activity activity;
 

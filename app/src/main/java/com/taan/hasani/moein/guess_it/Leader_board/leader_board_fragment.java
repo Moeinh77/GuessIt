@@ -37,7 +37,7 @@ public class leader_board_fragment extends Fragment {
     private Player player;
     private TextView yourPlace;
     final HashMap<String, String> info = new HashMap<>();
-    String url = "http://online6732.tk/guessIt.php";
+    String url = "http://mamadgram.tk/guessIt.php";
     private ListView listView;
     private ProgressBar progressBar;
 
