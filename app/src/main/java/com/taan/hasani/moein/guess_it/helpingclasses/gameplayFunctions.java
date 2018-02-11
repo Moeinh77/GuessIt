@@ -18,7 +18,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 
 
-public class Functions_ {
+public class gameplayFunctions {
 
     private String url = "http://mamadgram.tk/guessIt.php";
     private Boolean gameset_flag;
@@ -26,7 +26,7 @@ public class Functions_ {
 
     private Player player;
 
-    public Functions_(Activity activity) {
+    public gameplayFunctions(Activity activity) {
 
         this.activity = activity;
         player = new Player(activity);

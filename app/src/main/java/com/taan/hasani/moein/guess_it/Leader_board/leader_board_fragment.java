@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -37,10 +38,9 @@ public class leader_board_fragment extends Fragment {
     private Player player;
     private TextView yourPlace;
     final HashMap<String, String> info = new HashMap<>();
-    String url = "http://mamadgram.tk/guessIt.php";
+    private String url = "http://mamadgram.tk/guessIt.php";
     private ListView listView;
-    private ProgressBar progressBar;
-
+    private LottieAnimationView loadingbar;
     public leader_board_fragment() {
         // Required empty public constructor
     }
@@ -56,7 +56,7 @@ public class leader_board_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View leader = inflater.inflate(R.layout.fragment_leader_board_fragment, container, false);
-        progressBar = (ProgressBar) leader.findViewById(R.id.progressBar_leaderboard);
+        loadingbar = (LottieAnimationView) leader.findViewById(R.id.loadingbar);
         listView = (ListView) leader.findViewById(R.id.listview_leaderboard);
         yourPlace = (TextView) leader.findViewById(R.id.your_place_frag);
 
@@ -104,7 +104,8 @@ public class leader_board_fragment extends Fragment {
 
                     ListViewAdapter_leaderboard listViewAdapter_leaderboard = new ListViewAdapter_leaderboard
                             (getActivity(), R.layout.leaderboard_row, arrayList);
-                    progressBar.setVisibility(View.INVISIBLE);
+                    // progressBar.setVisibility(View.INVISIBLE);
+                    loadingbar.setVisibility(View.INVISIBLE);
                     listView.setAdapter(listViewAdapter_leaderboard);
                     listViewAdapter_leaderboard.notifyDataSetChanged();
 

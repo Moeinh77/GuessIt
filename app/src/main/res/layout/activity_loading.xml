@@ -8,23 +8,19 @@
     android:background="@color/colorPrimaryDark">
 
 
-    <ProgressBar
-        android:id="@+id/progressBar3"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="168dp"
-        android:layout_height="206dp"
-        android:progressTint="@color/colorAccent"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="237dp"
+        android:layout_height="240dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="152dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498" />
-
-    <!--<com.airbnb.lottie.LottieAnimationView-->
-    <!--android:id="@+id/animation_view"-->
-    <!--android:layout_width="159dp"-->
-    <!--android:layout_height="230dp"-->
-    <!--app:lottie_autoPlay="true"-->
-    <!--app:lottie_fileName="hello-world.json"-->
-    <!--app:lottie_loop="true" />-->
+        app:layout_constraintVertical_bias="0.065"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="material_wave_loading.json"
+        app:lottie_loop="true" />
 </android.support.constraint.ConstraintLayout>

@@ -11,6 +11,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
+import com.taan.hasani.moein.guess_it.Gson.userInfo_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login;
 import com.taan.hasani.moein.guess_it.game_menu.Main_menu;
@@ -20,7 +23,6 @@ import com.taan.hasani.moein.volley.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -36,11 +38,7 @@ public class Player {
     private Activity activity;
     private ArrayList<gameHistory_object> scoreList = new ArrayList<>();
     private String url = "http://mamadgram.tk/guessIt.php";
-    //agar jaee lazem shod mishe az inja avord choon public e
-
     private String username;
-
-
     private String role;
     private String password;
     private String id;
@@ -59,56 +57,6 @@ public class Player {
         password = prefs.getString("password", null);
         username = prefs.getString("username", null);
         name = prefs.getString("name", null);
-
-
-    }
-
-    //hargah inra seda konim etelaat ro az server migire mirize too pref
-    public void getUserInfo() {
-
-        HashMap<String, String> info = new HashMap<>();
-
-        info.put("action", "sendUserInformation");
-        info.put("userID", id);
-
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-
-                    //Toast.makeText(activity, response.toString(), Toast.LENGTH_SHORT).show();
-
-                    String name = new String(response.getString("name").getBytes("ISO-8859-1"), "UTF-8");
-                    String username = new String(response.getString("username").getBytes("ISO-8859-1"), "UTF-8");
-                    String password = new String(response.getString("password").getBytes("ISO-8859-1"), "UTF-8");
-                    String id = new String(response.getString("id").getBytes("ISO-8859-1"), "UTF-8");
-                    String acc_type = new String(response.getString("role").getBytes("ISO-8859-1"), "UTF-8");
-
-                    setName(name);
-                    setId(id);
-                    setPassword(password);
-                    setUsername(username);
-                    setrole(acc_type);
-
-                } catch (JSONException e) {
-                    Toast.makeText(activity.getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                } catch (UnsupportedEncodingException e) {
-                    Toast.makeText(activity.getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activity.getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
     }
 
     public void setrole(String role) {
@@ -179,6 +127,50 @@ public class Player {
         return scoreList;
     }
 
+    //Gsonized !!!
+    //hargah inra seda konim etelaat ro az server migire mirize too pref
+    public void getUserInfo() {
+
+        HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "sendUserInformation");
+        info.put("userID", id);
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    userInfo_GSON userInfo;
+                    Gson gson = new Gson();
+                    userInfo = gson.fromJson(response.getJSONObject("user").toString()
+                            , userInfo_GSON.class);
+
+                    setName(userInfo.name);
+                    setId(userInfo.id);
+                    setPassword(userInfo.password);
+                    setUsername(userInfo.username);
+                    setrole(userInfo.role);
+
+                } catch (JSONException e) {
+                    Toast.makeText(activity.getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activity.getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    //Gsonized !!!
     public void login(final String username_, final String password_) {
 
         HashMap<String, String> info = new HashMap<>();
@@ -192,30 +184,35 @@ public class Player {
                 url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
                 try {
-                    //Toast.makeText(activity,
-                    //         response.toString(),Toast.LENGTH_LONG).show();
-                    if (response.getString("dataIsRight").equals("yes")) {
 
-                        String user = response.getString("user");
-                        JSONObject userObject = new JSONObject(user);
+                    simpleRequest_GSON loginGson;
+                    Gson gson = new Gson();
 
-                        //naghshe user
-                        setrole(userObject.getString("role"));
+                    loginGson = gson.fromJson(response.toString()
+                            , simpleRequest_GSON.class);
 
-                        String id = userObject.getString("id");
-                        String name = userObject.getString("name");
+                    if (loginGson.dataIsRight.equals("yes")) {
 
-                        setName(name);
-                        setId(id);
-                        setUsername(username_);
-                        setPassword(password_);
+                        userInfo_GSON user;
+
+                        user = gson.fromJson(response.getJSONObject("user").toString()
+                                , userInfo_GSON.class);//gereftan etelaat user az
+                        // json object userdakhel response
+
+                        setrole(user.role);
+                        setName(user.name);
+                        setId(user.id);
+                        setUsername(user.username);
+                        setPassword(user.password);
 
                         //opens the gamechoose activity
                         Intent i = new Intent(activity, Main_menu.class);
                         activity.startActivity(i);
                         activity.finish();
+                        Toast.makeText(activity,
+                                "Welcome " + user.name, Toast.LENGTH_LONG).show();
+
                     } else {
                         Toast.makeText(activity,
                                 "Wrong username or password", Toast.LENGTH_LONG).show();
@@ -240,6 +237,7 @@ public class Player {
 
     }
 
+    //Gsonized !!!
     public void logout_of_server() {
 
         final HashMap<String, String> info = new HashMap<>();
@@ -253,32 +251,31 @@ public class Player {
             @Override
             public void onResponse(JSONObject response) {
 
+                Gson gson = new Gson();
+                simpleRequest_GSON request;
+                request = gson.fromJson(response.toString(),
+                        simpleRequest_GSON.class);
 
-                try {
-                    if (response.getString("dataIsRight").equals("yes")) {
+                if (request.equals("yes")) {
 
-                        SharedPreferences.Editor editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                        editor.putString("username", null);
-                        editor.putString("password", null);
-                        editor.putString("userID", null);
-                        editor.putString("name", null);
-                        editor.putInt("HighScore", 0);
-                        editor.putString("role", null);
-                        editor.apply();
+                    SharedPreferences.Editor editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                    editor.putString("username", null);
+                    editor.putString("password", null);
+                    editor.putString("userID", null);
+                    editor.putString("name", null);
+                    editor.putInt("HighScore", 0);
+                    editor.putString("role", null);
+                    editor.apply();
 
-                        Intent intent = new Intent(activity, Entrance_signup_login.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        activity.startActivity(intent);
-                        activity.finish();
-                    } else {
-                        Toast.makeText(activity,
-                                "خطایی در خروج شما رخ داد دوباره تلاش کنید...", Toast.LENGTH_LONG).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(activity, Entrance_signup_login.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    activity.startActivity(intent);
+                    activity.finish();
+                } else {
+                    Toast.makeText(activity,
+                            "خطایی در خروج شما رخ داد دوباره تلاش کنید...", Toast.LENGTH_LONG).show();
                 }
+
             }
 
         }, new Response.ErrorListener() {
@@ -292,9 +289,9 @@ public class Player {
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
-
     }
 
+    //Gsonized !!!
     public void change_password_func(String Entered_oldpass,
                                      final String Entered_newpass,
                                      String Entered_repeatpass) {
@@ -320,24 +317,23 @@ public class Player {
                 @Override
                 public void onResponse(JSONObject response) {
 
-                    try {
+                    Gson gson = new Gson();
+                    simpleRequest_GSON request;
+                    request = gson.fromJson(response.toString(),
+                            simpleRequest_GSON.class);
 
-                        if (response.getString("dataIsRight").equals("yes")) {
+                    if (request.equals("yes")) {
 
-                            SharedPreferences.Editor editor;
-                            editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                            editor.putString("password", Entered_newpass);
-                            editor.apply();
+                        SharedPreferences.Editor editor;
+                        editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                        editor.putString("password", Entered_newpass);
+                        editor.apply();
 
-                            Toast.makeText(activity, "Password changed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, "Password changed !", Toast.LENGTH_LONG).show();
 
-                        } else {
-                            Toast.makeText(activity,
-                                    response.getString("dataIsRight"), Toast.LENGTH_LONG).show();
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    } else {
+                        Toast.makeText(activity,
+                                "There was an error in changing the pass word!!!", Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -358,6 +354,7 @@ public class Player {
 
     }
 
+    //Gsonized !!!
     public void changeUsername(final String username_) {
 
 
@@ -373,24 +370,24 @@ public class Player {
             @Override
             public void onResponse(JSONObject response) {
 
-                try {
+                Gson gson = new Gson();
+                simpleRequest_GSON request;
+                request = gson.fromJson(response.toString(),
+                        simpleRequest_GSON.class);
 
+                if (request.equals("yes")) {
 
-                    if (response.getString("dataIsRight").equals("yes")) {
+                    Toast.makeText(activity,
+                            "Username changed", Toast.LENGTH_LONG).show();
 
-                        Toast.makeText(activity,
-                                "Username changed", Toast.LENGTH_LONG).show();
+                    setUsername(username_);
 
-                        setUsername(username_);
-
-                    } else {
-                        Toast.makeText(activity,
-                                "username didnt change", Toast.LENGTH_LONG).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    Toast.makeText(activity,
+                            "username didnt change", Toast.LENGTH_LONG).show();
                 }
+
+
             }
 
         }, new Response.ErrorListener() {
@@ -405,6 +402,7 @@ public class Player {
 
     }
 
+    //Gsonized !!!
     public void changeName(final String name_) {
 
 
@@ -420,23 +418,21 @@ public class Player {
             @Override
             public void onResponse(JSONObject response) {
 
-                try {
+                Gson gson = new Gson();
+                simpleRequest_GSON request;
+                request = gson.fromJson(response.toString(),
+                        simpleRequest_GSON.class);
 
+                if (request.equals("yes")) {
 
-                    if (response.getString("dataIsRight").equals("yes")) {
+                    Toast.makeText(activity,
+                            "name changed", Toast.LENGTH_LONG).show();
 
-                        Toast.makeText(activity,
-                                "name changed", Toast.LENGTH_LONG).show();
+                    setName(name_);
 
-                        setName(name_);
-
-                    } else {
-                        Toast.makeText(activity,
-                                "Couldn't change the name !", Toast.LENGTH_LONG).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    Toast.makeText(activity,
+                            "Couldn't change the name !", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -452,11 +448,10 @@ public class Player {
 
     }
 
+    //Gsonized !!!
     public void app_reopening() {
 
         final HashMap<String, String> info = new HashMap<>();
-
-        String url = "http://online6732.tk/guessIt.php";
 
         info.put("action", "login");
         info.put("username", getUsername());
@@ -468,34 +463,35 @@ public class Player {
             @Override
             public void onResponse(JSONObject response) {
 
-                try {
+                simpleRequest_GSON loginGson;
+                Gson gson = new Gson();
 
-                    if (response.getString("dataIsRight").equals("yes")) {
+                loginGson = gson.fromJson(response.toString()
+                        , simpleRequest_GSON.class);
+                if (loginGson.dataIsRight.equals("yes")) {
 
-                        String user = response.getString("user");
-                        JSONObject jsonObject1 = new JSONObject(user);
+                    userInfo_GSON user;
+                    try {
+                        user = gson.fromJson(response.getJSONObject("user").toString()
+                                , userInfo_GSON.class);//gereftan etelaat user az
+                        // json object e "user" dakhel response
 
-                        //naghshe user
-                        setrole(jsonObject1.getString("role"));
+                        setrole(user.role);//baraye har bar baz shodan naghshe
+                        // kar bar ra update mikonad
 
-                        //Toast.makeText(activity, response.toString(), Toast.LENGTH_SHORT).show();
-
-                        Toast.makeText(activity, "Welcome " + getUsername(), Toast.LENGTH_LONG).show();
-
+                        //opens the gamechoose activity
                         Intent i = new Intent(activity, Main_menu.class);
                         activity.startActivity(i);
-                        activity.finish();
-                    } else {
                         Toast.makeText(activity,
-                                "خطا در ورود به حساب", Toast.LENGTH_LONG).show();
+                                "welcome " + user.name, Toast.LENGTH_LONG).show();
                         activity.finish();
+                    } catch (JSONException e) {
+                        Toast.makeText(activity,
+                                "login  " + e.toString(), Toast.LENGTH_LONG).show();
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
                     Toast.makeText(activity,
-                            e.toString(), Toast.LENGTH_LONG).show();
-
+                            "Some thing went wrong login!!!", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -513,10 +509,10 @@ public class Player {
 
     }
 
+    //Gsonized !!!
     public void onAppExit() {
 
-
-        final HashMap<String, String> info = new HashMap<>();
+        HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "logout");
         info.put("userID", id);
@@ -525,21 +521,18 @@ public class Player {
                 url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                try {
-                    if (response.getString("dataIsRight").equals("yes")) {
+                Gson gson = new Gson();
+                simpleRequest_GSON request;
+                request = gson.fromJson(response.toString(),
+                        simpleRequest_GSON.class);
 
-                        Log.v("", response.getString("dataIsRight"));
+                if (request.equals("yes")) {
 
-                        Toast.makeText(activity,
-                                "Logged out successfully ", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(activity,
-                                "There was error in logging out...", Toast.LENGTH_LONG).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity,
+                            "Logged out successfully ", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(activity,
+                            "There was error in logging out...", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -572,6 +565,9 @@ public class Player {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+
+                    simpleRequest_GSON request_gson;
+                    Gson gson = new Gson();
 
                     if (response.getString("playerOneTotalScore") != null) {
 

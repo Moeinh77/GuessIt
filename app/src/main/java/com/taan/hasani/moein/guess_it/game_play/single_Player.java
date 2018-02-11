@@ -24,7 +24,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.taan.hasani.moein.guess_it.Gson.recieved_word;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
+import com.taan.hasani.moein.guess_it.helpingclasses.gameplayFunctions;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
@@ -53,7 +53,7 @@ public class single_Player extends AppCompatActivity {
     private int currentword_number;
     private int Totalwords;//tedad kole kalamt
     private JSONObject recievedWord_Jsonobj;
-    private Functions_ functions;
+    private gameplayFunctions functions;
     private Player player;
     private Button Edit;
     @Override
@@ -62,7 +62,7 @@ public class single_Player extends AppCompatActivity {
         setContentView(R.layout.activity_single_player);
 
         player = new Player(this);
-        functions = new Functions_(this);
+        functions = new gameplayFunctions(this);
         Button next_word_bt = (Button) findViewById(R.id.next_word_bt);
         word_TextView = (TextView) findViewById(R.id.word);
         entered_word = (EditText) findViewById(R.id.enterd_word);
@@ -75,13 +75,12 @@ public class single_Player extends AppCompatActivity {
         Edit.setVisibility(View.INVISIBLE);
 
         wordnumber = (TextView) findViewById(R.id.wordnumber);
-
         id = player.getId();
 
         //difficaulty va category va type ro az activity ghabl migirad
         Bundle bundle = getIntent().getExtras();
         category = bundle.getString("category");
-        difficulty = bundle.getString("difficulty");
+        // difficulty = bundle.getString("difficulty");
         type = bundle.getString("type");
         Totalwords = bundle.getInt("totalwordsnumber");
         ///////////////////////////////////////////////////////
@@ -103,7 +102,7 @@ public class single_Player extends AppCompatActivity {
 
                 if (timer != null) {
                     String Player_score = timer.getText().toString();
-                    String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
+                    String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));//***jaygozini 15 ba meghdar dar yafti az server
 
                     if (!entered_word.getText().toString().equals(""))
                         //   message.setVisibility(View.VISIBLE);
@@ -236,12 +235,11 @@ public class single_Player extends AppCompatActivity {
         countDownTimer = new CountDownTimer(timeLeft_onDialogPause * 1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                timer.setText("" + millisUntilFinished / 1000);
+                timer.setText(String.valueOf(millisUntilFinished / 1000));//***chaneged from +""
             }
 
             public void onFinish() {
                 timer.setText("0");
-
                 nextWord_func();
             }
         };
@@ -433,7 +431,7 @@ public class single_Player extends AppCompatActivity {
         info.put("action", "setGameSetting");
         info.put("userID", id);
         info.put("gameID", game_ID);
-        info.put("level", difficulty);
+        //   info.put("level", difficulty);
         // try {
         info.put("categories", category);
 //        } catch (UnsupportedEncodingException e) {

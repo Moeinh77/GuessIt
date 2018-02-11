@@ -97,7 +97,6 @@ public class categories_twoPlayer extends AppCompatActivity {
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.difficulty_dialog);
-        //dialog.setTitle("This is my custom dialog box");
         dialog.setCancelable(true);
 
         final RadioButton easy_RadioButton = (RadioButton) dialog.findViewById(R.id.slow);

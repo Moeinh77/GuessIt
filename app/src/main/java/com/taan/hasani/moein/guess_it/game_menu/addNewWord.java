@@ -1,6 +1,5 @@
 package com.taan.hasani.moein.guess_it.game_menu;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
+import com.taan.hasani.moein.guess_it.helpingclasses.gameplayFunctions;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
@@ -47,7 +46,7 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
 
         spinner_menu();
 
-        final Functions_ functions_ = new Functions_(this);
+        final gameplayFunctions gamefuncs = new gameplayFunctions(this);
         Button send = (Button) findViewById(R.id.send);
         final EditText completeWord_view = (EditText) findViewById(R.id.completeword);
         final EditText incompleteWord_view = (EditText) findViewById(R.id.incompleteword);
@@ -97,7 +96,7 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
 
                     }
 
-                    functions_.addWordtoDB(complete_word,
+                    gamefuncs.addWordtoDB(complete_word,
                             incomplete_word, word_obj);
 
                     completeWord_view.setText("");

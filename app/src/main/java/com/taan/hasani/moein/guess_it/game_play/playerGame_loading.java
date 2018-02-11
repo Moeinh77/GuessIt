@@ -11,6 +11,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
@@ -24,7 +26,7 @@ public class playerGame_loading extends Activity {
 
     private boolean inGame;
     private Player player;
-    private String url = "http://online6732.tk/guessIt.php";
+    private String url = "http://mamadgram.tk/guessIt.php";
     private String gamedID, category, type;
     private TextView status_textview;
 
@@ -38,7 +40,7 @@ public class playerGame_loading extends Activity {
         inGame = true;
         player = new Player(this);
 
-        //difficaulty va category ro az activity ghabl migirad
+        //difficaulty va category ro az activity ghabl migirad ke activity category hast
         Bundle bundle = getIntent().getExtras();
         category = bundle.getString("category");
         type = bundle.getString("type");
@@ -69,16 +71,21 @@ public class playerGame_loading extends Activity {
 
                 try {
 
-                    Toast.makeText(getApplicationContext(),
-                            "newSingle #" + response.toString(), Toast.LENGTH_SHORT).show();
+                    Gson gson = new Gson();
+                    simpleRequest_GSON request;
+                    request = gson.fromJson(response.toString(),
+                            simpleRequest_GSON.class);
 
-                    if (response.getString("gameID").equals("-1")) {
+                    Toast.makeText(getApplicationContext(),
+                            request.responseData, Toast.LENGTH_SHORT).show();
+
+                    gamedID = response.getString("gameID");//bayad ba intent montaghel beshe
+
+                    if (gamedID.equals("-1")) {
 
                         isMyGameReady();
 
                     } else {
-
-                        gamedID = response.getString("gameID");//bayad ba intent montaghel beshe
 
                         setGameSettings();
                         Toast.makeText(getApplicationContext(),
@@ -126,7 +133,6 @@ public class playerGame_loading extends Activity {
                     if (inGame) {
                         if (response.getString("gameID").equals("-1")) {
 
-
                             new Handler().postDelayed(new Runnable() {
 
                                 @Override
@@ -134,7 +140,6 @@ public class playerGame_loading extends Activity {
                                     isMyGameReady();
                                 }
                             }, 3000);
-
 
                         } else {
                             gamedID = response.getString("gameID");

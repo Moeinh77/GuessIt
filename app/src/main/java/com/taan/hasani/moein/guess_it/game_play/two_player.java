@@ -2,7 +2,6 @@ package com.taan.hasani.moein.guess_it.game_play;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -23,15 +22,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
+import com.taan.hasani.moein.guess_it.helpingclasses.gameplayFunctions;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 
 public class two_player extends AppCompatActivity {
@@ -55,7 +52,7 @@ public class two_player extends AppCompatActivity {
     String Rivalscore_gameEnd, Playerscore_gameEnd;
     private String status = " ";
     private Player player;
-    private Functions_ functions_;
+    private gameplayFunctions gamefuncs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +69,9 @@ public class two_player extends AppCompatActivity {
         player2_textview = (TextView) findViewById(R.id.rivalscore);
         player1_textview = (TextView) findViewById(R.id.yourscore);
         player = new Player(this);
-        functions_ = new Functions_(this);
+        gamefuncs = new gameplayFunctions(this);
 
-        //difficaulty va category ro az activity ghabl migirad
+        //gameID ra az playerGame_loading migirad
         Bundle bundle = getIntent().getExtras();
         gamedID = bundle.getString("gamedID");
         ///////////////////////////////////////////////////////
@@ -125,7 +122,7 @@ public class two_player extends AppCompatActivity {
                                 mediaPlayer.start();
                                 ////////////////////////////////////////////////////////
 
-                                functions_.setAnswer(gamedID, entered_word.getText().toString(),
+                                gamefuncs.setAnswer(gamedID, entered_word.getText().toString(),
                                         Player_time, Player_score, myturn);
 
                                 //baraye check kardan nobat
@@ -139,7 +136,7 @@ public class two_player extends AppCompatActivity {
 
                                 myturn = "yes";//javab ghalatehamchenan nobat bazikon baghi mimanad
 
-                                functions_.setAnswer(gamedID, entered_word.getText().toString(),
+                                gamefuncs.setAnswer(gamedID, entered_word.getText().toString(),
                                         Player_time, Player_score, myturn);
 
                             }
@@ -249,7 +246,7 @@ public class two_player extends AppCompatActivity {
 
                                 public void onFinish() {
                                     timer.setText("0");
-                                    functions_.setAnswer(gamedID, entered_word.getText().toString(),
+                                    gamefuncs.setAnswer(gamedID, entered_word.getText().toString(),
                                             "0", "0", "no");
                                     spent_time = 0;
                                     words_loaded = false;
