@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.taan.hasani.moein.guess_it.Gson.gameInfo_GSON;
 import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
 import com.taan.hasani.moein.guess_it.Gson.userInfo_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
@@ -59,29 +60,29 @@ public class Player {
         name = prefs.getString("name", null);
     }
 
-    public void setrole(String role) {
+    private void setrole(String role) {
         editor.putString("role", role);
         editor.apply();
     }
 
-    public void setUsername(String username) {
+    private void setUsername(String username) {
         editor.putString("username", username);
         editor.apply();
     }
 
-    public void setPassword(String password) {
+    private void setPassword(String password) {
         editor.putString("password", password);
         editor.apply();
 
     }
 
-    public void setId(String id) {
+    private void setId(String id) {
         editor.putString("userID", id);
         editor.apply();
 
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         editor.putString("name", name);
         editor.apply();
 
@@ -256,7 +257,7 @@ public class Player {
                 request = gson.fromJson(response.toString(),
                         simpleRequest_GSON.class);
 
-                if (request.equals("yes")) {
+                if (request.dataIsRight.equals("yes")) {
 
                     SharedPreferences.Editor editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                     editor.putString("username", null);
@@ -322,7 +323,7 @@ public class Player {
                     request = gson.fromJson(response.toString(),
                             simpleRequest_GSON.class);
 
-                    if (request.equals("yes")) {
+                    if (request.dataIsRight.equals("yes")) {
 
                         SharedPreferences.Editor editor;
                         editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
@@ -375,7 +376,7 @@ public class Player {
                 request = gson.fromJson(response.toString(),
                         simpleRequest_GSON.class);
 
-                if (request.equals("yes")) {
+                if (request.dataIsRight.equals("yes")) {
 
                     Toast.makeText(activity,
                             "Username changed", Toast.LENGTH_LONG).show();
@@ -423,7 +424,7 @@ public class Player {
                 request = gson.fromJson(response.toString(),
                         simpleRequest_GSON.class);
 
-                if (request.equals("yes")) {
+                if (request.dataIsRight.equals("yes")) {
 
                     Toast.makeText(activity,
                             "name changed", Toast.LENGTH_LONG).show();
@@ -526,7 +527,7 @@ public class Player {
                 request = gson.fromJson(response.toString(),
                         simpleRequest_GSON.class);
 
-                if (request.equals("yes")) {
+                if (request.dataIsRight.equals("yes")) {
 
                     Toast.makeText(activity,
                             "Logged out successfully ", Toast.LENGTH_LONG).show();
@@ -550,7 +551,7 @@ public class Player {
 
     }
 
-
+    //Gsonized !!!
     public ArrayList getUserGamesInfo(String gameID) {
 
         HashMap<String, String> info = new HashMap<>();
@@ -564,32 +565,28 @@ public class Player {
                 url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                try {
+                //    Toast.makeText(activity, response.toString(), Toast.LENGTH_LONG).show();
 
-                    simpleRequest_GSON request_gson;
+                gameInfo_GSON gameInfo;
                     Gson gson = new Gson();
+                gameInfo = gson.fromJson(response.toString(), gameInfo_GSON.class);
 
-                    if (response.getString("playerOneTotalScore") != null) {
+
+                if (gameInfo.playerOneID != null) {
 
                         gameHistory_object gameHistory_object = new gameHistory_object();
 
-                        if (id.equals(response.getString("playerOneID"))) {
+                    if (id.equals(gameInfo.playerOneID)) {
 
-                            String Playerscores = response.getString("playerOneTotalScore");
-                            String Rivalscore = response.getString("playerTwoTotalScore");
+                        gameHistory_object.setRivalUsername(gameInfo.playerTwoUsername);
+                        gameHistory_object.setPlayerScore(gameInfo.playerOneTotalScore);
+                        gameHistory_object.setRivalScore(gameInfo.playerTwoTotalScore);
 
-                            gameHistory_object.setRivalUsername(response.getString("playerTwoUsername"));
-                            gameHistory_object.setPlayerScore(Playerscores);
-                            gameHistory_object.setRivalScore(Rivalscore);
+                    } else if (id.equals(gameInfo.playerTwoID)) {
 
-                        } else {
-
-                            String Playerscores = response.getString("playerTwoTotalScore");
-                            String Rivalscore = response.getString("playerTwoTotalScore");
-
-                            gameHistory_object.setRivalUsername(response.getString("playerOneUsername"));
-                            gameHistory_object.setPlayerScore(Playerscores);
-                            gameHistory_object.setRivalScore(Rivalscore);
+                        gameHistory_object.setRivalUsername(gameInfo.playerOneUsername);
+                        gameHistory_object.setPlayerScore(gameInfo.playerTwoTotalScore);
+                        gameHistory_object.setRivalScore(gameInfo.playerOneTotalScore);
 
                         }
 
@@ -600,10 +597,6 @@ public class Player {
                         activity.findViewById(R.id.message_history).setVisibility(View.VISIBLE);
 
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
             }
 

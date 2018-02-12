@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.taan.hasani.moein.guess_it.Gson.makingGame_GSON;
 import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
@@ -24,11 +25,13 @@ import java.util.HashMap;
 
 public class playerGame_loading extends Activity {
 
-    private boolean inGame;
+    private boolean inGame = true;//baraye inke agr az safe sakhte bazi
+    // do nafare kharej shod digar false beshe va request nadahad
+
     private Player player;
     private String url = "http://mamadgram.tk/guessIt.php";
     private String gamedID, category, type;
-    private TextView status_textview;
+    private TextView status_textview;//status sakhte bazi ra gozaresh midahad
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,8 @@ public class playerGame_loading extends Activity {
 
         status_textview = (TextView) findViewById(R.id.status_textview);
 
-        inGame = true;
+        //inGame = true;
+
         player = new Player(this);
 
         //difficaulty va category ro az activity ghabl migirad ke activity category hast
@@ -50,6 +54,7 @@ public class playerGame_loading extends Activity {
 
     }
 
+    //GSONIZED !!!
     public void newTwoPlayerGame() {
 
         status_textview.setText("در حال ساخت بازی...");
@@ -61,25 +66,21 @@ public class playerGame_loading extends Activity {
         info.put("mode", "twoPlayer");
         info.put("type", type);
 
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
+        if (inGame) {//agar az safe ijad bazi kharej shode digar request nadahad
+            JSONObject jsonObject = new JSONObject(info);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url, jsonObject, new Response.Listener<JSONObject>() {
 
 
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
+                @Override
+                public void onResponse(JSONObject response) {
 
                     Gson gson = new Gson();
-                    simpleRequest_GSON request;
-                    request = gson.fromJson(response.toString(),
-                            simpleRequest_GSON.class);
+                    makingGame_GSON makingGame;
+                    makingGame = gson.fromJson(response.toString(),
+                            makingGame_GSON.class);
 
-                    Toast.makeText(getApplicationContext(),
-                            request.responseData, Toast.LENGTH_SHORT).show();
-
-                    gamedID = response.getString("gameID");//bayad ba intent montaghel beshe
+                    gamedID = makingGame.gameID;//bayad ba intent montaghel beshe
 
                     if (gamedID.equals("-1")) {
 
@@ -92,23 +93,21 @@ public class playerGame_loading extends Activity {
                                 gamedID, Toast.LENGTH_SHORT).show();
                     }
 
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            "newTwoPlayerGame " + e.toString(), Toast.LENGTH_SHORT).show();
                 }
-            }
 
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "*newTwoPlayerGame**Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(),
+                            "*newTwoPlayerGame**Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
 
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+            AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+        }
     }
 
+    //GSONIZED !!!
     public void isMyGameReady() {
 
         status_textview.setText("جستجو برای حریف...");
@@ -118,53 +117,53 @@ public class playerGame_loading extends Activity {
         info.put("action", "isMyGameReady");
         info.put("userID", player.getId());
 
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
+        if (inGame) {//agar az safe ijad bazi kharej shode digar request nadahad
+
+            JSONObject jsonObject = new JSONObject(info);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url, jsonObject, new Response.Listener<JSONObject>() {
 
 
-            @Override
-            public void onResponse(JSONObject response) {
+                @Override
+                public void onResponse(JSONObject response) {
 
-                try {
 
-                    //    Toast.makeText(getApplicationContext(),
-                    //            "isMyGameReady #"+response.toString(), Toast.LENGTH_SHORT).show();
-                    if (inGame) {
-                        if (response.getString("gameID").equals("-1")) {
+                    Gson gson = new Gson();
+                    makingGame_GSON makingGame;
+                    makingGame = gson.fromJson(response.toString(),
+                            makingGame_GSON.class);
 
-                            new Handler().postDelayed(new Runnable() {
+                    if (makingGame.gameID.equals("-1")) {
 
-                                @Override
-                                public void run() {
-                                    isMyGameReady();
-                                }
-                            }, 3000);
+                        new Handler().postDelayed(new Runnable() {
 
-                        } else {
-                            gamedID = response.getString("gameID");
-                            setGameSettings();
-                        }
+                            @Override
+                            public void run() {
+                                isMyGameReady();
+                            }
+                        }, 3000);
+
+                    } else {
+                        gamedID = makingGame.gameID;
+                        setGameSettings();
                     }
 
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_SHORT).show();
+
                 }
-            }
 
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "isMyGameReady***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(),
+                            "isMyGameReady***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
 
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
+            AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+        }
     }
 
+    //GSONIZED !!!
     public void setGameSettings() {
 
         HashMap<String, String> info = new HashMap<>();
@@ -174,17 +173,21 @@ public class playerGame_loading extends Activity {
         info.put("gameID", gamedID);
         info.put("categories", category);
 
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
+        if (inGame) {//agar az safe ijad bazi kharej shode digar request nadahad
+            JSONObject jsonObject = new JSONObject(info);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url, jsonObject, new Response.Listener<JSONObject>() {
 
 
-            @Override
-            public void onResponse(JSONObject response) {
+                @Override
+                public void onResponse(JSONObject response) {
 
-                try {
+                    Gson gson = new Gson();
+                    simpleRequest_GSON request;
+                    request = gson.fromJson(response.toString(),
+                            simpleRequest_GSON.class);
 
-                    if (response.getString("dataIsRight").equals("yes")) {
+                    if (request.dataIsRight.equals("yes")) {
 
                         Intent intent = new Intent(playerGame_loading.this, two_player.class);
                         intent.putExtra("gamedID", gamedID);
@@ -197,22 +200,18 @@ public class playerGame_loading extends Activity {
 
                     }
 
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            "setGameSetting " + e.toString(), Toast.LENGTH_SHORT).show();
                 }
-            }
 
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        "setGameSetting***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(),
+                            "setGameSetting***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
 
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
+            AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+        }
 
     }
 
@@ -221,5 +220,12 @@ public class playerGame_loading extends Activity {
 
         inGame = false;
         super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        inGame = false;
+
+        super.onPause();
     }
 }

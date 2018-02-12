@@ -6,14 +6,16 @@ package com.taan.hasani.moein.guess_it.Gson;
 
 public class gameInfo_GSON {
 
+    public String playerOneTimes;
     public String playerOneTotalScore;
     public String playerOneID;
     public String playerOneUsername;
     public String playerOneWords;
     public String playerOneRounds;
 
+    public String playerTwoTimes;
     public String playerTwoTotalScore;
-    public String playerOneTwoID;
+    public String playerTwoID;
     public String playerTwoUsername;
     public String playerTwoWords;
     public String playerTwoRounds;

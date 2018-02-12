@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -35,6 +36,7 @@ public class gameHistory_list extends Fragment {
     ArrayList<gameHistory_object> scoreList;//*************
     HashMap<String, String> info = new HashMap<>();
     Player player;
+    LottieAnimationView loading;
 
     public gameHistory_list() {
         // Required empty public constructor
@@ -46,7 +48,7 @@ public class gameHistory_list extends Fragment {
 
         View games_info = inflater.inflate(R.layout.fragment_games_history, container, false);
         listView = (ListView) games_info.findViewById(R.id.listView);
-        // progressBar = (ProgressBar) games_info.findViewById(R.id.progressBar2);
+        loading = (LottieAnimationView) games_info.findViewById(R.id.loadinggamehistory);
 
         player = new Player(getActivity());
 
@@ -75,7 +77,6 @@ public class gameHistory_list extends Fragment {
                     scoreList = new ArrayList<>();
 
                     String recived_games_id = userInfo.games;
-                    //   Toast.makeText(getActivity(),userInfo.username,Toast.LENGTH_LONG).show();
 
                     String[] array = recived_games_id.split(", ");
 
@@ -120,7 +121,7 @@ public class gameHistory_list extends Fragment {
         } else {
             listViewAdapter_gamesInfo listViewAdapter_gamesInfo = new listViewAdapter_gamesInfo
                     (getActivity(), R.layout.score_row, scoreList);
-            //progressBar.setVisibility(View.INVISIBLE);
+            loading.setVisibility(View.INVISIBLE);
             listView.setAdapter(listViewAdapter_gamesInfo);
             listViewAdapter_gamesInfo.notifyDataSetChanged();
         }
