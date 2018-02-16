@@ -22,7 +22,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
-import com.taan.hasani.moein.guess_it.Gson.recieved_word;
+import com.taan.hasani.moein.guess_it.Gson.makingGame_GSON;
+import com.taan.hasani.moein.guess_it.Gson.recievedWord_GSON;
+import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.helpingclasses.gameplayFunctions;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
@@ -45,17 +47,18 @@ public class single_Player extends AppCompatActivity {
             url = "http://mamadgram.tk/guessIt.php";
     private TextView totalScore_view;
     private CountDownTimer countDownTimer;
-    private String category, difficulty, type, recivedTime;
+    private String category, type, recivedTime;
     private int index;//baraye gereftane index alamate soal az list
     private Dialog dialog;
     private TextView wordnumber;
     private boolean inGame = true;//baraye inke agar az bazi kharej shodim dg request nade
     private int currentword_number;
     private int Totalwords;//tedad kole kalamt
-    private JSONObject recievedWord_Jsonobj;
     private gameplayFunctions functions;
     private Player player;
     private Button Edit;
+    private JSONObject recievedWord_Jsonobj;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,8 +218,6 @@ public class single_Player extends AppCompatActivity {
             }
         });
     }
-
-
     //*****************************
 
     public void nextWord_func() {
@@ -363,6 +364,7 @@ public class single_Player extends AppCompatActivity {
     }
     ////////////////////////////////////////////////////
 
+    //gsonized!!!
     public void newSinglePlayerGame() {
 
         currentword_number = 0;//kalame hara az avl beshmarad
@@ -379,8 +381,6 @@ public class single_Player extends AppCompatActivity {
         info.put("userID", id);
         info.put("type", type);
 
-        //game_ID=Functions.newSinglePlayerGame(info);
-
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -389,26 +389,20 @@ public class single_Player extends AppCompatActivity {
 
             @Override
             public void onResponse(JSONObject response) {
-
-                try {
-
-                    //    Toast.makeText(getApplicationContext(),
-                    //          response.toString(), Toast.LENGTH_LONG).show();
-                    game_ID = response.getString("gameID");
-
-                    if (response.getString("dataIsRight").equals("yes")) {
-                        setGameSettings();
-                    } else {
-
-                        Toast.makeText(getApplicationContext(), " data is right=no ,sth went wrong..."
-                                , Toast.LENGTH_SHORT).show();
-                        newSinglePlayerGame();
-                    }
+                makingGame_GSON makingGame;
+                Gson gson = new Gson();
+                makingGame = gson.fromJson(response.toString(), makingGame_GSON.class);
 
 
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            "newSinglePlayerGame " + e.toString(), Toast.LENGTH_LONG).show();
+                game_ID = makingGame.gameID;
+
+                if (makingGame.dataIsRight.equals("yes")) {
+                    setGameSettings();
+                } else {
+
+                    Toast.makeText(getApplicationContext(), " single player data is right=no ,sth went wrong..."
+                            , Toast.LENGTH_SHORT).show();
+                    newSinglePlayerGame();
                 }
             }
 
@@ -423,20 +417,16 @@ public class single_Player extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
+    //gsonized!!!
     public void setGameSettings() {
-
 
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "setGameSetting");
         info.put("userID", id);
         info.put("gameID", game_ID);
-        //   info.put("level", difficulty);
-        // try {
+
         info.put("categories", category);
-//        } catch (UnsupportedEncodingException e) {
-//            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
-//        }
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -446,22 +436,20 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-                try {
+                simpleRequest_GSON request;
+                Gson gson = new Gson();
+                request = gson.fromJson(response.toString(), simpleRequest_GSON.class);
 
-                    if (response.getString("dataIsRight").equals("yes")) {
+                if (request.dataIsRight.equals("yes")) {
 
-                        sendNextWord();
+                    sendNextWord();
 
-                    } else {
+                } else {
 
-                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "setsettings data is right no single player", Toast.LENGTH_LONG).show();
 
-                    }
-
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG).show();
                 }
+
             }
 
         }, new Response.ErrorListener() {
@@ -477,6 +465,7 @@ public class single_Player extends AppCompatActivity {
 
     }
 
+    //gsonized!!!
     public void sendNextWord() {
 
         timer.setOnClickListener(new View.OnClickListener() {
@@ -515,35 +504,32 @@ public class single_Player extends AppCompatActivity {
                 @Override
                 public void onResponse(JSONObject response) {
 
+                    simpleRequest_GSON request;
+                    Gson gson = new Gson();
+                    request = gson.fromJson(response.toString(), simpleRequest_GSON.class);
+
                     try {
+                        recievedWord_GSON recievedWord = gson.fromJson(response.getJSONObject("word").toString(), recievedWord_GSON.class);
 
-                        recieved_word recievedWord;
-                        Gson gson=new Gson();
-                        recievedWord=gson.fromJson(response.getJSONObject("word").toString()
-                                , recieved_word.class);
+                        //      Toast.makeText(getApplicationContext(),
+                        //              response.toString(),Toast.LENGTH_LONG).show();
 
-                        // Toast.makeText(getApplicationContext(),
-                        //         "gson test @@@"+recievedWord.incompleteWord,Toast.LENGTH_LONG).show();
+                        if (request.dataIsRight.equals("yes")) {
 
-                        if (response.getString("dataIsRight").equals("yes")) {
-
-
-                            Boolean lastWordCheck = response.getJSONObject("word")
-                                    .getString("word").equals("outOfWords");
+                            Boolean lastWordCheck = recievedWord.word.equals("outOfWords");
 
                             if (!lastWordCheck)//agar be outofwords nareside bood
                             {
+                                recievedWord_Jsonobj = response.getJSONObject("word");
 
                                 //   Toast.makeText(getApplicationContext(),
                                 //          response.toString(),Toast.LENGTH_LONG).show();
 
-                                recievedWord_Jsonobj = response.getJSONObject("word");
+                                incompleteWord = recievedWord.incompleteWord;
 
-                                incompleteWord = recievedWord_Jsonobj.getString("incompleteWord");
+                                completeWord = recievedWord.word;
 
-                                completeWord = recievedWord_Jsonobj.getString("word");
-
-                                recivedTime = recievedWord_Jsonobj.getString("time");
+                                recivedTime = recievedWord.time;
 
                                 word_TextView.setText(incompleteWord);
 
@@ -560,7 +546,6 @@ public class single_Player extends AppCompatActivity {
 
                                     public void onFinish() {
                                         timer.setText("0");
-
                                         nextWord_func();
                                     }
                                 };
@@ -573,7 +558,7 @@ public class single_Player extends AppCompatActivity {
 
 //                            Toast.makeText(getApplicationContext(), String.valueOf(length),
 //                                    Toast.LENGTH_SHORT).show();
-                            } else if (response.getJSONObject("word").getString("word").equals("outOfWords"))//agar kalamt tamam shod
+                            } else if (recievedWord.word.equals("outOfWords"))//agar kalamt tamam shod
                                 //outofwords miad ke bad dialog ro neshan midim
                                 alert_dialog_function_game_end();
 
@@ -588,8 +573,6 @@ public class single_Player extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), e.toString(),
                                 Toast.LENGTH_SHORT).show();
                     }
-
-
                 }
 
             }, new Response.ErrorListener() {

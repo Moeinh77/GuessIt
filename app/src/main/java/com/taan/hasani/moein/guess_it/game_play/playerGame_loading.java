@@ -109,6 +109,7 @@ public class playerGame_loading extends Activity {
 
     //GSONIZED !!!
     public void isMyGameReady() {
+        //  Toast.makeText(getApplicationContext(),"is my game",Toast.LENGTH_SHORT).show();
 
         status_textview.setText("جستجو برای حریف...");
 
@@ -129,17 +130,17 @@ public class playerGame_loading extends Activity {
 
 
                     Gson gson = new Gson();
-                    makingGame_GSON makingGame;
+                    final makingGame_GSON makingGame;
                     makingGame = gson.fromJson(response.toString(),
                             makingGame_GSON.class);
 
                     if (makingGame.gameID.equals("-1")) {
-
                         new Handler().postDelayed(new Runnable() {
 
                             @Override
                             public void run() {
                                 isMyGameReady();
+
                             }
                         }, 3000);
 
@@ -215,17 +216,12 @@ public class playerGame_loading extends Activity {
 
     }
 
+
     @Override
     protected void onDestroy() {
-
         inGame = false;
         super.onDestroy();
     }
 
-    @Override
-    protected void onPause() {
-        inGame = false;
 
-        super.onPause();
-    }
 }

@@ -20,4 +20,6 @@ public class gameInfo_GSON {
     public String playerTwoWords;
     public String playerTwoRounds;
 
+    public String status;
+    public String numberOfWords;
 }

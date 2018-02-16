@@ -21,6 +21,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.taan.hasani.moein.guess_it.Gson.gameInfo_GSON;
+import com.taan.hasani.moein.guess_it.Gson.recievedWord_GSON;
+import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.helpingclasses.gameplayFunctions;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
@@ -183,11 +187,12 @@ public class two_player extends AppCompatActivity {
 
     }
 
+    //gsonized!!!
     public void sendNextWord() {
 
         gameInfo();
 
-        if (!status.equals("game ended")) {
+        if (!status.equals("game ended") && inGame) {
 
             HashMap<String, String> info = new HashMap<>();
 
@@ -206,12 +211,17 @@ public class two_player extends AppCompatActivity {
                 @Override
                 public void onResponse(JSONObject response) {
 
-                    try {
+                    Gson gson = new Gson();
+                    simpleRequest_GSON simpleRequest;
+                    simpleRequest = gson.fromJson(response.toString(), simpleRequest_GSON.class);
 
-                        if (response.getString("dataIsRight").equals("yes")) {
-                            //dataIsRight zamani ke nobatet bashe yes miad
+                    if (simpleRequest.dataIsRight.equals("yes")) {
+                        //dataIsRight zamani ke nobatet bashe yes miad
 
+                        recievedWord_GSON recievedWord;
+                        try {
 
+                            recievedWord = gson.fromJson(response.getJSONObject("word").toString(), recievedWord_GSON.class);
                             //agar kalame ha tamam shode bashad dialog payan ro miare
                             if (currentword_number == (Toatalwords + 1)) {
 
@@ -231,11 +241,11 @@ public class two_player extends AppCompatActivity {
 
                             flag__nextWord_Timer = "yes";
 
-                            incompleteWord = response.getJSONObject("word").getString("incompleteWord");
+                            incompleteWord = recievedWord.incompleteWord;
 
-                            completeWord = response.getJSONObject("word").getString("word");
+                            completeWord = recievedWord.word;
 
-                            recivedTime = response.getJSONObject("word").getString("time");
+                            recivedTime = recievedWord.time;
 
                             ////////////////////////////////////////////
                             countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime) - spent_time) * 1000, 1000) {
@@ -263,42 +273,37 @@ public class two_player extends AppCompatActivity {
 
                             words_loaded = true;
 
-                        } else {
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
 
 
-                            if (currentword_number == (Toatalwords)) {
+                        if (currentword_number == (Toatalwords)) {
 
-                                alert_dialog_function_game_end();
+                            alert_dialog_function_game_end();
 
-                            }
-
-                            message.setVisibility(View.INVISIBLE);
-                            word.setVisibility(View.INVISIBLE);
-
-                            turn = "notmyturn";
-
-                            //Toast.makeText(getApplicationContext(),
-                            //        "It's not your turn yet, Please wait...", Toast.LENGTH_SHORT).show();
-                            timer.setText("لطفا صبر کنید...");
-                            //ferestadan request baraye inke bebinim nobateman shode ya na
-                            new Handler().postDelayed(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    sendNextWord();
-                                }
-                            }, 1000);
-                            //////////////////////////////////////////
-
-                            //   }
                         }
 
+                        message.setVisibility(View.INVISIBLE);
+                        word.setVisibility(View.INVISIBLE);
 
-                    } catch (JSONException e) {
+                        turn = "notmyturn";
 
-                        Toast.makeText(getApplicationContext(), "sendNextWord " + e.toString(),
-                                Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),
+                        //        "It's not your turn yet, Please wait...", Toast.LENGTH_SHORT).show();
+                        timer.setText("لطفا صبر کنید...");
+                        //ferestadan request baraye inke bebinim nobateman shode ya na
+                        new Handler().postDelayed(new Runnable() {
 
+                            @Override
+                            public void run() {
+                                sendNextWord();
+                            }
+                        }, 1000);
+                        //////////////////////////////////////////
+
+                        //   }
                     }
 
 
@@ -318,6 +323,7 @@ public class two_player extends AppCompatActivity {
         }
     }
 
+    //gsonized!!!
     public void gameInfo() {
 
         HashMap<String, String> info = new HashMap<>();
@@ -331,57 +337,31 @@ public class two_player extends AppCompatActivity {
                 url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                try {
+                Gson gson = new Gson();
+                gameInfo_GSON gameInfo;
+                gameInfo = gson.fromJson(response.toString(), gameInfo_GSON.class);
 
-                    String your_score = response.getString("playerOneTotalScore");
+                if (player.getId().equals(gameInfo.playerOneID)) {
 
-                    String rival_score = response.getString("playerTwoTotalScore");
+                    player2_textview.setText("امتیاز " + gameInfo.playerTwoUsername
+                            + " : " + gameInfo.playerTwoTotalScore);
+                    player1_textview.setText("امتیاز شما : " + gameInfo.playerOneTotalScore);
 
-                    status = response.getString("status");//baraye inke bebinim
-                    //bazi tamoom shode ya na
 
-                    if (player.getId().equals(response.getString("playerOneID"))) {
+                } else if (player.getId().equals(gameInfo.playerTwoID)) {
 
-                        player2_textview.setText("امتیاز " + response.getString("playerTwoUsername")
-                                + " : " + rival_score);
-                        player1_textview.setText("امتیاز شما : " + your_score);
+                    player1_textview.setText("امتیاز شما : " + gameInfo.playerTwoTotalScore);
+                    player2_textview.setText("امتیاز " + gameInfo.playerOneUsername +
+                            " : " + gameInfo.playerOneTotalScore);
 
-                        player2_textview.setTextColor(Color.RED);
-                        player1_textview.setTextColor(Color.GREEN);
+                }
 
-                        Rivalscore_gameEnd = rival_score;
-                        Playerscore_gameEnd = your_score;
-//
-//                        RivalWordsNumber = Integer.parseInt(
-//                                response.getString("playerTwoRounds"));
-
-                    } else if (player.getId().equals(response.getString("playerTwoID"))) {
-
-                        player2_textview.setText("امتیاز شما : " + rival_score);
-                        player1_textview.setText("امتیاز " + response.getString("playerOneUsername") +
-                                " : " + your_score);
-
-                        player2_textview.setTextColor(Color.GREEN);
-                        player1_textview.setTextColor(Color.RED);
-
-                        Rivalscore_gameEnd = your_score;
-                        Playerscore_gameEnd = rival_score;
-
-                        //RivalWordsNumber = Integer.parseInt(
-                        //        response.getString("playerOneRounds"));
-                    }
-
-                    if (Toatalwords == 0) {
-                        Toatalwords = Integer.parseInt(response.getString("numberOfWords"));
+                if (Toatalwords == 0) {
+                    Toatalwords = Integer.parseInt(gameInfo.numberOfWords);
 
 //                        Toast.makeText(getApplicationContext(), String.valueOf(Toatalwords)
 //                                + "game during word numbers", Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
             }
 
         }, new Response.ErrorListener() {
