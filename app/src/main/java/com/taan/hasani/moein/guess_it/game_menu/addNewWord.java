@@ -80,18 +80,12 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
 
                         for (int i = 0; i < indexlist_of_questionmarks.size(); i++) {
 
-                            //  Toast.makeText(getApplicationContext(),
-                            //        String.valueOf(indexlist_of_questionmarks.get(i)),
-                            // Toast.LENGTH_LONG).show();
                             stringBuilder.setCharAt(indexlist_of_questionmarks.get(i), '؟');
 
                         }
 
                         incomplete_word = stringBuilder.toString();
 
-                        ////////////////////////////////////////////////////
-                        //  Toast.makeText(getApplicationContext(),
-                        //         "not English", Toast.LENGTH_SHORT).show();
 
 
                     }

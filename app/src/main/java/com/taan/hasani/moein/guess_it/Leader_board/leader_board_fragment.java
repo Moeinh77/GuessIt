@@ -18,6 +18,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.taan.hasani.moein.guess_it.Gson.topuser_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.gameHistory.listViewAdapter_gamesInfo;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
@@ -73,6 +75,7 @@ public class leader_board_fragment extends Fragment {
         info.put("action", "sendListOfTopUsers");
         info.put("userID", player.getId());
 
+
         JSONObject jsonObject = new JSONObject(info);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -80,27 +83,35 @@ public class leader_board_fragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
 
+
+                // Toast.makeText(getActivity(),response.toString(),Toast.LENGTH_LONG).show();
                 try {
                     JSONArray jsonArray_scores = response.getJSONArray("listOfTopUsers");
 
 
+                    Gson gson = new Gson();
+
+
                     for (int i = 0; i < jsonArray_scores.length(); i++) {
 
-                        String place = jsonArray_scores.getJSONObject(i).getString("position");
-                        String username = jsonArray_scores.getJSONObject(i).getString("username");
-                        String score = jsonArray_scores.getJSONObject(i).getString("totalScore");
+                        topuser_GSON user = gson.fromJson(jsonArray_scores.getJSONObject(i).toString(),
+                                topuser_GSON.class);
 
-                        leaderBoard_object object = new leaderBoard_object();
-                        object.setPlayer_place(place);
-                        object.setPlayer_score(score);
-                        object.setPlayer_username(username);
+                        String place = user.position;
+                        String username = user.username;
+                        String score = user.totalScore;
 
-                        arrayList.add(object);
+                        leaderBoard_object Lobject = new leaderBoard_object();
+                        Lobject.setPlayer_place(place);
+                        Lobject.setPlayer_score(score);
+                        Lobject.setPlayer_username(username);
+
+                        arrayList.add(Lobject);
 
                     }
 
-                    yourPlace.setText(response.getString("yourPosition"));
-
+                    yourPlace.setText(response.getString("yourPosition"));//object joda mikhahad dg nasakhtam
+                    //choon faghat karbordesh vase yourposition e
 
                     ListViewAdapter_leaderboard listViewAdapter_leaderboard = new ListViewAdapter_leaderboard
                             (getActivity(), R.layout.leaderboard_row, arrayList);

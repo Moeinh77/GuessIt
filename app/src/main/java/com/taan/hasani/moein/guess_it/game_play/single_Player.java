@@ -389,10 +389,10 @@ public class single_Player extends AppCompatActivity {
 
             @Override
             public void onResponse(JSONObject response) {
+
                 makingGame_GSON makingGame;
                 Gson gson = new Gson();
                 makingGame = gson.fromJson(response.toString(), makingGame_GSON.class);
-
 
                 game_ID = makingGame.gameID;
 
