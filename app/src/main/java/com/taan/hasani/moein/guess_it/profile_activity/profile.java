@@ -48,6 +48,8 @@ public class profile extends Fragment {
 
         player = new Player(getActivity());//intialize e class Player
 
+        player.getUserInfo();//hame etelaat ra update konad
+
         AddNewWord = account_info_.findViewById(R.id.addWord);
         name_edittext = (EditText) account_info_.findViewById(R.id.FirstName);
         username_edittext = (EditText) account_info_.findViewById(R.id.username);

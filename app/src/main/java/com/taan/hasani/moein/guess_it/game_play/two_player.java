@@ -44,7 +44,7 @@ public class two_player extends AppCompatActivity {
     private TextView word, message, timer, player2_textview, player1_textview;
     private EditText entered_word;
     private CountDownTimer countDownTimer;
-    private String turn;
+    private String turn;//baraye inke vaghti nobat player nist check ra nazanad
     // private int spent_time = 0;
     //  private boolean imIngame = true;//agar player bazira tark kard
     //
@@ -105,7 +105,7 @@ public class two_player extends AppCompatActivity {
 
                         String Player_score = timer.getText().toString();
                         String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
-                        String myturn;
+
 
                         if (!entered_word.getText().toString().equals("")) {
 
@@ -115,7 +115,7 @@ public class two_player extends AppCompatActivity {
 
                                 number_of_trueGuess++;
 
-                                myturn = "no";//playerdg javab dade hala bayad nobat ro avaz konim
+                                String myturn = "no";//playerdg javab dade hala bayad nobat ro avaz konim
 
                                 word.setText(completeWord);
 
@@ -141,7 +141,7 @@ public class two_player extends AppCompatActivity {
                                         , Snackbar.LENGTH_LONG)
                                         .setActionTextColor(Color.YELLOW).show();
 
-                                myturn = "yes";//javab ghalatehamchenan nobat bazikon baghi mimanad
+                                String myturn = "yes";//javab ghalatehamchenan nobat bazikon baghi mimanad
 
                                 gamefuncs.setAnswer(gamedID, entered_word.getText().toString(),
                                         Player_time, Player_score, myturn);
@@ -223,14 +223,6 @@ public class two_player extends AppCompatActivity {
                             recievedWord_GSON recievedWord;
 
                             recievedWord = gson.fromJson(response.getJSONObject("word").toString(), recievedWord_GSON.class);
-//                            //agar kalame ha tamam shode bashad dialog payan ro miare
-//                            if (currentword_number == (Toatalwords + 1)) {
-//
-//                                gameEnd_Dialog();//send next word
-//                            }
-                            ///////////////////////////////////////////////////////////
-
-                            //flag__nextWord_Timer = "yes";
 
                             incompleteWord = recievedWord.incompleteWord;
 
@@ -345,6 +337,7 @@ public class two_player extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(JSONObject response) {
+
                 Gson gson = new Gson();
                 gameInfo_GSON gameInfo;
                 gameInfo = gson.fromJson(response.toString(), gameInfo_GSON.class);
@@ -355,10 +348,10 @@ public class two_player extends AppCompatActivity {
 
                     player1_textview.setText("شما : " + gameInfo.playerOneTotalScore);
 
-                    player2_textview.setText(gameInfo.playerTwoUsername
+                    player2_textview.setText(gameInfo.playerTwoTotalScore
                             // + "امتیاز "
                             +
-                            " : " + gameInfo.playerTwoTotalScore);
+                            " : " + gameInfo.playerTwoUsername);
 
                     Playerscore_gameEnd = gameInfo.playerOneTotalScore;
                     Rivalscore_gameEnd = gameInfo.playerTwoTotalScore;
@@ -367,9 +360,9 @@ public class two_player extends AppCompatActivity {
 
                     player1_textview.setText("امتیاز شما : " + gameInfo.playerTwoTotalScore);
 
-                    player2_textview.setText(gameInfo.playerOneUsername +
+                    player2_textview.setText(gameInfo.playerOneTotalScore +
                             //"امتیاز " +
-                            " : " + gameInfo.playerOneTotalScore);
+                            " : " + gameInfo.playerOneUsername);
 
                     Playerscore_gameEnd = gameInfo.playerTwoTotalScore;
                     Rivalscore_gameEnd = gameInfo.playerOneTotalScore;
