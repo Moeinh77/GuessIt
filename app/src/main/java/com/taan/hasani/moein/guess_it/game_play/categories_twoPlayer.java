@@ -95,63 +95,10 @@ public class categories_twoPlayer extends AppCompatActivity {
 
     public void alert_dialog_function(final String category) {
 
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.difficulty_dialog);
-        dialog.setCancelable(true);
+        Intent i = new Intent(categories_twoPlayer.this, playerGame_loading.class);
+        i.putExtra("category", category);
+        startActivity(i);
 
-        final RadioButton easy_RadioButton = (RadioButton) dialog.findViewById(R.id.slow);
-        final RadioButton hard_RadioButton = (RadioButton) dialog.findViewById(R.id.fast);
-
-
-        final Button start = (Button) dialog.findViewById(R.id.start);
-        Button cancel = (Button) dialog.findViewById(R.id.cancel);
-
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //  String difficulty = "2";
-                String rIsChecked = "false";
-
-
-                if (easy_RadioButton.isChecked()) {
-                    //  difficulty = "1";//easy_RadioButton.getText().toString();
-                    rIsChecked = "true";
-
-                }
-                if (hard_RadioButton.isChecked()) {
-                    //    difficulty = "3";
-                    rIsChecked = "true";
-
-                }
-
-                Intent i = new Intent(categories_twoPlayer.this, playerGame_loading.class);
-
-                if (rIsChecked.equals("true")) {
-
-                    i.putExtra("category", category);
-                    //   i.putExtra("type", difficulty);//ferestadane noe bazi
-
-
-                    startActivity(i);
-                    dialog.cancel();
-                } else {
-                    Toast.makeText(getApplicationContext(), "درجه سطحی را انتخاب کنید", Toast.LENGTH_LONG).show();
-                }
-
-
-            }
-        });
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-            }
-        });
-
-
-        dialog.show();
 
     }
 }
