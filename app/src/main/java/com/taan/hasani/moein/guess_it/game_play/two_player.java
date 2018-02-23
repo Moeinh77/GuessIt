@@ -256,7 +256,7 @@ public class two_player extends AppCompatActivity {
                                 };
                             } catch (NumberFormatException e) {
                                 countDownTimer = new CountDownTimer(15 * 1000, 1000) {
-                                    //Integer.parseInt(recivedTime)
+
                                     public void onTick(long millisUntilFinished) {
                                         timer.setText(String.valueOf(millisUntilFinished / 1000));
 
