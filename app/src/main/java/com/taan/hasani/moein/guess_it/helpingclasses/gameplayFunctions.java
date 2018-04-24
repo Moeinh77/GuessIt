@@ -1,6 +1,7 @@
 package com.taan.hasani.moein.guess_it.helpingclasses;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -17,15 +18,15 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 
 
-public class Functions_ {
+public class gameplayFunctions {
 
-    private String url = "http://online6732.tk/guessIt.php";
+    private String url = "http://mamadgram.tk/guessIt.php";
     private Boolean gameset_flag;
     private Activity activity;
 
     private Player player;
 
-    public Functions_(Activity activity) {
+    public gameplayFunctions(Activity activity) {
 
         this.activity = activity;
         player = new Player(activity);
@@ -43,8 +44,8 @@ public class Functions_ {
         HashMap<String, String> info = new HashMap<>();
 
         try {
-            recievedWord_Jsonobj.put("incompleteWord", new_incompleteWord);
-            recievedWord_Jsonobj.put("word", completeWord);
+            recievedWord_Jsonobj.put("incompleteWord", new_incompleteWord.trim());
+            recievedWord_Jsonobj.put("word", completeWord.trim());
             info.put("word", recievedWord_Jsonobj.toString());
             // Toast.makeText(activity, recievedWord_Jsonobj.toString(), Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
@@ -80,7 +81,8 @@ public class Functions_ {
     }
 
     public void setAnswer(String game_ID, String entered_word, String player_time,
-                          String player_score) {
+                          String player_score, String turn) {
+
 
         HashMap<String, String> info = new HashMap<>();
         HashMap<String, String> answer_hashmap = new HashMap<>();
@@ -88,6 +90,7 @@ public class Functions_ {
         answer_hashmap.put("time", player_time);
         answer_hashmap.put("score", player_score);
         answer_hashmap.put("answer", entered_word);
+        answer_hashmap.put("myTurn", turn);
 
         JSONObject answer = new JSONObject(answer_hashmap);
 
@@ -104,8 +107,8 @@ public class Functions_ {
             @Override
             public void onResponse(JSONObject response) {
 
-                //  Toast.makeText(getApplicationContext(),
-                //         "setAnswer response  :" + response.toString(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(),
+                //       "setAnswer response  :" + response.toString(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -113,7 +116,7 @@ public class Functions_ {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(activity,
-                        "setAnswer***Volley  :" + error.toString(), Toast.LENGTH_LONG).show();
+                        "setAnswer***Volley  :" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 

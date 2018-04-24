@@ -1,6 +1,7 @@
-package com.taan.hasani.moein.guess_it.player_info;
+package com.taan.hasani.moein.guess_it.profile_activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -17,21 +18,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.taan.hasani.moein.guess_it.game_menu.addNewWord;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
 
-public class account_settings_and_info extends Fragment {
+public class profile extends Fragment {
 
     String profilePicture;
-    TextView name_textview;
-    EditText username_edittext;
+    EditText username_edittext, name_edittext;//bara inke final nashe
     Button logout, Edit_username_bt;
     private EditText old_password, new_password, repeat_password;
-    private ImageView profile_pic;
+    private ImageView profile_pic, AddNewWord;
     private Player player;
 
     @Override
@@ -44,11 +44,14 @@ public class account_settings_and_info extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View account_info_ = inflater.inflate(R.layout.fragment_account_settings_info, container, false);
+        View account_info_ = inflater.inflate(R.layout.fragment_profile, container, false);
 
         player = new Player(getActivity());//intialize e class Player
 
-        name_textview = (TextView) account_info_.findViewById(R.id.FirstName);
+        player.getUserInfo();//hame etelaat ra update konad
+
+        AddNewWord = account_info_.findViewById(R.id.addWord);
+        name_edittext = (EditText) account_info_.findViewById(R.id.FirstName);
         username_edittext = (EditText) account_info_.findViewById(R.id.username);
         logout = (Button) account_info_.findViewById(R.id.logout_bt);
         old_password = (EditText) account_info_.findViewById(R.id.old_password);
@@ -57,9 +60,25 @@ public class account_settings_and_info extends Fragment {
         Button save_bt = (Button) account_info_.findViewById(R.id.save_bt);
         profile_pic = (ImageView) account_info_.findViewById(R.id.profile_pic);
         Edit_username_bt = (Button) account_info_.findViewById(R.id.edit_bt);
+        Button Edit_name_bt = (Button) account_info_.findViewById(R.id.editname_bt);
 
-        name_textview.setText(player.getName());
+        name_edittext.setText(player.getName());
         username_edittext.setText(player.getUsername());
+
+        AddNewWord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), addNewWord.class);
+                startActivity(i);
+            }
+        });
+
+        Edit_name_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player.changeName(name_edittext.getText().toString());
+            }
+        });
 
         Edit_username_bt.setOnClickListener(new View.OnClickListener() {
             @Override

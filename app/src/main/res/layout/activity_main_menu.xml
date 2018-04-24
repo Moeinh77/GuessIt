@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.taan.hasani.moein.volley.com.taan.hasani.moein.guess_it.game_menu.Main_menu">
 
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="0dp"
@@ -24,9 +23,9 @@
             android:id="@+id/tabs_mainmenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorAccent"
             app:tabGravity="fill"
-            app:tabIndicatorColor="@android:color/holo_red_dark"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
             tools:layout_editor_absoluteX="36dp"
             tools:layout_editor_absoluteY="69dp">
 
@@ -39,11 +38,13 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager_mainmenu"
         android:layout_width="0dp"
-        android:layout_height="454dp"
-        android:layout_marginTop="7dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintLeft_toLeftOf="parent"
 
+        app:layout_constraintBottom_toTopOf="@+id/appBarLayout"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

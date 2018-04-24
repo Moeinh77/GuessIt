@@ -18,8 +18,8 @@ import android.widget.Toast;
 import com.taan.hasani.moein.guess_it.Leader_board.leader_board_fragment;
 import com.taan.hasani.moein.guess_it.game_play.choosing_games_fragment;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
-import com.taan.hasani.moein.guess_it.player_info.account_settings_and_info;
-import com.taan.hasani.moein.guess_it.player_info.gameHistory_list;
+import com.taan.hasani.moein.guess_it.profile_activity.profile;
+import com.taan.hasani.moein.guess_it.gameHistory.gameHistory_list;
 import com.taan.hasani.moein.volley.R;
 
 import java.util.ArrayList;
@@ -36,6 +36,8 @@ public class Main_menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         player = new Player(this);
+
+        player.getUserInfo();
         ////////////////////////
 
         viewpager = (ViewPager) findViewById(R.id.viewpager_mainmenu);
@@ -54,32 +56,32 @@ public class Main_menu extends AppCompatActivity {
     }
 
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (player.getrole().equals("admin")) {
-
-            switch (item.getItemId()) {
-                case R.id.add:
-                    startActivity(new Intent(this, addNewWord.class));
-                    return true;
-
-                default:
-                    return super.onOptionsItemSelected(item);
-            }
-        } else {
-
-            Toast.makeText(getApplicationContext(), "متاسفانه اجازه دسترسی به این قسمت را ندارید...",
-                    Toast.LENGTH_LONG).show();
-        }
-        return false;
-    }
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.option_menu, menu);
+//        return true;
+//    }
+//
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        if (player.getrole().equals("admin")) {
+//
+//            switch (item.getItemId()) {
+//                case R.id.add:
+//                    startActivity(new Intent(this, addNewWord.class));
+//                    return true;
+//
+//                default:
+//                    return super.onOptionsItemSelected(item);
+//            }
+//        } else {
+//
+//            Toast.makeText(getApplicationContext(), "متاسفانه اجازه دسترسی به این قسمت را ندارید...",
+//                    Toast.LENGTH_LONG).show();
+//        }
+//        return false;
+//    }
 
     public void alert_dialog_function() {
 
@@ -117,7 +119,7 @@ public class Main_menu extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         Main_menu.ViewPagerAdapter adapter = new
                 Main_menu.ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new account_settings_and_info(), "");
+        adapter.addFragment(new profile(), "");
         adapter.addFragment(new gameHistory_list(), "");
         adapter.addFragment(new choosing_games_fragment(), "");
         adapter.addFragment(new leader_board_fragment(), "");

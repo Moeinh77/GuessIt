@@ -1,4 +1,4 @@
-package com.taan.hasani.moein.guess_it.player_info;
+package com.taan.hasani.moein.guess_it.gameHistory;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

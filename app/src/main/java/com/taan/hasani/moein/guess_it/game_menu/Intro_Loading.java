@@ -1,26 +1,14 @@
 package com.taan.hasani.moein.guess_it.game_menu;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
-import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-
-public class Loading extends AppCompatActivity {
+public class Intro_Loading extends AppCompatActivity {
 
     private Player player;
 
@@ -42,7 +30,7 @@ public class Loading extends AppCompatActivity {
                     player.app_reopening();
 
                 } else {
-                    Intent intent=new Intent(Loading.this,Entrance_signup_login.class);
+                    Intent intent = new Intent(Intro_Loading.this, Entrance_signup_login.class);
                     startActivity(intent);
                     finish();
                 }
@@ -50,6 +38,4 @@ public class Loading extends AppCompatActivity {
         }, TIME_OUT);
 
     }
-
-
 }

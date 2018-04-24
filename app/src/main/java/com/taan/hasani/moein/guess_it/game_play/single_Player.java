@@ -2,7 +2,6 @@ package com.taan.hasani.moein.guess_it.game_play;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -22,46 +21,43 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.taan.hasani.moein.guess_it.Gson.makingGame_GSON;
+import com.taan.hasani.moein.guess_it.Gson.recievedWord_GSON;
+import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.helpingclasses.Functions_;
+import com.taan.hasani.moein.guess_it.helpingclasses.gameplayFunctions;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class single_Player extends AppCompatActivity {
 
     private EditText entered_word;
-    private Button Edit;
     private int number_of_trueGuess;
     private TextView word_TextView, timer;
     private int Total_gamescore = 0;
     private ArrayList<Integer> indexlist_of_questionmarks = new ArrayList<>();
     private String incompleteWord, id, completeWord, game_ID,
-            url = "http://online6732.tk/guessIt.php";
+            url = "http://mamadgram.tk/guessIt.php";
     private TextView totalScore_view;
     private CountDownTimer countDownTimer;
-    private String category, flag__nextWord_Timer, difficulty, type, recivedTime;
-    private int arraylist_i;//baraye gereftane index alamate soal az list
+    private String category, type, recivedTime;
+    private int index;//baraye gereftane index alamate soal az list
     private Dialog dialog;
-    private int length;
     private TextView wordnumber;
-    private boolean Counter_started = false;//baraye inke agar ertebat ba net ghat shod moghe
-    //khoorooj choon cancel vase timer darim age timer ro intialize nakrde bashim stopped working mide
-
     private boolean inGame = true;//baraye inke agar az bazi kharej shodim dg request nade
     private int currentword_number;
-    private int Toatalwords;//tedad
-    private JSONObject recievedWord_Jsonobj;
-    private Functions_ functions;
+    private int Totalwords;//tedad kole kalamt
+    private gameplayFunctions functions;
     private Player player;
-    private TextView textView;
+    private Button Edit;
+    private JSONObject recievedWord_Jsonobj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +65,7 @@ public class single_Player extends AppCompatActivity {
         setContentView(R.layout.activity_single_player);
 
         player = new Player(this);
-        functions = new Functions_(this);
+        functions = new gameplayFunctions(this);
         Button next_word_bt = (Button) findViewById(R.id.next_word_bt);
         word_TextView = (TextView) findViewById(R.id.word);
         entered_word = (EditText) findViewById(R.id.enterd_word);
@@ -77,21 +73,19 @@ public class single_Player extends AppCompatActivity {
         timer = (TextView) findViewById(R.id.timer);
         totalScore_view = (TextView) findViewById(R.id.total_score);
         Button Help = (Button) findViewById(R.id.help_bt);
-        textView = (TextView) findViewById(R.id.time_text);
 
         Edit = (Button) findViewById(R.id.edit);//**************
         Edit.setVisibility(View.INVISIBLE);
 
         wordnumber = (TextView) findViewById(R.id.wordnumber);
-
         id = player.getId();
 
         //difficaulty va category va type ro az activity ghabl migirad
         Bundle bundle = getIntent().getExtras();
         category = bundle.getString("category");
-        difficulty = bundle.getString("difficulty");
+        // difficulty = bundle.getString("difficulty");
         type = bundle.getString("type");
-        Toatalwords = bundle.getInt("totalwordsnumber");
+        Totalwords = bundle.getInt("totalwordsnumber");
         ///////////////////////////////////////////////////////
 
         newSinglePlayerGame();
@@ -109,42 +103,45 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String Player_score = timer.getText().toString();
-                String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));
+                if (timer != null) {
+                    String Player_score = timer.getText().toString();
+                    String Player_time = Integer.toString(15 - Integer.parseInt(Player_score));//***jaygozini 15 ba meghdar dar yafti az server
 
-                if (!entered_word.getText().toString().equals(""))
-                    //   message.setVisibility(View.VISIBLE);
+                    if (!entered_word.getText().toString().equals(""))
+                        //   message.setVisibility(View.VISIBLE);
 
-                    if (entered_word.getText().toString().equals(completeWord)) {
+                        if (entered_word.getText().toString()
+                                .trim().equalsIgnoreCase(completeWord)) {
 
-                        countDownTimer.cancel();
+                            countDownTimer.cancel();
 
-                        word_TextView.setText(completeWord);
-                        //  message.setText();
-                        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
-                        mediaPlayer.start();
-                        //  didItOnce = true;
+                            word_TextView.setText(completeWord);
+                            //  message.setText();
+                            MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.success);
+                            mediaPlayer.start();
+                            //  didItOnce = true;
 
-                        Total_gamescore += Integer.parseInt(Player_score);//showing total score for game ending
+                            Total_gamescore += Integer.parseInt(Player_score);//showing total score for game ending
 
-                        //setAnswer*******
-                        functions.setAnswer(game_ID, entered_word.getText().toString(),
-                                Player_time, Player_score);
+                            //setAnswer*******
+                            functions.setAnswer(game_ID, entered_word.getText().toString(),
+                                    Player_time, Player_score, "yes");
 
-                        Snackbar.make(findViewById(R.id.singlePlayerActivity), "Congratulations !!! Your guess was RIGHT !"
-                                , Snackbar.LENGTH_LONG)
-                                .setActionTextColor(Color.YELLOW).show();
+                            Snackbar.make(findViewById(R.id.singlePlayerActivity), "Congratulations !!! Your guess was RIGHT !"
+                                    , Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.YELLOW).show();
 
-                        number_of_trueGuess++;
+                            number_of_trueGuess++;
 
-                        nextWord_func();
-                    } else {
+                            nextWord_func();
+                        } else {
 
-                        Snackbar.make(findViewById(R.id.singlePlayerActivity), "No guess again !!!"
-                                , Snackbar.LENGTH_LONG)
-                                .setActionTextColor(Color.YELLOW).show();
-                    }
+                            Snackbar.make(findViewById(R.id.singlePlayerActivity), "No guess again !!!"
+                                    , Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.YELLOW).show();
+                        }
 
+                }
             }
         });
 
@@ -176,15 +173,51 @@ public class single_Player extends AppCompatActivity {
         countDownTimer.cancel();
         word_TextView.setText(completeWord);
 
+
         Edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                functions.addWordtoDB(completeWord, entered_word.getText().toString()
-                        , recievedWord_Jsonobj);
+                indexlist_of_questionmarks.clear();
+
+                String newIncomlpeteword = entered_word.getText().toString();
+
+                //age zabane farsi ro khastim edit konim alamat soal haro dors kone
+                ////////////////////////////////////////////////////
+                if (!completeWord.matches("[A-Za-z ]+?")) {
+
+                    for (int i = 0; i < newIncomlpeteword.length(); i++) {
+                        if (newIncomlpeteword.charAt(i) == '?')
+                            indexlist_of_questionmarks.add(i);
+                    }
+                    ////////////////////////////////////////////////////
+
+                    StringBuilder stringBuilder = new StringBuilder(newIncomlpeteword);
+
+                    for (int i = 0; i < indexlist_of_questionmarks.size(); i++) {
+
+                        //  Toast.makeText(getApplicationContext(),
+                        //        String.valueOf(indexlist_of_questionmarks.get(i)),
+                        // Toast.LENGTH_LONG).show();
+                        stringBuilder.setCharAt(indexlist_of_questionmarks.get(i), '؟');
+
+                    }
+
+                    newIncomlpeteword = stringBuilder.toString();
+                }
+                ////////////////////////////////////////////////////
+
+                if (completeWord.length() == newIncomlpeteword.length())
+
+                    functions.addWordtoDB(completeWord, newIncomlpeteword,
+                            recievedWord_Jsonobj);
+
+                else
+                    Toast.makeText(getApplicationContext(),
+                            "به نظر در وارد کردن کلمه اشتباهی کرده اید..",
+                            Toast.LENGTH_SHORT).show();
             }
         });
     }
-
     //*****************************
 
     public void nextWord_func() {
@@ -193,24 +226,9 @@ public class single_Player extends AppCompatActivity {
 
         entered_word.setText("");
 
-        if (flag__nextWord_Timer.equals("yes")) {
+        countDownTimer.cancel();
 
-            countDownTimer.cancel();
-
-            if (timer.getText().toString() != recivedTime) {
-
-                sendNextWord();
-
-            } else {
-
-                sendNextWord();
-            }
-
-        } else {
-
-            sendNextWord();
-
-        }
+        sendNextWord();
     }
 
     public void counterResume(int timeLeft_onDialogPause) {
@@ -218,18 +236,16 @@ public class single_Player extends AppCompatActivity {
         countDownTimer = new CountDownTimer(timeLeft_onDialogPause * 1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                timer.setText("" + millisUntilFinished / 1000);
+                timer.setText(String.valueOf(millisUntilFinished / 1000));//***chaneged from +""
             }
 
             public void onFinish() {
                 timer.setText("0");
-
                 nextWord_func();
             }
         };
 
         countDownTimer.start();
-        Counter_started = true;
         ////////////////////////////////////////////
     }
 
@@ -248,6 +264,7 @@ public class single_Player extends AppCompatActivity {
         Button no = (Button) dialog.findViewById(R.id.no);
         dialog.show();
 
+
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,7 +278,6 @@ public class single_Player extends AppCompatActivity {
 
 
                 } else {
-                    getting_qmarks_index();
                     replace_char();
                     dialog.cancel();
                     counterResume(timeLeft_onDialogPause);
@@ -282,13 +298,13 @@ public class single_Player extends AppCompatActivity {
     }
 
     //peyda kardane index e horoofe ؟
-    public void getting_qmarks_index() {
+    public void getting_qmarks_index(final String incompleteWord) {
         //hey check mikonim bebinim ke incompleet daryaft shode ya na
-        if (!(length > 0)) {
+        if (!(completeWord.length() > 0) && inGame) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    getting_qmarks_index();
+                    getting_qmarks_index(incompleteWord);
                     Toast.makeText(getApplicationContext(), "Please wait...",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -296,9 +312,10 @@ public class single_Player extends AppCompatActivity {
         } else {
 
             //horoof  alamate soal ro joda kone
-            for (int i = 0; i < length; i++) {
+            for (int i = 0; i < completeWord.length(); i++) {
 
-                if (category.equals("2")) {
+                if (completeWord.matches("[A-Za-z ]+?")) {
+
                     if (incompleteWord.charAt(i) == '?') {
 
                         indexlist_of_questionmarks.add(i);
@@ -321,12 +338,13 @@ public class single_Player extends AppCompatActivity {
     //baz kardan alamate soal ha va jaygozari harfe asli
     public void replace_char() {
 
-        if (indexlist_of_questionmarks.isEmpty()) {
+        if (indexlist_of_questionmarks.isEmpty() && inGame) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    getting_qmarks_index(incompleteWord);
                     replace_char();
-                    Toast.makeText(getApplicationContext(), "Please wait...",
+                    Toast.makeText(getApplicationContext(), "indexlist_of_questionmarks.isEmpty",
                             Toast.LENGTH_SHORT).show();
                 }
             }, 500);
@@ -334,18 +352,19 @@ public class single_Player extends AppCompatActivity {
         } else {
             //  Toast.makeText(getApplicationContext(),"replace char working",Toast.LENGTH_SHORT)
             //     .show();
-            int i = indexlist_of_questionmarks.get(arraylist_i);
+            int i = indexlist_of_questionmarks.get(index);
             char unlocked_char = completeWord.charAt(i);
             StringBuilder stringBuilder = new StringBuilder(incompleteWord);
             stringBuilder.setCharAt(i, unlocked_char);
             incompleteWord = stringBuilder.toString();
             word_TextView.setText(incompleteWord);
-            arraylist_i++;
+            index++;
         }
 
     }
     ////////////////////////////////////////////////////
 
+    //gsonized!!!
     public void newSinglePlayerGame() {
 
         currentword_number = 0;//kalame hara az avl beshmarad
@@ -362,8 +381,6 @@ public class single_Player extends AppCompatActivity {
         info.put("userID", id);
         info.put("type", type);
 
-        //game_ID=Functions.newSinglePlayerGame(info);
-
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -373,25 +390,19 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-                try {
+                makingGame_GSON makingGame;
+                Gson gson = new Gson();
+                makingGame = gson.fromJson(response.toString(), makingGame_GSON.class);
 
-                    //    Toast.makeText(getApplicationContext(),
-                    //          response.toString(), Toast.LENGTH_LONG).show();
-                    game_ID = response.getString("gameID");
+                game_ID = makingGame.gameID;
 
-                    if (response.getString("dataIsRight").equals("yes")) {
-                        setGameSettings();
-                    } else {
+                if (makingGame.dataIsRight.equals("yes")) {
+                    setGameSettings();
+                } else {
 
-                        Toast.makeText(getApplicationContext(), " data is right=no ,sth went wrong..."
-                                , Toast.LENGTH_SHORT).show();
-                        newSinglePlayerGame();
-                    }
-
-
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            "newSinglePlayerGame " + e.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), " single player data is right=no ,sth went wrong..."
+                            , Toast.LENGTH_SHORT).show();
+                    newSinglePlayerGame();
                 }
             }
 
@@ -406,20 +417,16 @@ public class single_Player extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
+    //gsonized!!!
     public void setGameSettings() {
-
 
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "setGameSetting");
         info.put("userID", id);
         info.put("gameID", game_ID);
-        info.put("level", difficulty);
-        // try {
+
         info.put("categories", category);
-//        } catch (UnsupportedEncodingException e) {
-//            Toast.makeText(getApplicationContext(), "UnsupportedEncodingException", Toast.LENGTH_SHORT).show();
-//        }
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -429,22 +436,20 @@ public class single_Player extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-                try {
+                simpleRequest_GSON request;
+                Gson gson = new Gson();
+                request = gson.fromJson(response.toString(), simpleRequest_GSON.class);
 
-                    if (response.getString("dataIsRight").equals("yes")) {
+                if (request.dataIsRight.equals("yes")) {
 
-                        sendNextWord();
+                    sendNextWord();
 
-                    } else {
+                } else {
 
-                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "setsettings data is right no single player", Toast.LENGTH_LONG).show();
 
-                    }
-
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG).show();
                 }
+
             }
 
         }, new Response.ErrorListener() {
@@ -460,16 +465,10 @@ public class single_Player extends AppCompatActivity {
 
     }
 
+    //gsonized!!!
     public void sendNextWord() {
 
         timer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor();
-            }
-        });
-
-        textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editor();
@@ -480,14 +479,14 @@ public class single_Player extends AppCompatActivity {
 
             currentword_number++;
 ////////////////////////////////////////////////////////////////////////////////
-            if (currentword_number == Toatalwords + 1)
-                wordnumber.setText(Toatalwords + "/" + Toatalwords);
+            if (currentword_number == Totalwords + 1)
+                wordnumber.setText(Totalwords + "/" + Totalwords);
             else
-                wordnumber.setText(currentword_number + "/" + Toatalwords);
+                wordnumber.setText(currentword_number + "/" + Totalwords);
 ////////////////////////////////////////////////////////////////////////////////
             indexlist_of_questionmarks.clear();
 
-            arraylist_i = 0;
+            index = 0;
 
             HashMap<String, String> info = new HashMap<>();
 
@@ -505,27 +504,38 @@ public class single_Player extends AppCompatActivity {
                 @Override
                 public void onResponse(JSONObject response) {
 
+                    simpleRequest_GSON request;
+                    Gson gson = new Gson();
+                    request = gson.fromJson(response.toString(), simpleRequest_GSON.class);
+
                     try {
+                        recievedWord_GSON recievedWord = gson.fromJson(response.getJSONObject("word").toString(), recievedWord_GSON.class);
 
-                        if (response.getString("dataIsRight").equals("yes")) {
+                        //      Toast.makeText(getApplicationContext(),
+                        //              response.toString(),Toast.LENGTH_LONG).show();
 
-                            Boolean lastWordCheck = response.getJSONObject("word")
-                                    .getString("word").equals("outOfWords");
+                        if (request.dataIsRight.equals("yes")) {
+
+                            Boolean lastWordCheck = recievedWord.word.equals("outOfWords");
 
                             if (!lastWordCheck)//agar be outofwords nareside bood
                             {
-
                                 recievedWord_Jsonobj = response.getJSONObject("word");
 
-                                flag__nextWord_Timer = "yes";
+                                //   Toast.makeText(getApplicationContext(),
+                                //          response.toString(),Toast.LENGTH_LONG).show();
 
-                                incompleteWord = recievedWord_Jsonobj.getString("incompleteWord");
+                                incompleteWord = recievedWord.incompleteWord;
 
-                                completeWord = recievedWord_Jsonobj.getString("word");
+                                completeWord = recievedWord.word;
 
-                                recivedTime = recievedWord_Jsonobj.getString("time");
+                                recivedTime = recievedWord.time;
 
                                 word_TextView.setText(incompleteWord);
+
+                                //////////////////joda kardane alamat hay soal
+                                getting_qmarks_index(incompleteWord);
+                                //////////////////
 
                                 //////////////////
                                 countDownTimer = new CountDownTimer((Integer.parseInt(recivedTime)) * 1000, 1000) {
@@ -536,34 +546,26 @@ public class single_Player extends AppCompatActivity {
 
                                     public void onFinish() {
                                         timer.setText("0");
-
                                         nextWord_func();
                                     }
                                 };
                                 ////////////////////////////////////////////
                                 countDownTimer.start();
-                                Counter_started = true;
 
                                 /////////////////
-                                length = word_TextView.getText().length();
+                                //length = word_TextView.getText().length();
                                 //////////////
 
 //                            Toast.makeText(getApplicationContext(), String.valueOf(length),
 //                                    Toast.LENGTH_SHORT).show();
-                            } else if (response.getJSONObject("word").getString("word").equals("outOfWords"))//agar kalamt tamam shod
+                            } else if (recievedWord.word.equals("outOfWords"))//agar kalamt tamam shod
                                 //outofwords miad ke bad dialog ro neshan midim
                                 alert_dialog_function_game_end();
 
-                            {
-
-                            }
-
                         } else {
-
 
                             Toast.makeText(getApplicationContext(),
                                     "next word dataIsRight =no ", Toast.LENGTH_LONG).show();
-
 
                         }
 
@@ -571,8 +573,6 @@ public class single_Player extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), e.toString(),
                                 Toast.LENGTH_SHORT).show();
                     }
-
-
                 }
 
             }, new Response.ErrorListener() {
@@ -590,8 +590,8 @@ public class single_Player extends AppCompatActivity {
 
     public void alert_dialog_function_game_end() {
 
+        if (countDownTimer != null)
         countDownTimer.cancel();
-
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.game_end_singleplayer_dialog);
@@ -626,7 +626,7 @@ public class single_Player extends AppCompatActivity {
         /////////////////////////////////////////////////////////
 
         guesses_true.setText(String.valueOf(number_of_trueGuess));
-        guesses_false.setText(String.valueOf(Toatalwords - number_of_trueGuess));
+        guesses_false.setText(String.valueOf(Totalwords - number_of_trueGuess));
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -655,7 +655,6 @@ public class single_Player extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //  super.onBackPressed();
 
         AlertDialog.Builder alertDialogBuilder =
                 new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
@@ -688,7 +687,8 @@ public class single_Player extends AppCompatActivity {
 
         inGame = false;
 
-        if (Counter_started)
+
+        if (countDownTimer != null)
 
             countDownTimer.cancel();
 

@@ -1,6 +1,5 @@
-package com.taan.hasani.moein.guess_it.player_info;
+package com.taan.hasani.moein.guess_it.gameHistory;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -8,14 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.taan.hasani.moein.guess_it.Gson.userInfo_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
@@ -23,35 +24,22 @@ import com.taan.hasani.moein.volley.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 public class gameHistory_list extends Fragment {
 
-
-    String url = "http://online6732.tk/guessIt.php";
-    String recived_games_id;
-    String[] array = null;
+    String url = "http://mamadgram.tk/guessIt.php";
     ListView listView;
     private TextView message;
-    ArrayList<gameHistory_object> scoreList = new ArrayList<>();//*************
-    ProgressBar progressBar;
+    ArrayList<gameHistory_object> scoreList;//*************
     HashMap<String, String> info = new HashMap<>();
     Player player;
+    LottieAnimationView loading;
 
     public gameHistory_list() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -60,7 +48,7 @@ public class gameHistory_list extends Fragment {
 
         View games_info = inflater.inflate(R.layout.fragment_games_history, container, false);
         listView = (ListView) games_info.findViewById(R.id.listView);
-        progressBar = (ProgressBar) games_info.findViewById(R.id.progressBar2);
+        loading = (LottieAnimationView) games_info.findViewById(R.id.loadinggamehistory);
 
         player = new Player(getActivity());
 
@@ -72,25 +60,25 @@ public class gameHistory_list extends Fragment {
     }
 
     public void get_user_games_ids() {
-
-        //getting id for the player
-        final String MY_PREFS_NAME = "username and password";
-        SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String id = prefs.getString("userID", null);
-        //////////////////////////////////////////
         info.put("action", "sendUserInformation");
-        info.put("userID", id);
-        JSONObject jsonObject = new JSONObject(info);
+        info.put("userID", player.getId());
+        final JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 try {
-                    scoreList = new ArrayList<>();
-                    recived_games_id = new String(response.getString("games").getBytes("ISO-8859-1"), "UTF-8");
+                    userInfo_GSON userInfo;
+                    Gson gson = new Gson();
+                    userInfo = gson.fromJson(response.getJSONObject("user").toString()
+                            , userInfo_GSON.class);
 
-                    array = recived_games_id.split(", ");
+                    scoreList = new ArrayList<>();
+
+                    String recived_games_id = userInfo.games;
+
+                    String[] array = recived_games_id.split(", ");
 
                     //id hame bazi ha dar array hast inja
                     // miaym har khoone az array ro mifresim be oon yeki
@@ -103,18 +91,15 @@ public class gameHistory_list extends Fragment {
 
                     startUpTheList(array.length);
 
-
                 } catch (JSONException e) {
-                    Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                } catch (UnsupportedEncodingException e) {
-                    Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "history list" + e.toString(), Toast.LENGTH_LONG).show();
                 }
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "history " + error.toString(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -136,7 +121,7 @@ public class gameHistory_list extends Fragment {
         } else {
             listViewAdapter_gamesInfo listViewAdapter_gamesInfo = new listViewAdapter_gamesInfo
                     (getActivity(), R.layout.score_row, scoreList);
-            progressBar.setVisibility(View.INVISIBLE);
+            loading.setVisibility(View.INVISIBLE);
             listView.setAdapter(listViewAdapter_gamesInfo);
             listViewAdapter_gamesInfo.notifyDataSetChanged();
         }

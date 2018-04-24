@@ -25,15 +25,22 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="508dp" />
 
-    <ProgressBar
-        android:id="@+id/progressBar2"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="170dp"
-        android:layout_height="159dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loadinggamehistory"
+        android:layout_width="237dp"
+        android:layout_height="240dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="152dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="material_wave_loading.json"
+        app:lottie_loop="true" />
 
     <TextView
         android:id="@+id/message_history"
@@ -50,10 +57,9 @@
 
     <ListView
         android:id="@+id/listView"
-        android:layout_width="336dp"
-        android:layout_height="453dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
         android:divider="@color/colorPrimaryDark"
         android:dividerHeight="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -61,6 +67,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.488"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintVertical_bias="0.488" />
 </android.support.constraint.ConstraintLayout>
