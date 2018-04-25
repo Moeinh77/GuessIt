@@ -33,7 +33,7 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_word);
 
-        player = new Player(this);
+        player = new Player();
 
         if (!player.getrole().equals("admin")) {
 

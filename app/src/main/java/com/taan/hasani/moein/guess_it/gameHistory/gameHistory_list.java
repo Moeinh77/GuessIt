@@ -50,7 +50,7 @@ public class gameHistory_list extends Fragment {
         listView = (ListView) games_info.findViewById(R.id.listView);
         loading = (LottieAnimationView) games_info.findViewById(R.id.loadinggamehistory);
 
-        player = new Player(getActivity());
+        player = new Player();
 
         get_user_games_ids();
         message = (TextView) games_info.findViewById(R.id.message_history);
@@ -61,7 +61,7 @@ public class gameHistory_list extends Fragment {
 
     public void get_user_games_ids() {
         info.put("action", "sendUserInformation");
-        info.put("userID", player.getId());
+        info.put("username", player.getUsername());
         final JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject, new Response.Listener<JSONObject>() {
@@ -84,7 +84,7 @@ public class gameHistory_list extends Fragment {
                     // miaym har khoone az array ro mifresim be oon yeki
                     //function ta etelaat ro bar asas id biare va hamaro bokone ye string ta too ye view bezarim
                     for (int i = 0; i < array.length; i++) {
-                        player.getUserGamesInfo(array[i]);
+                        //         player.getUserGamesInfo(array[i]); **************************
                     }
                     ////////////////////////
                     scoreList = player.getScoreList();

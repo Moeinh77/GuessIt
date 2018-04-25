@@ -29,7 +29,7 @@ public class gameplayFunctions {
     public gameplayFunctions(Activity activity) {
 
         this.activity = activity;
-        player = new Player(activity);
+        player = new Player();
 
     }
 
@@ -53,7 +53,8 @@ public class gameplayFunctions {
         }
         /////////////////////////
         info.put("action", "addWord");
-        info.put("userID", player.getId());
+        info.put("username", player.getUsername());//$$$$$$$$$$$$$$$$$$$$$$$$  changed from userId to username $$$$$$$$$$$$$$$$$$$$$$$$
+
         /////////////////////////
 
         JSONObject jsonObject = new JSONObject(info);
@@ -97,7 +98,7 @@ public class gameplayFunctions {
         /////////////////////////
         info.put("action", "setAnswer");
         info.put("gameID", game_ID);
-        info.put("userID", player.getId());
+        info.put("username", player.getUsername());
         info.put("answer", answer.toString());
         /////////////////////////
 

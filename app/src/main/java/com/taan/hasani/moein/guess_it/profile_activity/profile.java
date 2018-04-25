@@ -46,7 +46,7 @@ public class profile extends Fragment {
         // Inflate the layout for this fragment
         View account_info_ = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        player = new Player(getActivity());//intialize e class Player
+        player = new Player();//intialize e class Player
 
         player.getUserInfo();//hame etelaat ra update konad
 
@@ -93,7 +93,7 @@ public class profile extends Fragment {
 
                                            if (!old_password.getText().toString().equals("") && !new_password.getText().toString().equals("") && !repeat_password.getText().toString().equals("")) {
 
-                                               player.change_password_func(
+                                               player.changePassword(
                                                        old_password.getText().toString(),
                                                        new_password.getText().toString(),
                                                        repeat_password.getText().toString());

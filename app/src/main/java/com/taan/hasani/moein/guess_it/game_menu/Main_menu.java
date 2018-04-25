@@ -1,5 +1,6 @@
 package com.taan.hasani.moein.guess_it.game_menu;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,7 +36,8 @@ public class Main_menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-        player = new Player(this);
+
+        player = new Player();
 
         player.getUserInfo();
         ////////////////////////

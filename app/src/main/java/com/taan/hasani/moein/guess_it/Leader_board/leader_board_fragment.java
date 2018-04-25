@@ -62,7 +62,7 @@ public class leader_board_fragment extends Fragment {
         listView = (ListView) leader.findViewById(R.id.listview_leaderboard);
         yourPlace = (TextView) leader.findViewById(R.id.your_place_frag);
 
-        player = new Player(getActivity());
+        player = new Player();
 
         get_scores();
 
@@ -73,7 +73,8 @@ public class leader_board_fragment extends Fragment {
     public void get_scores() {
 
         info.put("action", "sendListOfTopUsers");
-        info.put("userID", player.getId());
+        info.put("username", player.getUsername());//$$$$$$$$$$$$$$$$$$$$$$$$  changed from userId to username $$$$$$$$$$$$$$$$$$$$$$$$
+
 
 
         JSONObject jsonObject = new JSONObject(info);

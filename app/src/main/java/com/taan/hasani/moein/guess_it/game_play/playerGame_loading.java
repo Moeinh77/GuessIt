@@ -42,7 +42,7 @@ public class playerGame_loading extends Activity {
 
         //inGame = true;
 
-        player = new Player(this);
+        player = new Player();
 
         //difficaulty va category ro az activity ghabl migirad ke activity category hast
         Bundle bundle = getIntent().getExtras();
@@ -62,7 +62,7 @@ public class playerGame_loading extends Activity {
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "newGame");
-        info.put("userID", player.getId());
+        info.put("username", player.getUsername());//$$$$$$$$$$$$$$$$$$$$$$$$  changed from userId to username $$$$$$$$$$$$$$$$$$$$$$$$
         info.put("mode", "twoPlayer");
         info.put("type", type);
 
@@ -116,7 +116,8 @@ public class playerGame_loading extends Activity {
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "isMyGameReady");
-        info.put("userID", player.getId());
+        info.put("username", player.getUsername());//$$$$$$$$$$$$$$$$$$$$$$$$  changed from userId to username $$$$$$$$$$$$$$$$$$$$$$$$
+
 
         if (inGame) {//agar az safe ijad bazi kharej shode digar request nadahad
             //   Toast.makeText(getApplicationContext(),"is my game",Toast.LENGTH_SHORT).show();
@@ -171,7 +172,8 @@ public class playerGame_loading extends Activity {
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "setGameSetting");
-        info.put("userID", player.getId());
+        info.put("username", player.getUsername());//$$$$$$$$$$$$$$$$$$$$$$$$  changed from userId to username $$$$$$$$$$$$$$$$$$$$$$$$
+
         info.put("gameID", gamedID);
         info.put("categories", category);
 
@@ -221,7 +223,8 @@ public class playerGame_loading extends Activity {
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "stopSearchForFriend");
-        info.put("userID", player.getId());
+        info.put("username", player.getUsername());//$$$$$$$$$$$$$$$$$$$$$$$$  changed from userId to username $$$$$$$$$$$$$$$$$$$$$$$$
+
         info.put("gameID", gamedID);
 
         JSONObject jsonObject = new JSONObject(info);

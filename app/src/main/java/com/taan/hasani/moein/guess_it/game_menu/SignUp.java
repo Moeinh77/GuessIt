@@ -65,7 +65,7 @@ public class SignUp extends AppCompatActivity {
                         try {
                             if (response.getString("dataIsRight").equals("yes")) {
                                 save_userInfo(username, password, name);
-                                Intent intent = new Intent(SignUp.this, Intro_Loading.class);
+                                Intent intent = new Intent(SignUp.this, App_ReOpen.class);
                                 startActivity(intent);
                                 finish();
                             } else {
