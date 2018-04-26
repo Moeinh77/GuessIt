@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.taan.hasani.moein.guess_it.Gson.getMyInfo_GSON;
 import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
 import com.taan.hasani.moein.guess_it.Gson.userInfo_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
@@ -27,7 +28,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 /**
- * Created by Moein on 11/1/2017.
+ * dar zamani ke player instantiatemishavad updateMyInfo run mishavad
+ *dar moghe ee ke updateMyInfo ejra mishavad hamechi set mishavad
+ * natijatan digar dar zamani ke get hara run mikonim niaz bekhandan az sahred pref ndarim
  */
 
 public class Player {
@@ -38,26 +41,53 @@ public class Player {
     private String username;
     private String role;
     private String password;
-    private String name;//@@@@@dakhele user info dare meghdar dehi mishe
-    private String Token;
+    private String firstName;
+    private String lastName;
+    private String userID;
+    private String token;
+    private String signupTime;
+    private String mobileNumber;
     private String MY_PREFS_NAME = "username and password";
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private int Highscore;
 
-
     public Player() {
 
         this.activity = App_ReOpen.activity;
+
         prefs = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
 
-        getUserInfo();
+        updateMyInfo();
+    }
 
+    ////////////////////////////////////////////////////////////
 
+    private void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    private void setFirstName(String firstName) {
+        this.firstName = firstName;
+        editor.putString("firstName", firstName);
+        editor.apply();
+    }
+
+    private void setLastName(String lastName) {
+        this.lastName = lastName;
+        editor.putString("lastName", lastName);
+        editor.apply();
+    }
+
+    private void setUserID(String userID) {
+        this.userID = userID;
+        editor.putString("userID", userID);
+        editor.apply();
     }
 
     private void setrole(String role) {
+        this.role = role;
         editor.putString("role", role);
         editor.apply();
     }
@@ -88,48 +118,70 @@ public class Player {
         editor.apply();
     }
 
-    public void setToken(String token) {
-        this.Token = token;
-
+    private void setToken(String token) {
+        this.token = token;
         editor.putString("token", token);
         editor.apply();
-    }//###
+    }
+
+    private void setSignupTime(String signupTime) {
+        this.signupTime = role;
+        editor.putString("signupTime", signupTime);
+        editor.apply();
+    }
 
     ////////////////////////////////////////////////////////////
 
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public String getUserID() {
+        return userID;
+        //prefs.getString("userID", null);
+    }
+
+    public String getFirstName() {
+        return firstName;
+        //prefs.getString("firstName", null);
+    }
+
+    public String getLastName() {
+        return lastName;
+        //prefs.getString("token", null);
+    }
+
     public String getToken() {
-        Token = prefs.getString("token", null);
-        return Token;
-    }//###
+        return prefs.getString("token", null);
+    }
 
     public int getHighscore() {
-        Highscore = prefs.getInt("HighScore", 0);
         return Highscore;
-    }
+        //prefs.getInt("HighScore", 0);
+    }//not coming from anyWhere
 
     public String getrole() {
-        role = prefs.getString("role", null);
         return role;
-    }
-
-    public String getName() {
-        name = prefs.getString("name", null);
-        return name;
-    }
+        //prefs.getString("role", null);
+    }//change it on update ###
 
     public String getUsername() {
-        //   username = prefs.getString("username", null);
         return username;
-    }
+        //prefs.getString("username", null);
+    }//on update ##
 
-    public String getPassword() {
+    private String getPassword() {
         //      password = prefs.getString("password", null);
         return password;
-    }
+    }//make it secure ###
+    /////////////////////////////////////////////////////////////////////
 
     public ArrayList<gameHistory_object> getScoreList() {
         return scoreList;
     }
+
+    /////////////////////////////////////////////////////////////////////
+
 
     //Gsonized !!!//newVersion ###
     public void getUserInfo() {
@@ -172,7 +224,48 @@ public class Player {
 
     }
 
+    private void updateMyInfo() {
 
+        final HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "getMyInfo");
+        info.put("username", this.getUsername());
+        info.put("token", this.getToken());
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Gson gson = new Gson();
+                getMyInfo_GSON myInfo_gson;
+
+                myInfo_gson = gson.fromJson(response.toString(),
+                        getMyInfo_GSON.class);
+
+                setUsername(myInfo_gson.username);
+                setFirstName(myInfo_gson.firstName);
+                setLastName(myInfo_gson.lastName);
+                setUserID(myInfo_gson.userId);
+                setMobileNumber(myInfo_gson.mobileNumber);
+                setSignupTime(myInfo_gson.signupTime);//###make it secure
+                //editor.putString("picture", myInfo_gson.picture);
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activity,
+                        "failed to get your info !!!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+    }
 
     //Gsonized !!!
     public void logout_of_server() {

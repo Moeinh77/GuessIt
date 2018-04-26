@@ -60,7 +60,9 @@
 
         <service
             android:name="com.taan.hasani.moein.guess_it.Service.getInfo"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name="com.taan.hasani.moein.guess_it.game_menu.Activation_activity"></activity>
     </application>
 
 </manifest>
