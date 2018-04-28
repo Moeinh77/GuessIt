@@ -52,7 +52,7 @@ public class profile extends Fragment {
 
         AddNewWord = account_info_.findViewById(R.id.addWord);
         name_edittext = (EditText) account_info_.findViewById(R.id.FirstName);
-        username_edittext = (EditText) account_info_.findViewById(R.id.username);
+        username_edittext = (EditText) account_info_.findViewById(R.id.username_txt);
         logout = (Button) account_info_.findViewById(R.id.logout_bt);
         old_password = (EditText) account_info_.findViewById(R.id.old_password);
         new_password = (EditText) account_info_.findViewById(R.id.new_password);
@@ -62,8 +62,8 @@ public class profile extends Fragment {
         Edit_username_bt = (Button) account_info_.findViewById(R.id.edit_bt);
         Button Edit_name_bt = (Button) account_info_.findViewById(R.id.editname_bt);
 
-        name_edittext.setText(player.getName());
-        username_edittext.setText(player.getUsername());
+        //  name_edittext.setText(player.getName());
+        username_edittext.setText(player.getuserName());
 
         AddNewWord.setOnClickListener(new View.OnClickListener() {
             @Override

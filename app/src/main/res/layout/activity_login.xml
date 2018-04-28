@@ -7,7 +7,7 @@
     tools:context="com.taan.hasani.moein.volley.com.taan.hasani.moein.guess_it.game_menu.Login">
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/username_txt"
         android:layout_width="168dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -15,7 +15,7 @@
         android:ems="10"
         android:inputType="textMultiLine"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/password"
+        app:layout_constraintBottom_toTopOf="@+id/password_txt"
         app:layout_constraintHorizontal_bias="0.354"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -23,7 +23,7 @@
         app:layout_constraintVertical_bias="0.588" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/password_txt"
         android:layout_width="168dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="234dp"
@@ -45,8 +45,8 @@
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/username"
-        app:layout_constraintLeft_toRightOf="@+id/username"
+        app:layout_constraintBaseline_toBaselineOf="@+id/username_txt"
+        app:layout_constraintLeft_toRightOf="@+id/username_txt"
         app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
@@ -59,7 +59,7 @@
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/password"
+        app:layout_constraintBaseline_toBaselineOf="@+id/password_txt"
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
@@ -75,5 +75,5 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/password_txt" />
 </android.support.constraint.ConstraintLayout>

@@ -73,7 +73,7 @@ public class leader_board_fragment extends Fragment {
     public void get_scores() {
 
         info.put("action", "sendListOfTopUsers");
-        info.put("username", player.getUsername());//$$$$$$$$$$$$$$$$$$$$$$$$  changed from userId to username $$$$$$$$$$$$$$$$$$$$$$$$
+        info.put("username", player.getuserName());//$$$$$$$$$$$$$$$$$$$$$$$$  changed from userId to username $$$$$$$$$$$$$$$$$$$$$$$$
 
 
 
@@ -123,7 +123,7 @@ public class leader_board_fragment extends Fragment {
 
                 } catch (JSONException e) {
 
-                    Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+                    //   Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
 
                 }
 
@@ -133,8 +133,8 @@ public class leader_board_fragment extends Fragment {
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(),
-                        "leaderBoard $$$" + error.toString(), Toast.LENGTH_LONG).show();
+                //   Toast.makeText(getActivity(),
+                //         "leaderBoard $$$" + error.toString(), Toast.LENGTH_LONG).show();
 
             }
         });

@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.securepreferences.SecurePreferences;
 import com.taan.hasani.moein.guess_it.Gson.getMyInfo_GSON;
 import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
 import com.taan.hasani.moein.guess_it.Gson.userInfo_GSON;
@@ -48,16 +49,21 @@ public class Player {
     private String signupTime;
     private String mobileNumber;
     private String MY_PREFS_NAME = "username and password";
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor editor;
-    private int Highscore;
+    private int highscore;
+    // private SharedPreferences prefs;
+    // private SharedPreferences.Editor editor;
+    private SecurePreferences prefs;
+    private SecurePreferences.Editor editor;
 
     public Player() {
 
         this.activity = App_ReOpen.activity;
 
-        prefs = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        prefs = new SecurePreferences(activity);
+        editor = prefs.edit();
+
+        // prefs = securePref;
+        // editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
 
         updateMyInfo();
     }
@@ -70,33 +76,26 @@ public class Player {
 
     private void setFirstName(String firstName) {
         this.firstName = firstName;
-        editor.putString("firstName", firstName);
-        editor.apply();
+        // editor.putString("firstName", firstName);
+        // editor.apply();
     }
 
     private void setLastName(String lastName) {
         this.lastName = lastName;
-        editor.putString("lastName", lastName);
-        editor.apply();
+        // editor.putString("lastName", lastName);
+        // editor.apply();
     }
 
     private void setUserID(String userID) {
         this.userID = userID;
-        editor.putString("userID", userID);
-        editor.apply();
+        //  editor.putString("userID", userID);
+        //   editor.apply();
     }
 
     private void setrole(String role) {
         this.role = role;
-        editor.putString("role", role);
-        editor.apply();
-    }
-
-    private void setUsername(String username) {
-        this.username = username;//***
-
-        editor.putString("username", username);
-        editor.apply();
+        //   editor.putString("role", role);
+        //   editor.apply();
     }
 
     private void setPassword(String password) {
@@ -107,30 +106,41 @@ public class Player {
 
     }
 
-    private void setName(String name) {
-        editor.putString("name", name);
-        editor.apply();
+    public void setHighscore(int highScore) {
+        this.highscore = highScore;
 
-    }
-
-    public void setHighscore(int highscore) {
-        editor.putInt("HighScore", highscore);
-        editor.apply();
-    }
-
-    private void setToken(String token) {
-        this.token = token;
-        editor.putString("token", token);
+        editor.putInt("highScore", highscore);
         editor.apply();
     }
 
     private void setSignupTime(String signupTime) {
         this.signupTime = role;
-        editor.putString("signupTime", signupTime);
+        //  editor.putString("signupTime", signupTime);
+        //  editor.apply();
+    }
+
+    public void setToken(String token_) {
+        this.token = token_;
+
+        editor.putString("token", token_);
         editor.apply();
     }
 
+    public void setuserName(String s) {
+
+        editor.putString("userName", s);
+        editor.apply();
+
+    }
     ////////////////////////////////////////////////////////////
+
+    public String getuserName() {
+        return prefs.getString("userName", null);
+    }
+
+    public String getToken() {
+        return prefs.getString("token", null);
+    }
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -151,24 +161,15 @@ public class Player {
         //prefs.getString("token", null);
     }
 
-    public String getToken() {
-        return prefs.getString("token", null);
-    }
-
     public int getHighscore() {
-        return Highscore;
+        return highscore;
         //prefs.getInt("HighScore", 0);
-    }//not coming from anyWhere
+    }//not getting any value
 
     public String getrole() {
         return role;
         //prefs.getString("role", null);
-    }//change it on update ###
-
-    public String getUsername() {
-        return username;
-        //prefs.getString("username", null);
-    }//on update ##
+    }
 
     private String getPassword() {
         //      password = prefs.getString("password", null);
@@ -183,13 +184,14 @@ public class Player {
     /////////////////////////////////////////////////////////////////////
 
 
-    //Gsonized !!!//newVersion ###
+
     public void getUserInfo() {
 
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "getUserInfo");
-        info.put("username", getUsername());
+        info.put("username", "???????????");
+        info.put("token", getToken());
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -203,9 +205,9 @@ public class Player {
                     userInfo = gson.fromJson(response.getJSONObject("user").toString()
                             , userInfo_GSON.class);
 
-                    setName(userInfo.name);
+                    //setName(userInfo.name);
                     setPassword(userInfo.password);
-                    setUsername(userInfo.username);
+                    setuserName(userInfo.username);
                     setrole(userInfo.role);
 
                 } catch (JSONException e) {
@@ -224,12 +226,13 @@ public class Player {
 
     }
 
+    //newVersion ###
     private void updateMyInfo() {
 
         final HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "getMyInfo");
-        info.put("username", this.getUsername());
+        info.put("username", this.getuserName());
         info.put("token", this.getToken());
 
         JSONObject jsonObject = new JSONObject(info);
@@ -244,7 +247,7 @@ public class Player {
                 myInfo_gson = gson.fromJson(response.toString(),
                         getMyInfo_GSON.class);
 
-                setUsername(myInfo_gson.username);
+                setuserName(myInfo_gson.username);
                 setFirstName(myInfo_gson.firstName);
                 setLastName(myInfo_gson.lastName);
                 setUserID(myInfo_gson.userId);
@@ -252,6 +255,7 @@ public class Player {
                 setSignupTime(myInfo_gson.signupTime);//###make it secure
                 //editor.putString("picture", myInfo_gson.picture);
 
+                Toast.makeText(activity, response.toString(), Toast.LENGTH_SHORT).show();
             }
 
         }, new Response.ErrorListener() {
@@ -267,13 +271,12 @@ public class Player {
 
     }
 
-    //Gsonized !!!
     public void logout_of_server() {
 
         final HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "logout");
-        info.put("username", getUsername());
+        info.put("username", getuserName());
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -286,25 +289,29 @@ public class Player {
                 request = gson.fromJson(response.toString(),
                         simpleRequest_GSON.class);
 
-                if (request.dataIsRight.equals("yes")) {
+                // if (request.dataIsRight.equals("yes")) {
 
-                    SharedPreferences.Editor editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                    editor.putString("username", null);
-                    editor.putString("password", null);
-                    editor.putString("userID", null);
-                    editor.putString("name", null);
-                    editor.putInt("HighScore", 0);
-                    editor.putString("role", null);
+//                    SharedPreferences.Editor editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+//                    editor.putString("username", null);
+//                    editor.putString("password", null);
+//                    editor.putString("userID", null);
+//                    editor.putString("name", null);
+//                    editor.putInt("HighScore", 0);
+//                    editor.putString("role", null);
+//                    editor.apply();
+
+                editor.putString("token", null);
+                editor.putString("username", null);
                     editor.apply();
 
                     Intent intent = new Intent(activity, Entrance_signup_login.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     activity.startActivity(intent);
                     activity.finish();
-                } else {
-                    Toast.makeText(activity,
-                            "خطایی در خروج شما رخ داد دوباره تلاش کنید...", Toast.LENGTH_LONG).show();
-                }
+                // } else {
+                //     Toast.makeText(activity,
+                //              "خطایی در خروج شما رخ داد دوباره تلاش کنید...", Toast.LENGTH_LONG).show();
+                //  }
 
             }
 
@@ -321,7 +328,6 @@ public class Player {
 
     }
 
-    //Gsonized !!!
     public void changePassword(String Entered_oldpass,
                                final String Entered_newpass,
                                String Entered_repeatpass) {
@@ -339,7 +345,7 @@ public class Player {
             info.put("action", "changeMyPassword");
             info.put("newPassword", Entered_newpass);
             info.put("oldPassword", password);
-            info.put("username", getUsername());
+            info.put("username", getuserName());
 
             JSONObject jsonObject = new JSONObject(info);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -354,10 +360,10 @@ public class Player {
 
                     if (request.dataIsRight.equals("yes")) {
 
-                        SharedPreferences.Editor editor;
-                        editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                        editor.putString("password", Entered_newpass);
-                        editor.apply();
+//                        SharedPreferences.Editor editor;
+//                        editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+//                        editor.putString("password", Entered_newpass);
+//                        editor.apply();
 
                         Toast.makeText(activity, "Password changed !", Toast.LENGTH_LONG).show();
 
@@ -384,7 +390,6 @@ public class Player {
 
     }
 
-    //Gsonized !!!
     public void changeUsername(final String username_) {
 
 
@@ -409,7 +414,7 @@ public class Player {
                     Toast.makeText(activity,
                             "Username changed", Toast.LENGTH_LONG).show();
 
-                    setUsername(username_);
+                    setuserName(username_);
 
                 } else {
                     Toast.makeText(activity,
@@ -431,7 +436,6 @@ public class Player {
 
     }
 
-    //Gsonized !!!
     public void changeName(final String name_) {
 
 
@@ -439,7 +443,7 @@ public class Player {
 
         info.put("action", "changeName");
         info.put("name", name_);
-        info.put("username", getUsername());
+        info.put("username", getuserName());
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -457,7 +461,7 @@ public class Player {
                     Toast.makeText(activity,
                             "name changed", Toast.LENGTH_LONG).show();
 
-                    setName(name_);
+                    //  setName(name_);
 
                 } else {
                     Toast.makeText(activity,
@@ -474,17 +478,15 @@ public class Player {
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
     }
 
 
-    //Gsonized !!!
     public void onAppExit() {
 
         HashMap<String, String> info = new HashMap<>();
 
         info.put("action", "logout");
-        info.put("username", getUsername());
+        info.put("username", getuserName());
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject, new Response.Listener<JSONObject>() {

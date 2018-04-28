@@ -39,7 +39,7 @@ public class App_ReOpen extends AppCompatActivity {
 
         player = new Player();
 
-        int TIME_OUT = 500;
+        int TIME_OUT = 1000;
 
         Intent intent = new Intent(this, getInfo.class);
         startService(intent);
@@ -52,6 +52,8 @@ public class App_ReOpen extends AppCompatActivity {
 
                     Intent i = new Intent(App_ReOpen.this, Main_menu.class);
                     startActivity(i);
+                    Toast.makeText(getApplicationContext(),
+                            "your user ### " + player.getuserName(), Toast.LENGTH_LONG).show();
                     finish();
 
                 } else {
@@ -63,6 +65,7 @@ public class App_ReOpen extends AppCompatActivity {
         }, TIME_OUT);
 
     }
+
 
     //Gsonized !!!
 //    public void autoLogin() {

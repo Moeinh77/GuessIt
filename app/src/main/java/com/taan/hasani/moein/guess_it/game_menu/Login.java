@@ -1,7 +1,6 @@
 package com.taan.hasani.moein.guess_it.game_menu;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,12 +14,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.taan.hasani.moein.guess_it.Gson.login_GSON;
-import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -35,9 +32,9 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button login_bt = (Button) findViewById(R.id.login);
-        final EditText username_editext = (EditText) findViewById(R.id.username);
-        final EditText password_editext = (EditText) findViewById(R.id.password);
+        Button login_bt = findViewById(R.id.login);
+        final EditText username_editext = findViewById(R.id.username_txt);
+        final EditText password_editext = findViewById(R.id.password_txt);
         player = new Player();
 
         login_bt.setOnClickListener(new View.OnClickListener() {
@@ -80,30 +77,18 @@ public class Login extends AppCompatActivity {
 
                     if (loginGson.dataIsRight.equals("yes")) {
 
-                        Toast.makeText(getApplicationContext(),
-                                "Response :" + loginGson.token, Toast.LENGTH_SHORT).show();
-                        //  userInfo_GSON user;
-
-                        // user = gson.fromJson(response.getJSONObject("user").toString()
-                        //          , userInfo_GSON.class);//gereftan etelaat user az
-                        // json object userdakhel response
-
-                        //   setrole(user.role);
-                        //   setName(user.name);
-                        //   setUsername(user.username);
-                        //   setPassword(user.password);
-
-                        //opens the gamechoose activity
 
                         player.setToken(loginGson.token);
-                        Toast.makeText(getApplicationContext(),
-                                "Response :" + player.getToken(), Toast.LENGTH_SHORT).show();
+                        player.setuserName(username_);
+                        //    player.setTest(username_);//1111111111111111111111111111
+                        //Toast.makeText(getApplicationContext(),
+                        //         "response:"+response.toString(), Toast.LENGTH_SHORT).show();
 
                         Intent i = new Intent(getApplicationContext(), Main_menu.class);
                         startActivity(i);
                         finish();
                         Toast.makeText(getApplicationContext(),
-                                "Welcome ", Toast.LENGTH_LONG).show();
+                                loginGson.dataIsRight, Toast.LENGTH_LONG).show();
 
                     } else {
                         Toast.makeText(getApplicationContext(),

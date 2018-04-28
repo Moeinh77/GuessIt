@@ -13,32 +13,32 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class _Player {
 
-    private String url = "http://mamadgram.tk/guessIt_2.php";
-    private String username;
-    private String role;
-    private String password;
-    private String id;
-    private String name;
-    private String MY_PREFS_NAME = "username and password";
-    private int Highscore;
-    private Activity activity;
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor editor;
-
-
-    public _Player() {
-
-        //  activity=Main_menu.activity;
-
-    }
-
-    private void writeInSP() {
-
-
-        prefs = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-
-    }
+//    private String url = "http://mamadgram.tk/guessIt_2.php";
+//    private String username;
+//    private String role;
+//    private String password;
+//    private String id;
+//    private String name;
+//    private String MY_PREFS_NAME = "username and password";
+//    private int Highscore;
+//    private Activity activity;
+//    private SharedPreferences prefs;
+//    private SharedPreferences.Editor editor;
+//
+//
+//    public _Player() {
+//
+//        //  activity=Main_menu.activity;
+//
+//    }
+//
+//    private void writeInSP() {
+//
+//
+//        prefs = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+//        editor = activity.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+//
+//    }
 
 
 }

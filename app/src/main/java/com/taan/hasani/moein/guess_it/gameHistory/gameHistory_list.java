@@ -61,7 +61,7 @@ public class gameHistory_list extends Fragment {
 
     public void get_user_games_ids() {
         info.put("action", "sendUserInformation");
-        info.put("username", player.getUsername());
+        info.put("username", player.getuserName());
         final JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject, new Response.Listener<JSONObject>() {
@@ -92,14 +92,14 @@ public class gameHistory_list extends Fragment {
                     startUpTheList(array.length);
 
                 } catch (JSONException e) {
-                    Toast.makeText(getActivity(), "history list" + e.toString(), Toast.LENGTH_LONG).show();
+                    //   Toast.makeText(getActivity(), "history list" + e.toString(), Toast.LENGTH_LONG).show();
                 }
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), "history " + error.toString(), Toast.LENGTH_LONG).show();
+                //     Toast.makeText(getActivity(), "history " + error.toString(), Toast.LENGTH_LONG).show();
             }
         });
 

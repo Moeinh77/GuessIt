@@ -53,7 +53,7 @@ public class gameplayFunctions {
         }
         /////////////////////////
         info.put("action", "addWord");
-        info.put("username", player.getUsername());//$$$$$$$$$$$$$$$$$$$$$$$$  changed from userId to username $$$$$$$$$$$$$$$$$$$$$$$$
+        info.put("username", player.getuserName());//$$$$$$$$$$$$$$$$$$$$$$$$  changed from userId to username $$$$$$$$$$$$$$$$$$$$$$$$
 
         /////////////////////////
 
@@ -98,7 +98,7 @@ public class gameplayFunctions {
         /////////////////////////
         info.put("action", "setAnswer");
         info.put("gameID", game_ID);
-        info.put("username", player.getUsername());
+        info.put("username", player.getuserName());
         info.put("answer", answer.toString());
         /////////////////////////
 
