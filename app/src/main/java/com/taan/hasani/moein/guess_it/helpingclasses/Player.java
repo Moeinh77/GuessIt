@@ -126,9 +126,10 @@ public class Player {
         editor.apply();
     }
 
-    public void setuserName(String s) {
+    public void setuserName(String username_) {
+        this.username = username_;
 
-        editor.putString("userName", s);
+        editor.putString("userName", username_);
         editor.apply();
 
     }
@@ -183,8 +184,6 @@ public class Player {
 
     /////////////////////////////////////////////////////////////////////
 
-
-
     public void getUserInfo() {
 
         HashMap<String, String> info = new HashMap<>();
@@ -226,7 +225,7 @@ public class Player {
 
     }
 
-    //newVersion ###
+    //new###
     private void updateMyInfo() {
 
         final HashMap<String, String> info = new HashMap<>();
@@ -255,7 +254,8 @@ public class Player {
                 setSignupTime(myInfo_gson.signupTime);//###make it secure
                 //editor.putString("picture", myInfo_gson.picture);
 
-                Toast.makeText(activity, response.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Update my Info" + response.toString(), Toast.LENGTH_SHORT).show();
+
             }
 
         }, new Response.ErrorListener() {
@@ -270,6 +270,62 @@ public class Player {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
     }
+
+    //new###
+    public void setInterests() {
+
+        final HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "setInterests");
+        info.put("username", this.getuserName());
+        info.put("interests", "##################");
+        info.put("token", this.getToken());
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    //new###
+    public void getInterests() {
+
+        final HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "getInterests");
+        info.put("username", this.getuserName());
+        info.put("token", this.getToken());
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+    }
+
 
     public void logout_of_server() {
 
