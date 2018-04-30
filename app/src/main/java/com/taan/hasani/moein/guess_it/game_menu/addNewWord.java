@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.taan.hasani.moein.guess_it.helpingclasses.gameplayFunctions;
+import com.taan.hasani.moein.guess_it.helpingclasses.Functions;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
@@ -46,7 +46,7 @@ public class addNewWord extends AppCompatActivity implements AdapterView.OnItemS
 
         spinner_menu();
 
-        final gameplayFunctions gamefuncs = new gameplayFunctions(this);
+        final Functions gamefuncs = new Functions(this);
         Button send = (Button) findViewById(R.id.send);
         final EditText completeWord_view = (EditText) findViewById(R.id.completeword);
         final EditText incompleteWord_view = (EditText) findViewById(R.id.incompleteword);

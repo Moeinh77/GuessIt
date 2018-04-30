@@ -1,40 +1,14 @@
 package com.taan.hasani.moein.guess_it.game_play;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.Gson;
-import com.taan.hasani.moein.guess_it.Gson.gameInfo_GSON;
-import com.taan.hasani.moein.guess_it.Gson.recievedWord_GSON;
-import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
-import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.helpingclasses.gameplayFunctions;
+import com.taan.hasani.moein.guess_it.helpingclasses.Functions;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 
 public class two_player extends AppCompatActivity {
 
@@ -57,7 +31,7 @@ public class two_player extends AppCompatActivity {
     private String status = " ";//baraye inke dar shoorooe bazi ke hanooz daryaft nashode status be nullptr nakhorim
 
     private Player player;//etelaat player
-    private gameplayFunctions gamefuncs;
+    private Functions gamefuncs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +48,7 @@ public class two_player extends AppCompatActivity {
 //        player2_textview = (TextView) findViewById(R.id.rivalscore);
 //        player1_textview = (TextView) findViewById(R.id.yourscore);
 //        player = new Player();
-//        gamefuncs = new gameplayFunctions(this);
+//        gamefuncs = new Functions(this);
 //
 //        //gameID ra az playerGame_loading migirad
 //        Bundle bundle = getIntent().getExtras();

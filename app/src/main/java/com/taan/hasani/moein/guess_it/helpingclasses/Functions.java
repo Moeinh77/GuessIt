@@ -8,6 +8,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.taan.hasani.moein.guess_it.Gson.userInfo_GSON;
 import com.taan.hasani.moein.guess_it.appcontroller.AppController;
 
 import org.json.JSONException;
@@ -18,7 +20,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 
 
-public class gameplayFunctions {
+public class Functions {
 
     private String url = "http://mamadgram.tk/guessIt.php";
     private Boolean gameset_flag;
@@ -26,17 +28,44 @@ public class gameplayFunctions {
 
     private Player player;
 
-    public gameplayFunctions(Activity activity) {
+    public Functions(Activity activity) {
 
         this.activity = activity;
         player = new Player();
 
     }
 
-    // public String getGame_ID() {
-//        return game_ID;
-//    }
+    public void getUserInfo(String Username) {
 
+        HashMap<String, String> info = new HashMap<>();
+
+        info.put("action", "getUserInfo");
+        info.put("username", Username);
+        info.put("token", Player.getToken());
+
+        JSONObject jsonObject = new JSONObject(info);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Gson gson = new Gson();
+                userInfo_GSON userInfo = gson.fromJson(response.toString()
+                        , userInfo_GSON.class);
+
+                //return the value but check for async and consequences
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activity.getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+    }
 
     public void addWordtoDB(final String completeWord, String new_incompleteWord
             , JSONObject recievedWord_Jsonobj) {

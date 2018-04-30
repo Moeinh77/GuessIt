@@ -76,20 +76,20 @@ public class gameHistory_list extends Fragment {
 
                     scoreList = new ArrayList<>();
 
-                    String recived_games_id = userInfo.games;
+                    //     String recived_games_id = userInfo.games;
 
-                    String[] array = recived_games_id.split(", ");
+                    //  String[] array = recived_games_id.split(", ");
 
                     //id hame bazi ha dar array hast inja
                     // miaym har khoone az array ro mifresim be oon yeki
                     //function ta etelaat ro bar asas id biare va hamaro bokone ye string ta too ye view bezarim
-                    for (int i = 0; i < array.length; i++) {
-                        //         player.getUserGamesInfo(array[i]); **************************
-                    }
+//                    for (int i = 0; i < array.length; i++) {
+//                        //         player.getUserGamesInfo(array[i]); **************************
+//                    }
                     ////////////////////////
                     scoreList = player.getScoreList();
 
-                    startUpTheList(array.length);
+                    //      startUpTheList(array.length);
 
                 } catch (JSONException e) {
                     //   Toast.makeText(getActivity(), "history list" + e.toString(), Toast.LENGTH_LONG).show();

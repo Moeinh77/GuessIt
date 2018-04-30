@@ -27,7 +27,6 @@ import java.util.HashMap;
 
 public class App_ReOpen extends AppCompatActivity {
 
-    private Player player;
     static public Activity activity;
 
     @Override
@@ -37,7 +36,7 @@ public class App_ReOpen extends AppCompatActivity {
 
         activity = this;
 
-        player = new Player();
+        //  player = new Player();
 
         int TIME_OUT = 1000;
 
@@ -48,12 +47,12 @@ public class App_ReOpen extends AppCompatActivity {
             @Override
             public void run() {
 
-                if (player.getToken() != null) {
+                if (Player.getToken() != null) {
 
                     Intent i = new Intent(App_ReOpen.this, Main_menu.class);
                     startActivity(i);
                     Toast.makeText(getApplicationContext(),
-                            "your user ### " + player.getuserName(), Toast.LENGTH_LONG).show();
+                            "your user ### " + Player.getuserName(), Toast.LENGTH_LONG).show();
                     finish();
 
                 } else {

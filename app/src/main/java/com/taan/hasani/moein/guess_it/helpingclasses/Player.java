@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.securepreferences.SecurePreferences;
+import com.taan.hasani.moein.guess_it.Gson.Interests_GSON;
 import com.taan.hasani.moein.guess_it.Gson.getMyInfo_GSON;
 import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
 import com.taan.hasani.moein.guess_it.Gson.userInfo_GSON;
@@ -19,6 +20,7 @@ import com.taan.hasani.moein.guess_it.game_menu.Entrance_signup_login;
 import com.taan.hasani.moein.guess_it.game_menu.App_ReOpen;
 import com.taan.hasani.moein.guess_it.gameHistory.gameHistory_object;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,11 +50,11 @@ public class Player {
     private String token;
     private String signupTime;
     private String mobileNumber;
-    private String MY_PREFS_NAME = "username and password";
+    // private String MY_PREFS_NAME = "username and password";
     private int highscore;
     // private SharedPreferences prefs;
     // private SharedPreferences.Editor editor;
-    private SecurePreferences prefs;
+    private static SecurePreferences prefs;
     private SecurePreferences.Editor editor;
 
     public Player() {
@@ -135,11 +137,11 @@ public class Player {
     }
     ////////////////////////////////////////////////////////////
 
-    public String getuserName() {
+    public static String getuserName() {
         return prefs.getString("userName", null);
     }
 
-    public String getToken() {
+    public static String getToken() {
         return prefs.getString("token", null);
     }
 
@@ -184,46 +186,7 @@ public class Player {
 
     /////////////////////////////////////////////////////////////////////
 
-    public void getUserInfo() {
 
-        HashMap<String, String> info = new HashMap<>();
-
-        info.put("action", "getUserInfo");
-        info.put("username", "???????????");
-        info.put("token", getToken());
-
-        JSONObject jsonObject = new JSONObject(info);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-                    userInfo_GSON userInfo;
-                    Gson gson = new Gson();
-                    userInfo = gson.fromJson(response.getJSONObject("user").toString()
-                            , userInfo_GSON.class);
-
-                    //setName(userInfo.name);
-                    setPassword(userInfo.password);
-                    setuserName(userInfo.username);
-                    setrole(userInfo.role);
-
-                } catch (JSONException e) {
-                    Toast.makeText(activity.getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activity.getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
-    }
 
     //new###
     private void updateMyInfo() {
@@ -314,6 +277,22 @@ public class Player {
             @Override
             public void onResponse(JSONObject response) {
 
+                Gson gson = new Gson();
+                simpleRequest_GSON request_ = gson.fromJson(response.toString(), simpleRequest_GSON.class);
+
+                if (request_.dataIsRight.equals("yes")) {
+                    try {
+
+                        JSONArray interests_array = response.getJSONArray("interests");
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    //Interests_GSON[] interests_gson = gson.fromJson(.toString(), Interests_GSON[].class);
+
+                }
             }
         }, new Response.ErrorListener() {
             @Override

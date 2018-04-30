@@ -37,9 +37,11 @@ public class Main_menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        player = new Player();
+        // Toast.makeText(getApplicationContext(),  Player.getToken(),
+        //             Toast.LENGTH_LONG).show();
+        Player.getToken();
+        // player = new Player();
 
-        player.getUserInfo();
         ////////////////////////
 
         viewpager = (ViewPager) findViewById(R.id.viewpager_mainmenu);

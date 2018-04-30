@@ -1,40 +1,20 @@
 package com.taan.hasani.moein.guess_it.game_play;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.Gson;
-import com.taan.hasani.moein.guess_it.Gson.makingGame_GSON;
-import com.taan.hasani.moein.guess_it.Gson.recievedWord_GSON;
-import com.taan.hasani.moein.guess_it.Gson.simpleRequest_GSON;
-import com.taan.hasani.moein.guess_it.appcontroller.AppController;
-import com.taan.hasani.moein.guess_it.helpingclasses.gameplayFunctions;
+import com.taan.hasani.moein.guess_it.helpingclasses.Functions;
 import com.taan.hasani.moein.guess_it.helpingclasses.Player;
 import com.taan.hasani.moein.volley.R;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class single_Player extends AppCompatActivity {
 
@@ -54,7 +34,7 @@ public class single_Player extends AppCompatActivity {
     private boolean inGame = true;//baraye inke agar az bazi kharej shodim dg request nade
     private int currentword_number;
     private int Totalwords;//tedad kole kalamt
-    private gameplayFunctions functions;
+    private Functions functions;
     private Player player;
     private Button Edit;
     private JSONObject recievedWord_Jsonobj;
@@ -65,7 +45,7 @@ public class single_Player extends AppCompatActivity {
         setContentView(R.layout.activity_single_player);
 
 //        player = new Player();
-//        functions = new gameplayFunctions(this);
+//        functions = new Functions(this);
 //        Button next_word_bt = (Button) findViewById(R.id.next_word_bt);
 //        word_TextView = (TextView) findViewById(R.id.word);
 //        entered_word = (EditText) findViewById(R.id.enterd_word);

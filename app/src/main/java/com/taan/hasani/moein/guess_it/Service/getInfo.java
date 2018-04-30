@@ -19,7 +19,7 @@ public class getInfo extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         Player player = new Player();
-        player.getUserInfo();
+        //   player.getUserInfo();
 
         _Toast("Running");
 

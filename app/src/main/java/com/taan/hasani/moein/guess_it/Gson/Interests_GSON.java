@@ -6,6 +6,5 @@ package com.taan.hasani.moein.guess_it.Gson;
 
 public class Interests_GSON {
     public String intersts;//bayad json array bashad
-    public String responseData;
-    public String dataIsRight;
+    public String persianTitle;
 }

@@ -7,13 +7,20 @@ import org.json.JSONObject;
  */
 
 public class userInfo_GSON {
-    public String games;
+
     public String username;
-    public String id;
     public String name;
     public String totalScore;
     public String position;
-    public String scores;
-    public String role;
-    public String password;
+    public String picture;
+
+//    public String games;
+//    public String username;
+//    public String id;
+//    public String name;
+//    public String totalScore;
+//    public String position;
+//    public String scores;
+//    public String role;
+//    public String password;
 }
