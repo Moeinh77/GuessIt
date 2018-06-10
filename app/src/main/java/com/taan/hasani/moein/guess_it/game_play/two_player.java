@@ -38,22 +38,21 @@ import java.util.HashMap;
 
 public class two_player extends AppCompatActivity {
 
+    String Rivalscore_gameEnd, Playerscore_gameEnd;
     private String url = "http://mamadgram.tk/guessIt.php", completeWord,
             incompleteWord, gamedID, recivedTime;
     private int number_of_trueGuess;
     private TextView word, message, timer, player2_textview, player1_textview;
     private EditText entered_word;
     private CountDownTimer countDownTimer;
-    private String turn;//baraye inke vaghti nobat player nist check ra nazanad
     // private int spent_time = 0;
     //  private boolean imIngame = true;//agar player bazira tark kard
     //
-
+    private String turn;//baraye inke vaghti nobat player nist check ra nazanad
     private boolean word_loaded;//baraye jelo giri az crash dar soorat zadan next ya check
     //agar kalame load nashode bashad
     //private int currentword_number;
     private int Toatalwords = 0;//tedad kalamte har bazi ke az server miad
-    String Rivalscore_gameEnd, Playerscore_gameEnd;
     private String status = " ";//baraye inke dar shoorooe bazi ke hanooz daryaft nashode status be nullptr nakhorim
 
     private Player player;//etelaat player
@@ -65,14 +64,14 @@ public class two_player extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_two_player);
 
-        Button check_bt = (Button) findViewById(R.id.check_bt);
+        Button check_bt = findViewById(R.id.check_bt);
         //Button nextWord_bt = (Button) findViewById(R.id.nextWord_bt);
-        word = (TextView) findViewById(R.id.word);
-        message = (TextView) findViewById(R.id.message);
-        entered_word = (EditText) findViewById(R.id.enteredWord);
-        timer = (TextView) findViewById(R.id.timer);
-        player2_textview = (TextView) findViewById(R.id.rivalscore);
-        player1_textview = (TextView) findViewById(R.id.yourscore);
+        word = findViewById(R.id.word);
+        message = findViewById(R.id.message);
+        entered_word = findViewById(R.id.enteredWord);
+        timer = findViewById(R.id.timer);
+        player2_textview = findViewById(R.id.rivalscore);
+        player1_textview = findViewById(R.id.yourscore);
         player = new Player(this);
         gamefuncs = new gameplayFunctions(this);
 
@@ -435,11 +434,11 @@ public class two_player extends AppCompatActivity {
         dialog.setContentView(R.layout.game_end_twoplayer_dialog);
         dialog.setCancelable(false);
 
-        Button cancel = (Button) dialog.findViewById(R.id.no);
-        TextView guesses_true = (TextView) dialog.findViewById(R.id.guesses_true);
-        TextView yourscore_gameEnd = (TextView) dialog.findViewById(R.id.player_score_gameEnd);
-        TextView guesses_false = (TextView) dialog.findViewById(R.id.guesses_false);
-        TextView rivalScore = (TextView) dialog.findViewById(R.id.rivalScore);
+        Button cancel = dialog.findViewById(R.id.no);
+        TextView guesses_true = dialog.findViewById(R.id.guesses_true);
+        TextView yourscore_gameEnd = dialog.findViewById(R.id.player_score_gameEnd);
+        TextView guesses_false = dialog.findViewById(R.id.guesses_false);
+        TextView rivalScore = dialog.findViewById(R.id.rivalScore);
         // TextView newHighScore_view = (TextView) dialog.findViewById(R.id.newHighscore);
 
         // newHighScore_view.setVisibility(View.INVISIBLE);

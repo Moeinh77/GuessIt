@@ -38,7 +38,7 @@ public class playerGame_loading extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_loading);
 
-        status_textview = (TextView) findViewById(R.id.status_textview);
+        status_textview = findViewById(R.id.status_textview);
 
         //inGame = true;
 
@@ -135,7 +135,8 @@ public class playerGame_loading extends Activity {
                     makingGame = gson.fromJson(response.toString(),
                             makingGame_GSON.class);
 
-                    if (makingGame.gameID.equals("-1")) {
+                    if (makingGame.gameID != null) {
+                        if (makingGame.gameID.equals("-1")) {
                         new Handler().postDelayed(new Runnable() {
 
                             @Override
@@ -148,6 +149,7 @@ public class playerGame_loading extends Activity {
                     } else {
                         gamedID = makingGame.gameID;
                         setGameSettings();
+                        }
                     }
 
 
