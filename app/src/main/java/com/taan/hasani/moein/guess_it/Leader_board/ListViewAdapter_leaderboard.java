@@ -81,9 +81,9 @@ public class ListViewAdapter_leaderboard extends ArrayAdapter<leaderBoard_object
             holder = new ListViewAdapter_leaderboard.Viewholder();
 
             //intialize kardane view hay mojood dar view nemoone
-            holder.playerPlace = (TextView) row.findViewById(R.id.player_place);
-            holder.playerUsername = (TextView) row.findViewById(R.id.player_username);
-            holder.playerScore = (TextView) row.findViewById(R.id.player_score);
+            holder.playerPlace = row.findViewById(R.id.player_place);
+            holder.playerUsername = row.findViewById(R.id.player_username);
+            holder.playerScore = row.findViewById(R.id.player_score);
 
             ///////////////////////////////////////////////////
 
@@ -115,18 +115,24 @@ public class ListViewAdapter_leaderboard extends ArrayAdapter<leaderBoard_object
                 dialog.setContentView(R.layout.user_onclickdialog);
                 dialog.setCancelable(true);
 
-                Button close = (Button) activity.findViewById(R.id.close_bt);
-
-
-                sendUserInformationByUsername(
-                        finalHolder.leaderBoardObject.getPlayer_username());
+                Button close = dialog.findViewById(R.id.close_bt);
 
 //                close.setOnClickListener(new View.OnClickListener() {
 //                    @Override
-//                    public void onClick(View v) {
+//                    public void onClick(View view) {
 //                        dialog.cancel();
 //                    }
 //                });
+
+                sendUserInformationByUsername(
+                        finalHolder.leaderBoardObject.getPlayer_username(), dialog);
+
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
 
                 dialog.show();
 
@@ -135,15 +141,7 @@ public class ListViewAdapter_leaderboard extends ArrayAdapter<leaderBoard_object
         return row;
     }
 
-    private class Viewholder {
-
-        leaderBoard_object leaderBoardObject;
-        TextView playerScore;
-        TextView playerUsername;
-        TextView playerPlace;
-    }
-
-    private void sendUserInformationByUsername(String username_) {
+    private void sendUserInformationByUsername(String username_, final Dialog dialog) {
 
 
         HashMap<String, String> info = new HashMap<>();
@@ -151,11 +149,10 @@ public class ListViewAdapter_leaderboard extends ArrayAdapter<leaderBoard_object
         info.put("action", "sendUserInformationByUsername");
         info.put("username", username_);
 
-        String url = "http://online6732.tk/guessIt.php";
 
         JSONObject jsonObject = new JSONObject(info);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, jsonObject, new Response.Listener<JSONObject>() {
+                AppController.url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -165,10 +162,10 @@ public class ListViewAdapter_leaderboard extends ArrayAdapter<leaderBoard_object
 
 //                        Toast.makeText(activity,
 //                                "Username changed", Toast.LENGTH_LONG).show();
-                        username = (TextView) activity.findViewById(R.id.username_dilog);
-                        name = (TextView) activity.findViewById(R.id.name_dialog);
-                        totalscore = (TextView) activity.findViewById(R.id.totalscore_dialog);
-                        rank = (Button) activity.findViewById(R.id.rank_bt);
+                        username = dialog.findViewById(R.id.username_dilog);
+                        name = dialog.findViewById(R.id.name_dialog);
+                        totalscore = dialog.findViewById(R.id.totalscore_dialog);
+                        rank = dialog.findViewById(R.id.rank_bt);
 
 
                         username.setText(response.getString("username"));
@@ -200,6 +197,14 @@ public class ListViewAdapter_leaderboard extends ArrayAdapter<leaderBoard_object
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
 
 
+    }
+
+    private class Viewholder {
+
+        leaderBoard_object leaderBoardObject;
+        TextView playerScore;
+        TextView playerUsername;
+        TextView playerPlace;
     }
 
 }
