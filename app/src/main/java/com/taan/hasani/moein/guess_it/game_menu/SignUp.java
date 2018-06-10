@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class SignUp extends AppCompatActivity {
 
     private final String MY_PREFS_NAME ="username and password" ;
-    String url = "http://mamadgram.tk/guessIt.php";
+    String url = AppController.url;
     private String password, username, name;
     private Button signup;
     private EditText username_editext, Nname_edittext, password_editext;
@@ -35,10 +35,10 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        signup=(Button)findViewById(R.id.signup);
-        username_editext=(EditText)findViewById(R.id.username);
-        password_editext=(EditText)findViewById(R.id.password);
-        Nname_edittext = (EditText) findViewById(R.id.name);
+        signup = findViewById(R.id.signup);
+        username_editext = findViewById(R.id.username);
+        password_editext = findViewById(R.id.password);
+        Nname_edittext = findViewById(R.id.name);
 
         final HashMap<String, String> info = new HashMap<>();
 
