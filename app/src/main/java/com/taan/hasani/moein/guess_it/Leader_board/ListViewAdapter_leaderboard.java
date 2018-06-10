@@ -160,17 +160,15 @@ public class ListViewAdapter_leaderboard extends ArrayAdapter<leaderBoard_object
 
                     if (response.getString("dataIsRight").equals("yes")) {
 
-//                        Toast.makeText(activity,
-//                                "Username changed", Toast.LENGTH_LONG).show();
                         username = dialog.findViewById(R.id.username_dilog);
                         name = dialog.findViewById(R.id.name_dialog);
                         totalscore = dialog.findViewById(R.id.totalscore_dialog);
                         rank = dialog.findViewById(R.id.rank_bt);
 
 
-                        username.setText(response.getString("username"));
-                        name.setText(response.getString("name"));
-                        totalscore.setText(response.getString("totalScore"));
+                        username.setText("Username :" + response.getString("username"));
+                        name.setText("Name :" + response.getString("name"));
+                        totalscore.setText("Toatal Scrore:" + response.getString("totalScore"));
                         rank.setText(response.getString("position"));
 
 
